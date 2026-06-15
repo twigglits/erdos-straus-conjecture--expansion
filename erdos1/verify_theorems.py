@@ -4,7 +4,7 @@
 Checks, on powers of two / Conway-Guy / brute-optimal dissociated sets:
   Lemma 0  : (1/2pi) int prod cos^2(a_i t) dt = 2^-n   (=, dissociated;  >, not)
   Theorem 1: sum a_i^2 >= (4^n-1)/3,  equality for powers of two
-  Theorem 2: top-heavy bound a_n >= sqrt((4^n-1)/(3K)), K = sum a_i^2 / a_n^2
+  Corollary 2: top-heavy bound a_n >= sqrt((4^n-1)/(3K)), K = sum a_i^2 / a_n^2
   Theorem 3: a_n >= sqrt((4^n-1)/(3n))   (the 1/sqrt3 * 2^n/sqrt n bound)
 All asserts must pass.
 
@@ -58,7 +58,7 @@ def check_theorems():
         if name == "pow2":
             assert s2 == floor, ("pow2 not tight", n, s2, floor)   # equality
         K = s2 / an ** 2
-        t2 = an ** 2 >= (4 ** n - 1) / (3 * K) - 1e-6      # Theorem 2 (== T1)
+        t2 = an ** 2 >= (4 ** n - 1) / (3 * K) - 1e-6      # Corollary 2 (== T1)
         t3 = an >= math.sqrt((4 ** n - 1) / (3 * n)) - 1e-9  # Theorem 3
         assert t1 and t2 and t3, (name, n, t1, t2, t3)
         worst_t1_gap = min(worst_t1_gap, s2 / floor)
@@ -67,7 +67,7 @@ def check_theorems():
                   f"{str(t1):>4} {K:>7.3f} {1/math.sqrt(3*K):>16.4f} {str(t3):>4}")
     print(f"\n  Theorem 1 tight ratio (min sum a^2 / floor over all sets) = "
           f"{worst_t1_gap:.6f}  (==1 means some family is exactly tight)")
-    print("  PASS — all of Theorems 1, 2, 3 hold on every set tested.\n")
+    print("  PASS — Theorem 1, Corollary 2, Theorem 3 hold on every set tested.\n")
 
 
 if __name__ == "__main__":

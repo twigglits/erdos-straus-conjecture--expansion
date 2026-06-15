@@ -18,12 +18,14 @@ of beating `√(2/π)` actually lives. **It does not beat the constant** — tha
 a hard 95-year-old problem and `√(2/π)` is the natural Gaussian endpoint. What
 it does: make the lever precise and measurable, and map the obstruction.
 
-**Rigorous, proven, machine-checked results** — the variance floor
-`Σaᵢ² ≥ (4ⁿ−1)/3` (tight), the **full conjecture for top-heavy sets**
-(`Σaᵢ² ≤ K·aₙ² ⟹ N ≥ 2ⁿ/√(3K)`), and the clean `N ≥ (1/√3−o(1))·2ⁿ/√n` bound —
-are in **`THEOREMS.md`** (proofs) and `verify_theorems.py` (checks). They settle
-the easy/top-heavy regime exactly and draw the line at the hard near-Gaussian case
-this analysis maps below.
+**The CLASSICAL second-moment floor, re-derived and machine-checked** — the variance
+floor `Σaᵢ² ≥ (4ⁿ−1)/3` (tight for the variance, equality *uniquely* powers of 2), the
+corollary that the conjecture holds in the easy/lacunary regime `Σaᵢ² ≤ O(1)·aₙ²`, and
+the `1/√3` bound `N ≥ 2ⁿ/√(3n)` (Bae/Guy) — are in **`THEOREMS.md`** (proofs) and
+`verify_theorems.py` (checks). These are *classical, not new* (Erdős–Moser/Bae–Guy era);
+the record `√(2/π)` is cited, not reproved. The **genuinely new content is the barrier
+map here** (the σ^{2/3} window, the two-corner obstruction, the `O(log σ)` shattering),
+not the bounds — they only mark exactly where the hard near-Gaussian case begins.
 
 ---
 
