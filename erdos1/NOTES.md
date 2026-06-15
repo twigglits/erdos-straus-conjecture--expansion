@@ -18,6 +18,13 @@ of beating `√(2/π)` actually lives. **It does not beat the constant** — tha
 a hard 95-year-old problem and `√(2/π)` is the natural Gaussian endpoint. What
 it does: make the lever precise and measurable, and map the obstruction.
 
+**Rigorous, proven, machine-checked results** — the variance floor
+`Σaᵢ² ≥ (4ⁿ−1)/3` (tight), the **full conjecture for top-heavy sets**
+(`Σaᵢ² ≤ K·aₙ² ⟹ N ≥ 2ⁿ/√(3K)`), and the clean `N ≥ (1/√3−o(1))·2ⁿ/√n` bound —
+are in **`THEOREMS.md`** (proofs) and `verify_theorems.py` (checks). They settle
+the easy/top-heavy regime exactly and draw the line at the hard near-Gaussian case
+this analysis maps below.
+
 ---
 
 ## 1. The exact reduction
