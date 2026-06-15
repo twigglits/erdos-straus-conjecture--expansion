@@ -112,15 +112,25 @@ and Lemma 0's clean iff-form — *not* the bounds in this file.
   bumps of `∫∏cos²` — the elementary route `1/√3 → 1/√π → √(3/2π)`.
 - **A multi-moment argument** (combine `Σaᵢ²` with `Σaᵢ⁴`) to enlarge Corollary 2's class
   from `K=O(1)` toward `K=o(n)` — the only direction here that would touch new sets.
-- **Lean-formalise Lemma 0 + Theorem 1** (crisp extremal; `formal-conjectures`'
-  `ErdosProblems/1.lean` carries this bound as `sorry`). The genuine, finite value-add.
+- **A multi-moment argument** already noted above.
 
 ---
 
 ## Machine verification
 
-`verify_theorems.py` (`PYTHONNOUSERSITE=1 python3 verify_theorems.py`) checks, on powers
-of two, Conway–Guy sets (n≤20), and brute-force optimal sets (n≤7): Lemma 0 (numerically,
-dissociated vs not), Theorem 1 (with equality, ratio 1.000000, only for powers of two),
-Corollary 2 (the bound, reporting `K` per family — `pow2` `K→4/3`, Conway–Guy `K↑`), and
-Theorem 3. All assertions pass.
+Two independent checks.
+
+**Numerical** — `verify_theorems.py` (`PYTHONNOUSERSITE=1 python3 verify_theorems.py`) checks,
+on powers of two, Conway–Guy sets (n≤20), and brute-force optimal sets (n≤7): Lemma 0
+(numerically, dissociated vs not), Theorem 1 (with equality, ratio 1.000000, only for
+powers of two), Corollary 2 (`K` per family — `pow2` `K→4/3`, Conway–Guy `K↑`), Theorem 3.
+All assertions pass.
+
+**Formal (Lean 4 + Mathlib)** — `subsetsums/` is a machine-checked proof of Lemma 0, the
+variance-floor heart (`varLB`: distinct integers have `12(m ∑v² − (∑v)²) ≥ m⁴ − m²`), and
+**Theorem 1** itself (`Theorem1_of_moments`: dissociated ⟹ `4ⁿ − 1 ≤ 3 ∑aᵢ²`), the last
+modulo the two standard second-moment identities supplied as explicit hypotheses. **No
+`sorry`**: the file ends with `#print axioms`, and all three results depend only on
+`[propext, Classical.choice, Quot.sound]`. Build/verify per `subsetsums/README.md`
+(`lake exe cache get; lake build`). Honest gap to a standalone Theorem 1: discharge the
+two elementary subset-counting identities (`hI1`, `hI2`).

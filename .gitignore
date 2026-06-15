@@ -23,3 +23,6 @@ engines/err_*.log
 engines/cuda_*.csv
 engines/got_*.csv
 engines/ref_*.csv
+
+# Lean build artifacts (Mathlib cache, ~GBs — regenerate with lake exe cache get)
+erdos1/subsetsums/.lake/
