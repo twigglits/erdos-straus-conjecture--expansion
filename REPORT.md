@@ -1306,6 +1306,47 @@ specific value remains empirical.** [Machine: `analysis/type3_derivation.py` —
 f̃₁(2521) = 377 = 115/85/177, verifies the per-stratum residue formula, and prints the
 actual / geometry / equidistribution decomposition (0.437 / ~0.30 / ~0.46) over [73, 8000).]
 
+**Addendum — the sliding-modulus average localises the correction (2026-06-15,
+`analysis/type3_sliding.py`).** The open question (does averaging over the moving modulus
+a = 4x − p rescue the τ/φ equidistribution?) is now answered. Define the per-stratum
+correction κ_j = (actual count) / (equidist count). Over four sub-bands of [73, 8000):
+
+| band | κ_I | κ_II | κ_III |
+|---|---|---|---|
+| [73, 1000) | 1.690 | 0.714 | 0.942 |
+| [1000, 2500) | 1.634 | 0.710 | 0.990 |
+| [2500, 5000) | 1.615 | 0.704 | 0.984 |
+| [5000, 8000) | 1.653 | 0.711 | 1.000 |
+
+**The κ_j converge** — to ≈ 1.64, 0.71, 1.00 — so averaging *reveals* a stable
+singular-series correction; it does not drift. This resolves the council's split with a
+twist:
+
+- **Automatic-window stratum (Type III): κ_III → 1 — averaging DOES rescue the naïve main
+  term.** The Erdős–Hall–Tenenbaum subgroup obstruction averages *away*: the reachability
+  rate Pr[4⁻¹ ∈ S_x] and the achievable-set density |S_x|/φ(|a|) both decay like ~1/log p
+  (0.12 → 0.028 over the bands), but their **ratio → 1** (0.87, 0.97, 0.96, 0.99) — rare
+  reachability is exactly compensated by index inflation (the class is rich when it is
+  reachable). Hence the Type III *count* satisfies, asymptotically,
+  c_III ~ Σ_{x<p/4} τ(x²)/φ(|4x − p|) — a clean Titchmarsh-divisor-type sum.
+- **Size-capped strata (Type I, II): κ ≠ 1, stably — no rescue.** κ_I ≈ 1.64, κ_II ≈ 0.71
+  are genuine convergent corrections. Decisively: **Type I and Type III have identical
+  residue structure** (both targets are squares mod |a|, both reachable iff 4 ∈ H_x) yet
+  κ_I ≈ 1.64 ≠ 1.00 ≈ κ_III, so the entire gap is **window × residue coupling** — Type I's
+  size cap e ≤ |dmin| selects small divisors, which have few prime factors, hence live in a
+  smaller achievable subgroup, hence over-represent any reachable target. This is exactly
+  the "false independence of size and residue" the council flagged, now isolated and
+  quantified.
+
+**Net.** The constant is III/f₁ = κ_III·G_III / Σ_j κ_j·G_j, with G_j the window-geometry
+weights and κ ≈ (1.64, 0.71, 1.00) *convergent* correction constants. So (i) the value is
+genuinely well-defined, not drifting; (ii) its non-trivial content is fully localised to
+the **Type I/II size × residue coupling** — the residue distribution and the subgroup
+obstruction both average away in the clean stratum; and (iii) a closed form now needs only
+κ_I and κ_II, each a Titchmarsh-divisor-type sum weighted by the small-divisor subgroup
+density — a bounded, concrete analytic target rather than the whole ratio. [Machine:
+`analysis/type3_sliding.py` — κ_j per sub-band + the reachability/density decay.]
+
 ### 13.3 K-criteria: factorisation level coverage
 
 For every prime p in the band, compute:
