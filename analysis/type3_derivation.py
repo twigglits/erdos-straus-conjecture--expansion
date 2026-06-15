@@ -10,13 +10,23 @@ in the grade-1 window:
 Stratify |d| = p^j e, e | x^2:  j=0 Type I, j=1 II, j=2 III. Each j has exactly
 tau(x^2) divisors of B^2 (p does not divide x).
 
-FINDINGS this script establishes:
+WHAT IS RIGOROUS (this script establishes):
  1. validates the model: f1(2521) = 377, I/II/III = 115/85/177 exactly.
  2. pure window geometry (drop the residue filter) gives III/f1 -> 1/3, NOT 0.43.
- 3. the residue condition d == -B (mod|a|) is what lifts III to 0.43. Per stratum
-    it reads  e == 4^(1-j) x^(2-j)  (mod |a|)  [since p == 4x (mod a)], so
-    Type I: e==4x^2,  Type II: e==x,  Type III: e==4^{-1}; the divisor involution
-    e <-> x^2/e maps the Type I class to the Type III class.
+ 3. the residue condition d == -B (mod|a|) reduces per stratum to the single unit
+    class  e == 4^(1-j) x^(2-j)  (mod |a|)  [since p == 4x (mod a)]: Type I e==4x^2,
+    Type II e==x, Type III e==4^{-1}; the divisor involution e <-> x^2/e maps the
+    Type I class bijectively onto the Type III class (so I and III have EQUAL
+    residue-counts at every x -- the I/III asymmetry is window-driven, not residue).
+
+WHAT IS NOT (council-reviewed 2026-06-15, see REPORT §13.2): the *value* 0.43 is NOT
+derived. The 'equidist' model (each unit class ~ tau(x^2)/phi(|a|)) is illegitimate as
+stated -- divisors of x^2 only fill the subgroup H_x = <primes|x> of (Z/|a|)*
+(Erdos-Hall-Tenenbaum), the modulus a=4x-p slides with x, and the model converges to the
+WRONG constant ~0.46. Its 2% agreement is numerator-only (Type III, automatic window);
+the I+II denominator (divisors in short intervals INT APs) is the uncontrolled hard case.
+The three modes below print actual(~0.437, rising) / geom(~0.30) / equidist(~0.46): the
+value remains EMPIRICAL; 7/16=0.4375 is not excluded.
 
 Run:  python3 type3_derivation.py    (stdlib only)
 """
@@ -133,5 +143,6 @@ if __name__ == "__main__":
         print(f"\nband [{lo},{hi}): {len(ps)} primes == 1 mod 24")
         for m in ('actual', 'geom', 'equidist'):
             print(f"  {m:9} III/f1 = {ratio(sums[m]):.4f}")
-    print("\n  geom ~ 1/3 (window only);  actual ~ 0.43 (residue-lifted);"
-          "  equidist = geometry x 1/phi(|a|) captures the lift.")
+    print("\n  geom ~ 1/3 (window only); actual ~ 0.43 (rising, empirical);"
+          " equidist ~0.46 OVERSHOOTS (naive 1/phi, not the Erdos-Hall-Tenenbaum")
+    print("  subgroup weight). Mechanism located, value NOT derived -- see REPORT 13.2.")
