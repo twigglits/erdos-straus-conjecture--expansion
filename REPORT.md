@@ -1161,9 +1161,11 @@ All claims are machine-verified by `analysis/analyze_section13.py`
    constant sits near 1/3 and looks irrational, but the *value* stays empirical: the
    τ/φ(|4x−p|) equidistribution model gives the wrong value (≈ 0.46), the true
    weight is the Erdős–Hall–Tenenbaum subgroup density 𝟙{c∈H_x}/|H_x|, and the per-stratum
-   κ-corrections do not even converge (§13.2 addendum, verified to p = 4×10⁵). Only the
-   ratio III/f₁ ≈ 0.436 is stable (< 0.5% over two decades); it is not a clean closed form
-   and 7/16 = 0.4375 is not excluded.
+   κ-corrections do not even converge (§13.2 addendum, verified to p = 4×10⁵). The ratio
+   III/f₁ ≈ 0.436 is more robust but its *limit* is also untested (per-band fit hints
+   ~0.43–0.435); it is not a clean closed form, 7/16 = 0.4375 is neither confirmed nor
+   excluded. The genuine route is the ratio-of-singular-series (the global Euler product
+   cancels because ν_p is local at p — which is why the ratio outlives the κ's).
 
 3. **K-criteria directly diagnose the most extreme floor primes.** K1 (4p+1 ∋ factor
    ≡ 3 mod 4) fires for 50.6% of all primes in the band and only 39.8% of square-class
@@ -1333,10 +1335,15 @@ a = 4x − p that drift accumulates, so κ_j = actual/equidist inherits a slow (
 1.6449 for κ_I is decisively excluded** (κ_I = 1.538 at 4×10⁵ and still falling); the
 small-band coincidence κ_I ≈ ζ(2) was an artifact.
 
-**What IS stable is the observable III/f₁ ≈ 0.436** — it moves only 0.4371 → 0.4357
-(< 0.5%) across two decades, *because* the three κ-drifts compensate. The κ-decomposition
-is a useful diagnostic, not a set of constants; the genuine invariant is the
-normalisation-independent ratio.
+**The observable III/f₁ ≈ 0.436 is more robust than the κ's — but a second council review
+(2026-06-15) flags that calling it a *limit* is itself an over-read.** Cumulatively it
+moves only 0.4371 → 0.4357 (< 0.5%); the *independent per-band* ratios (differencing the
+cumulative counts) are 0.4375, 0.4378, 0.4370, 0.4347, 0.4360, 0.4356 — flat-ish ~0.436
+with ±0.002 noise and no clean descent, and a 1/log p fit extrapolates to ~0.430–0.435.
+So the true limit is uncertain in ≈ [0.43, 0.436]: **0.436 is the observed value over
+[73, 4×10⁵], not a confirmed limit** — and a confident 0.428 (from fitting the *cumulative*
+descent) is itself an over-extrapolation. The κ-decomposition is a diagnostic, not
+constants; the ratio is steadier, but "constant" remains untested.
 
 **Surviving structural content (scale-independent):** Type III's window is automatic, so
 κ_III stays closest to clean (≈ 1, the reach × index near-cancellation); and **Type I and
@@ -1346,13 +1353,27 @@ Type III have identical residue structure** (both square targets, both reachable
 subgroup → over-represent reachable targets), the council's "false independence" weak link,
 confirmed robustly.
 
-**Verdict on the value.** III/f₁ ≈ 0.436 is *empirical and essentially stable*, but it is
-**not** a clean closed form and **not** reducible to convergent per-stratum constants — even
-the natural κ-decomposition drifts. A rigorous treatment needs the true divisor-in-AP
-density (not 1/φ) with the small-divisor subgroup correction — Deshouillers–Iwaniec /
-Wirsing–Halász input over a sliding modulus — beyond what this study establishes.
-**Methodological note: this is the third time small-band data suggested convergence that
-a longer run refuted; trend claims here require ≥ 2 decades of p before they are stated.**
+**Verdict on the value.** III/f₁ ≈ 0.436 over the observed range; the true limit is likely
+slightly lower (~0.43–0.435) but the data cannot pin it — **convergence untested**. It is
+**not** a clean closed form, **not** reducible to convergent per-stratum κ's, and
+7/16 = 0.4375 is neither confirmed nor excluded.
+
+**The council's positive contribution is the route, not the value.** Write f₁ and f₁_III
+each as a Hardy–Littlewood / Titchmarsh singular-series sum and take the **ratio of singular
+series**. Because the p-adic stratification ν_p(d) ∈ {0,1,2} is a condition *local at p*,
+the global Euler product ∏_{ℓ≠p} **cancels in the ratio** — which is precisely *why* III/f₁
+is far steadier than any individual κ (whose 1/φ yardstick retains the global product and so
+drifts). The limit is therefore expected to be a genuine **non-elementary singular-series
+constant** = (local-at-p factor) × (archimedean window weight), obtainable via
+Selberg–Delange (yielding the constant *and* its 1/log p secondary term in one stroke), with
+Deshouillers–Iwaniec (τ in APs to modulus x^{2/3+}) and the Erdős–Hall–Tenenbaum
+divisors-in-residue-classes correction supplying the rigorous average. The decisive
+numerical test — per-band III/f₁ with binomial + block-bootstrap error bars, pushed to
+p ≥ 10⁷ — remains to be run.
+
+**Methodological note: this is the fourth optimistic over-read in this thread (Type III
+"derived"; κ_I → ζ(2); κ_j → constants; III/f₁ → 0.436 as a limit). Trend/limit claims here
+now require ≥ 2 decades of p AND independent per-band error bars before they are stated.**
 [Machine: `analysis/type3_sliding.py` (κ_j + reachability/density, small p);
 `analysis/type3_kappa.c` (C/OpenMP, validated vs the Python actual counts, to 4×10⁵;
 build `gcc -O2 -fopenmp -o type3_kappa_c type3_kappa.c`).]
