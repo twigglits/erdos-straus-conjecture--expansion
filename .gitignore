@@ -14,6 +14,7 @@ engines/fp
 engines/fpr
 engines/fpcuda
 engines/fsigned
+analysis/type3_kappa_c
 
 # transient run output and validation scratch
 *.partial

@@ -1159,9 +1159,11 @@ All claims are machine-verified by `analysis/analyze_section13.py`
    kernel condition d ≡ −B (mod |a|) reduces per stratum to the unit class
    e ≡ 4^{1−j} x^{2−j} (mod |a|) with an exact I ↔ III involution. These explain why the
    constant sits near 1/3 and looks irrational, but the *value* stays empirical: the
-   τ/φ(|4x−p|) equidistribution model converges to the wrong constant (≈ 0.46), the true
-   weight is the Erdős–Hall–Tenenbaum subgroup density 𝟙{c∈H_x}/|H_x|, and the sub-band
-   ratio rises monotonically (0.434 → 0.439) — 7/16 = 0.4375 is not excluded.
+   τ/φ(|4x−p|) equidistribution model gives the wrong value (≈ 0.46), the true
+   weight is the Erdős–Hall–Tenenbaum subgroup density 𝟙{c∈H_x}/|H_x|, and the per-stratum
+   κ-corrections do not even converge (§13.2 addendum, verified to p = 4×10⁵). Only the
+   ratio III/f₁ ≈ 0.436 is stable (< 0.5% over two decades); it is not a clean closed form
+   and 7/16 = 0.4375 is not excluded.
 
 3. **K-criteria directly diagnose the most extreme floor primes.** K1 (4p+1 ∋ factor
    ≡ 3 mod 4) fires for 50.6% of all primes in the band and only 39.8% of square-class
@@ -1306,46 +1308,54 @@ specific value remains empirical.** [Machine: `analysis/type3_derivation.py` —
 f̃₁(2521) = 377 = 115/85/177, verifies the per-stratum residue formula, and prints the
 actual / geometry / equidistribution decomposition (0.437 / ~0.30 / ~0.46) over [73, 8000).]
 
-**Addendum — the sliding-modulus average localises the correction (2026-06-15,
-`analysis/type3_sliding.py`).** The open question (does averaging over the moving modulus
-a = 4x − p rescue the τ/φ equidistribution?) is now answered. Define the per-stratum
-correction κ_j = (actual count) / (equidist count). Over four sub-bands of [73, 8000):
+**Addendum — the sliding-modulus average: the κ_j do NOT converge (2026-06-15,
+`analysis/type3_sliding.py`, `analysis/type3_kappa.c`).** Define the per-stratum correction
+κ_j = (actual count) / (equidist count). Small bands ([73, 8000)) *suggested* κ_j →
+constants (≈ 1.64, 0.71, 1.00) — but a high-precision C/OpenMP computation to p = 4×10⁵
+(4172 primes ≡ 1 mod 24; engine validated by reproducing the exact actual count
+3011/1906/3818 over [73, 3000)) **refutes that**. All three drift monotonically:
 
-| band | κ_I | κ_II | κ_III |
-|---|---|---|---|
-| [73, 1000) | 1.690 | 0.714 | 0.942 |
-| [1000, 2500) | 1.634 | 0.710 | 0.990 |
-| [2500, 5000) | 1.615 | 0.704 | 0.984 |
-| [5000, 8000) | 1.653 | 0.711 | 1.000 |
+| P | #primes | κ_I | κ_II | κ_III | III/f₁ |
+|---|---|---|---|---|---|
+| 3000 | 46 | 1.632 | 0.703 | 0.978 | 0.4371 |
+| 10⁴ | 143 | 1.637 | 0.708 | 0.991 | 0.4375 |
+| 2.5×10⁴ | 325 | 1.612 | 0.700 | 1.001 | 0.4377 |
+| 5×10⁴ | 619 | 1.585 | 0.692 | 1.006 | 0.4373 |
+| 10⁵ | 1181 | 1.561 | 0.687 | 1.011 | 0.4359 |
+| 2×10⁵ | 2212 | 1.550 | 0.682 | 1.015 | 0.4360 |
+| 4×10⁵ | 4172 | **1.538** | **0.678** | **1.021** | **0.4357** |
 
-**The κ_j converge** — to ≈ 1.64, 0.71, 1.00 — so averaging *reveals* a stable
-singular-series correction; it does not drift. This resolves the council's split with a
-twist:
+**κ_I falls (1.64 → 1.54), κ_II falls (0.708 → 0.678), κ_III rises through 1 (0.98 → 1.02)
+— none is a constant.** The cause: the equidist normalisation 1/φ(|a|) is *itself* a
+drifting approximation to the true divisor-in-AP density, and over the sliding modulus
+a = 4x − p that drift accumulates, so κ_j = actual/equidist inherits a slow (apparently
+~1/log p) trend with no confirmable limit — and certainly no clean closed form. **ζ(2) =
+1.6449 for κ_I is decisively excluded** (κ_I = 1.538 at 4×10⁵ and still falling); the
+small-band coincidence κ_I ≈ ζ(2) was an artifact.
 
-- **Automatic-window stratum (Type III): κ_III → 1 — averaging DOES rescue the naïve main
-  term.** The Erdős–Hall–Tenenbaum subgroup obstruction averages *away*: the reachability
-  rate Pr[4⁻¹ ∈ S_x] and the achievable-set density |S_x|/φ(|a|) both decay like ~1/log p
-  (0.12 → 0.028 over the bands), but their **ratio → 1** (0.87, 0.97, 0.96, 0.99) — rare
-  reachability is exactly compensated by index inflation (the class is rich when it is
-  reachable). Hence the Type III *count* satisfies, asymptotically,
-  c_III ~ Σ_{x<p/4} τ(x²)/φ(|4x − p|) — a clean Titchmarsh-divisor-type sum.
-- **Size-capped strata (Type I, II): κ ≠ 1, stably — no rescue.** κ_I ≈ 1.64, κ_II ≈ 0.71
-  are genuine convergent corrections. Decisively: **Type I and Type III have identical
-  residue structure** (both targets are squares mod |a|, both reachable iff 4 ∈ H_x) yet
-  κ_I ≈ 1.64 ≠ 1.00 ≈ κ_III, so the entire gap is **window × residue coupling** — Type I's
-  size cap e ≤ |dmin| selects small divisors, which have few prime factors, hence live in a
-  smaller achievable subgroup, hence over-represent any reachable target. This is exactly
-  the "false independence of size and residue" the council flagged, now isolated and
-  quantified.
+**What IS stable is the observable III/f₁ ≈ 0.436** — it moves only 0.4371 → 0.4357
+(< 0.5%) across two decades, *because* the three κ-drifts compensate. The κ-decomposition
+is a useful diagnostic, not a set of constants; the genuine invariant is the
+normalisation-independent ratio.
 
-**Net.** The constant is III/f₁ = κ_III·G_III / Σ_j κ_j·G_j, with G_j the window-geometry
-weights and κ ≈ (1.64, 0.71, 1.00) *convergent* correction constants. So (i) the value is
-genuinely well-defined, not drifting; (ii) its non-trivial content is fully localised to
-the **Type I/II size × residue coupling** — the residue distribution and the subgroup
-obstruction both average away in the clean stratum; and (iii) a closed form now needs only
-κ_I and κ_II, each a Titchmarsh-divisor-type sum weighted by the small-divisor subgroup
-density — a bounded, concrete analytic target rather than the whole ratio. [Machine:
-`analysis/type3_sliding.py` — κ_j per sub-band + the reachability/density decay.]
+**Surviving structural content (scale-independent):** Type III's window is automatic, so
+κ_III stays closest to clean (≈ 1, the reach × index near-cancellation); and **Type I and
+Type III have identical residue structure** (both square targets, both reachable iff
+4 ∈ H_x) yet κ_I ≈ 1.54 ≠ 1.02 ≈ κ_III at *every* scale — so that gap is genuinely
+**window × residue coupling** (small divisors → few prime factors → smaller achievable
+subgroup → over-represent reachable targets), the council's "false independence" weak link,
+confirmed robustly.
+
+**Verdict on the value.** III/f₁ ≈ 0.436 is *empirical and essentially stable*, but it is
+**not** a clean closed form and **not** reducible to convergent per-stratum constants — even
+the natural κ-decomposition drifts. A rigorous treatment needs the true divisor-in-AP
+density (not 1/φ) with the small-divisor subgroup correction — Deshouillers–Iwaniec /
+Wirsing–Halász input over a sliding modulus — beyond what this study establishes.
+**Methodological note: this is the third time small-band data suggested convergence that
+a longer run refuted; trend claims here require ≥ 2 decades of p before they are stated.**
+[Machine: `analysis/type3_sliding.py` (κ_j + reachability/density, small p);
+`analysis/type3_kappa.c` (C/OpenMP, validated vs the Python actual counts, to 4×10⁵;
+build `gcc -O2 -fopenmp -o type3_kappa_c type3_kappa.c`).]
 
 ### 13.3 K-criteria: factorisation level coverage
 
@@ -1544,8 +1554,14 @@ than before, but it is now quantified from five independent angles.
 
 - `analysis/analyze_section13.py` — all §13 numbers (stdlib only; ~2 min;
   run: `python3 analyze_section13.py`)
-- `analysis/type3_derivation.py` — the §13.2 Type III derivation (stdlib only;
-  run: `python3 type3_derivation.py`): validates the strata model against
-  f̃₁(2521) = 377 = 115/85/177, verifies the per-stratum residue formula
-  e ≡ 4^{1−j} x^{2−j} (mod |a|), and prints the actual / geometry / equidistribution
-  decomposition of f₁III/f₁ across [73, 8000).
+- `analysis/type3_derivation.py` — the §13.2 Type III strata model (stdlib only;
+  run: `python3 type3_derivation.py`): validates against f̃₁(2521) = 377 = 115/85/177,
+  verifies the per-stratum residue formula e ≡ 4^{1−j} x^{2−j} (mod |a|), and prints the
+  actual / geometry / equidistribution decomposition of f₁III/f₁ across [73, 8000).
+- `analysis/type3_sliding.py` — the κ_j sliding-modulus diagnostic + reachability/density
+  decay (stdlib; small p).
+- `analysis/type3_kappa.c` — C/OpenMP κ_j engine for the §13.2 addendum (build
+  `gcc -O2 -fopenmp -o type3_kappa_c type3_kappa.c`; run `./type3_kappa_c 400000`).
+  Validated by reproducing the exact actual count 3011/1906/3818 over [73, 3000); shows
+  κ_I, κ_II, κ_III all drift (no convergence) to p = 4×10⁵, only III/f₁ ≈ 0.436 stable.
+  (`analysis/type3_kappa.py` is the slower stdlib equivalent.)
