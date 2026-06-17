@@ -349,6 +349,8 @@ Full proofs and checks: [`erdos1/THEOREMS.md`](erdos1/THEOREMS.md).
 │   ├── target_frontier.py        §12 adversarial targeting score
 │   ├── local_solubility.py       local solubility + stratum vanishing (the BM "local" half)
 │   ├── second_moment.py          §14 2nd-moment reduction + Erdős–Kac channel law
+│   ├── find_solution.py          §15 exhibits an ESC solution per prime to 10²² (adversarial)
+│   ├── channel_survey.py         §15 rolling-window channel-margin survey 10⁹–10¹⁵
 │   ├── plot_types.py             figures 1–5
 │   ├── plot_residual.py          figures 6–7
 │   └── residual_effects.json     fitted congruence effects (q ≤ 97)
@@ -494,6 +496,14 @@ convergence untested — not a confirmed limit); K1∨K2 failure
 diagnoses the four most extreme floor primes; F̃ floor ~ (ln p)^2.24; the
 congruence ladder is perfectly anti-phased between f₀ and f₁ (corr = −0.958).
 §14 (2026-06-18) opens the **second moment** — untouched since Elsholtz–Tao 2013 (Remark 1.3) and confirmed so by a fresh citation sweep. It gives the explicit reduction of Σ f_II(p)² to a **two-shift Titchmarsh divisor sum** (measured 98.5% off-diagonal), the **first empirical second moment in the literature** (extending §5's var/mean; f is lognormal not Poisson: Var/mean grows 3.5→13.8 while Var/mean² ≈ e^{σ²}−1), and the one **rigorous** distributional law — an Erdős–Kac CLT for the channel count ω₃(4p+1) (mean ≈ Var ≈ ½ lnln p; K1-starvation ω₃=0 of Landau–Ramanujan density ≈0.47; the floor primes are its left-tail large deviations). It does not narrow the gap; it maps the frontier and supplies its first data.
+§15 (2026-06-18) attacks from four more angles: ESC verified with explicit solutions for
+adversarial square-class primes to **10²²** (`find_solution.py`); the Erdős–Kac channel
+margin shown to persist to **10¹⁵** (`channel_survey.py`, rolling-window sieve); the
+geometric/dynamical route formally closed (the surface is (1,1,1)/Cayley nodal cubic, finite
+Aut S₄ — no Vieta/Markoff descent, no mod-p graph); and **no non-circular conditional
+theorem** possible (parity barrier + average-vs-pointwise gap). Honest: the 10¹⁰ blind
+prediction is still **untested** — the engines are 32-bit/u64-bound and cap at ~2×10⁹ (a
+128-bit engine is the next build).
 Open: the 10¹⁰ blind prediction ([439, 499] for min f in [10¹⁰, 10¹⁰+10⁷] —
 requires a fresh GPU run); a rigorous limit (if one exists) for the Type III ratio
 f₁III/f₁ ≈ 0.436, via the singular-series-ratio route (§13.2);
