@@ -348,6 +348,7 @@ Full proofs and checks: [`erdos1/THEOREMS.md`](erdos1/THEOREMS.md).
 │   ├── residual_spectrum.py      §12 spectrum (writes residual_effects.json)
 │   ├── target_frontier.py        §12 adversarial targeting score
 │   ├── local_solubility.py       local solubility + stratum vanishing (the BM "local" half)
+│   ├── second_moment.py          §14 2nd-moment reduction + Erdős–Kac channel law
 │   ├── plot_types.py             figures 1–5
 │   ├── plot_residual.py          figures 6–7
 │   └── residual_effects.json     fitted congruence effects (q ≤ 97)
@@ -492,6 +493,7 @@ lognormal with σ ≈ 0.51 and its negative covariance with F̃ reduces var(ln f
 convergence untested — not a confirmed limit); K1∨K2 failure
 diagnoses the four most extreme floor primes; F̃ floor ~ (ln p)^2.24; the
 congruence ladder is perfectly anti-phased between f₀ and f₁ (corr = −0.958).
+§14 (2026-06-18) opens the **second moment** — untouched since Elsholtz–Tao 2013 (Remark 1.3) and confirmed so by a fresh citation sweep. It gives the explicit reduction of Σ f_II(p)² to a **two-shift Titchmarsh divisor sum** (measured 98.5% off-diagonal), the **first empirical second moment in the literature** (extending §5's var/mean; f is lognormal not Poisson: Var/mean grows 3.5→13.8 while Var/mean² ≈ e^{σ²}−1), and the one **rigorous** distributional law — an Erdős–Kac CLT for the channel count ω₃(4p+1) (mean ≈ Var ≈ ½ lnln p; K1-starvation ω₃=0 of Landau–Ramanujan density ≈0.47; the floor primes are its left-tail large deviations). It does not narrow the gap; it maps the frontier and supplies its first data.
 Open: the 10¹⁰ blind prediction ([439, 499] for min f in [10¹⁰, 10¹⁰+10⁷] —
 requires a fresh GPU run); a rigorous limit (if one exists) for the Type III ratio
 f₁III/f₁ ≈ 0.436, via the singular-series-ratio route (§13.2);
@@ -526,5 +528,26 @@ OEIS submission of f̃₁ and F̃; Lean formalization of Lemma D.
   Mathematicorum 30 (2004) 36–37 — the documented trace of the signed variant
 - T. Bloom, C. Elsholtz, *Egyptian Fractions* (survey, 2022) —
   <https://arxiv.org/abs/2210.04496>
-</content>
-</invoke>
+
+**Second-moment frontier and divisor-in-AP inputs (§14)**
+
+- G. H. Halberstam, *On the distribution of additive number-theoretic functions III*,
+  J. London Math. Soc. 30 (1955) — Erdős–Kac CLT for additive functions of shifted primes
+  (the rigorous backbone of the ω₃(4p+1) channel law)
+- K. Ford, *The distribution of integers with a divisor in a given interval*, Ann. of Math.
+  168 (2008) 367–433 — <https://arxiv.org/abs/math/0401223> (the lognormal divisor law)
+- A. Granville, X. Shao, *Bombieri–Vinogradov for multiplicative functions, and beyond the
+  x^{1/2}-barrier* (2019) — <https://arxiv.org/abs/1703.06865> (every-modulus equidistribution
+  is provably false — the analytic mirror of Theorem F)
+- P. Sharma, *Ternary divisor function in arithmetic progressions* (level 1/2+1/30, 2024) —
+  <https://arxiv.org/abs/2303.06087>
+- S. Aydemir, A. Boran, *The ternary divisor function in APs averaged over residue classes*
+  (level 8/11, 2026) — <https://arxiv.org/abs/2601.12601>
+- S. Drappeau, *Sums of Kloosterman sums and the Titchmarsh divisor problem* (2017) —
+  <https://arxiv.org/abs/1504.05549>; E. Assing, V. Blomer, J. Li, *Uniform Titchmarsh divisor
+  problems* (2021) — <https://arxiv.org/abs/2005.13915>
+- B. Topacoğullari, *The shifted convolution of divisor functions* (2017) —
+  <https://arxiv.org/abs/1512.05770>
+- (ESC-adjacent 2026, partial: Mballa, *natural-density-one parametrisation* —
+  <https://arxiv.org/abs/2602.20036>; Bello-Hernández et al., *a divisor parametrisation* —
+  <https://arxiv.org/abs/2606.10922>)
