@@ -12,7 +12,7 @@ Building on §11–§12.  Five new directions, all out-of-sample where it matter
 (E) Blind prediction for [10^10, 1.01×10^10]: lognormal-EV extrapolation from §5 model;
     concretely falsifiable, no new data needed
 
-Run (from files/):  python3 analyze_section13.py
+Run (from analysis/):  python3 analyze_section13.py
 stdlib only — no numpy required.
 """
 import csv, json, math

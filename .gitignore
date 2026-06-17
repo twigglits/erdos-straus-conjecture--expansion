@@ -26,3 +26,10 @@ engines/ref_*.csv
 
 # Lean build artifacts (Mathlib cache, ~GBs — regenerate with lake exe cache get)
 erdos1/subsetsums/.lake/
+
+# --- Local scratch (regenerable; not deliverables) ---
+# Engine binaries + transient run output if dumped into a files/ scratch dir
+# (engines/* + *.partial + *.err above catch most; build commands in REPORT §8).
+files/
+# Firecrawl scrape cache (erdosproblems.com pulls) — regenerated on demand.
+.firecrawl/

@@ -14,6 +14,11 @@ the conjecture over $\mathbb{Z}$.
 
 </div>
 
+> **Scope — two problems.** The main study below is the **Erdős–Straus conjecture**
+> (#242). A second, unrelated problem — **Erdős #1**, the \$500 distinct-subset-sums
+> conjecture — lives self-contained in [`erdos1/`](erdos1/); see *"A second problem in
+> this repo"* near the end of this README, and `erdos1/NOTES.md` / `erdos1/THEOREMS.md`.
+
 ## The conjecture
 
 > For every integer $n \ge 2$ there exist **positive** integers $x, y, z$ with
@@ -225,8 +230,10 @@ Five new analyses on the graded dataset to $6\times10^5$. (i) $\rho = f_0/\tilde
 is lognormal with $\sigma(\ln\rho)\approx0.51$; the see-saw's negative covariance
 $\text{cov}(\ln\rho, \ln\tilde{F}) = -0.136$ reduces $\text{var}(\ln f_0)$ by 62% —
 the mechanism that starves positive channels *stabilises* $f_0$ against extreme
-fluctuation. (ii) The Type III fraction $f_{1,\text{III}}/f_1 \approx \mathbf{0.43}$
-is a new universal constant of the signed problem, stable across 3 decades in $p$.
+fluctuation. (ii) The Type III fraction $f_{1,\text{III}}/f_1 \approx \mathbf{0.436}$
+over $[73,\, 4\times10^5]$ is strikingly steady, but **convergence is untested** — it is
+*not* a confirmed limit or closed form (the per-stratum $\kappa_j$ do **not** converge,
+and $7/16$ is neither confirmed nor excluded; §13.2, calibrated after council review).
 (iii) K-criteria ($4p+1$ or $8p+1$ containing a prime $\equiv 3\pmod 4$) diagnose
 the four most extreme floor primes (both simultaneously closed); later floor primes
 can have K1/K2 fire. (iv) $\min\tilde{F} \sim (\ln p)^{2.24}$ vs $\min f_0 \sim
@@ -286,14 +293,41 @@ positive window always gets its share.
 
 </div>
 
+## A second problem in this repo: Erdős #1 — distinct subset sums
+
+<div align="justify">
+
+[`erdos1/`](erdos1/) is a **separate, unrelated problem**, sharing only this repository
+and the human–AI method: Erdős's \$500 *distinct-subset-sums* conjecture
+([erdosproblems.com/1](https://www.erdosproblems.com/1); OEIS A276661). For a
+**dissociated** set $A=\{a_1<\dots<a_n\}\subset\mathbb{Z}_+$ (all $2^n$ subset sums
+distinct), conjecturally $N=\max_i a_i \ge c\cdot 2^n$; the record lower bound is
+$N \ge (\sqrt{2/\pi}-o(1))\,2^n/\sqrt n$ (Elkies–Gleason; Dubroff–Fox–Xu 2021).
+
+**Honest status (after council review).** The *bounds* this subproject proves — the
+variance floor $\sum_i a_i^2 \ge (4^n-1)/3$ (equality **uniquely** at the powers of
+two), its lacunary-regime corollary, and the $1/\sqrt3$ second-moment bound
+$N \ge 2^n/\sqrt{3n}$ — are **classical** (Erdős–Moser / Bae–Guy era), here re-derived,
+machine-checked (`erdos1/verify_theorems.py`), and **formalised in Lean 4 + Mathlib with
+no `sorry`** (`erdos1/subsetsums/`, modulo two supplied second-moment identities). They
+are *not* new and do *not* beat the record constant $\sqrt{2/\pi}$. The genuinely new
+content is the **barrier map** in [`erdos1/NOTES.md`](erdos1/NOTES.md): the
+$\sigma^{2/3}$ critical window, the Gaussian-vs-packed two-corner obstruction, and the
+$O(\log\sigma)$ shattering — a sharp account of *where* beating $\sqrt{2/\pi}$ is hard.
+Full proofs and checks: [`erdos1/THEOREMS.md`](erdos1/THEOREMS.md).
+
+</div>
+
 ## Repository file tree
 
 ```text
 .
-├── README.md                     this file
-├── REPORT.md                     the full study (§0–§13)
-├── TRANSCRIPT.md                 original phone-session log that started it
+├── README.md                     this file (covers BOTH problems below)
 ├── LICENSE
+│
+│   ─── Problem 1 (main): Erdős–Straus conjecture, #242 ───
+├── REPORT.md                     the full Erdős–Straus study (§0–§13)
+├── TRANSCRIPT.md                 original phone-session log that started it
 ├── engines/                      solution-counting engines (cross-validated)
 │   ├── fp.c                      f(p) counter — C reference
 │   ├── fpr.rs                    f(p) counter — Rust (multi-threaded, std-only)
@@ -307,20 +341,35 @@ positive window always gets its share.
 │   ├── analyze_octave.py         §10 merge / validate / law / octave
 │   ├── analyze_signed.py         §11 signed-extension numbers
 │   ├── analyze_section13.py      §13 ρ / Type III / K-criteria
+│   ├── type3_derivation.py       §13.2 Type III structural reduction
+│   ├── type3_sliding.py          §13.2 sliding-modulus κ_j (small p)
+│   ├── type3_kappa.py            §13.2 κ_j reference (Python)
+│   ├── type3_kappa.c             §13.2 κ_j to 4×10⁵ (C/OpenMP)
 │   ├── residual_spectrum.py      §12 spectrum (writes residual_effects.json)
 │   ├── target_frontier.py        §12 adversarial targeting score
+│   ├── local_solubility.py       local solubility + stratum vanishing (the BM "local" half)
 │   ├── plot_types.py             figures 1–5
 │   ├── plot_residual.py          figures 6–7
 │   └── residual_effects.json     fitted congruence effects (q ≤ 97)
 ├── data/                         datasets: per-prime counts + graded census
 │   └── *.csv, *.result           (hard_*, fresh_*, signed_*, esc2025, …)
-└── plots/                        the figure atlas (1–7, PNG)
+├── plots/                        the figure atlas (1–7, PNG)
+│
+│   ─── Problem 2: Erdős #1 — distinct subset sums ($500) ───
+└── erdos1/                       SEPARATE problem — see its section above
+    ├── NOTES.md                  the barrier map (the genuinely new content)
+    ├── THEOREMS.md               variance floor + 1/√3 bound (classical, machine-checked)
+    ├── verify_theorems.py        numerical verification of THEOREMS.md
+    ├── subsetsums/               Lean 4 + Mathlib proof, no `sorry` (Lemma 0, Theorem 1)
+    ├── hunt.py · sweep.py · plot.py · runscaling.py    the experimental lab
+    └── fig1_landscape.png · fig2_obstruction.png       the figures
 ```
 
 <div align="justify">
 
-(Build artifacts — `target/`, compiled binaries, transient run output — are
-git-ignored and not shown; see `.gitignore`.)
+(Not shown — all git-ignored, see `.gitignore`: build artifacts (`target/`,
+`erdos1/subsetsums/.lake/`, compiled binaries) and regenerable local scratch
+(`files/` run output, `.firecrawl/` scrape cache).)
 
 </div>
 
@@ -336,6 +385,8 @@ git-ignored and not shown; see `.gitignore`.)
 | `analysis/residual_spectrum.py`, `analysis/target_frontier.py` | §12: the spectrum + the adversarial score |
 | `analysis/analyze_*.py`, `analysis/plot_*.py` | Analyses and the figure atlas (`plots/1–7`) |
 | `data/hard_*.csv`, `data/fresh_2e9_slice.csv`, `data/signed_*.csv` | The datasets (per-prime counts; graded census) |
+| `analysis/local_solubility.py` | Everywhere-local solubility + stratum vanishing — the Brauer–Manin "local" half (self-checking) |
+| `erdos1/` | **A second, unrelated problem**: Erdős #1, distinct subset sums (\$500). Its own `NOTES.md` / `THEOREMS.md` / Lean proof — see the section above. |
 
 <div align="justify">
 
@@ -437,11 +488,13 @@ and §12 prove, inside this project's own framework, that identity/covering/chan
 methods cannot, and quantify how far congruence structure alone can reach (10% of
 a counterexample). §13 (2026-06-13) adds five new measurements: ρ = f₀/F̃ is
 lognormal with σ ≈ 0.51 and its negative covariance with F̃ reduces var(ln f₀) by
-62% (the stabilising paradox); f₁III/f₁ ≈ **0.43 universally**; K1∨K2 failure
+62% (the stabilising paradox); f₁III/f₁ ≈ **0.436** over [73, 4×10⁵] (steady, but
+convergence untested — not a confirmed limit); K1∨K2 failure
 diagnoses the four most extreme floor primes; F̃ floor ~ (ln p)^2.24; the
 congruence ladder is perfectly anti-phased between f₀ and f₁ (corr = −0.958).
 Open: the 10¹⁰ blind prediction ([439, 499] for min f in [10¹⁰, 10¹⁰+10⁷] —
-requires a fresh GPU run); theoretical derivation of the Type III constant 0.43;
+requires a fresh GPU run); a rigorous limit (if one exists) for the Type III ratio
+f₁III/f₁ ≈ 0.436, via the singular-series-ratio route (§13.2);
 OEIS submission of f̃₁ and F̃; Lean formalization of Lemma D.
 
 </div>
