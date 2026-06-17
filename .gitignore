@@ -33,3 +33,6 @@ erdos1/subsetsums/.lake/
 files/
 # Firecrawl scrape cache (erdosproblems.com pulls) — regenerated on demand.
 .firecrawl/
+
+# §16 targeted-floor intermediate artifact (regenerable via analysis/target_1e10.py)
+data/target_1e10_bottomK.txt
