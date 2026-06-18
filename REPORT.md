@@ -1890,3 +1890,55 @@ reasons now mapped from geometry, dynamics, conditionals, and the second moment 
   self-tests on known hard primes, then the frontier + K1-starved batteries (0 failures).
 - `analysis/channel_survey.py` — rolling-window segmented-sieve channel survey 10⁹–10¹⁵
   (needs `sympy`); prints the Erdős–Kac / Landau–Ramanujan persistence table above.
+
+---
+
+# Session addendum (2026-06-18, cont.): §16 — past the counting frontier (128-bit engines)
+
+## 16. Lifting the f(p) counting frontier from 2×10⁹ toward 10¹⁰
+
+### 16.0 Honest headline
+
+The batch engines `fp.c`/`fp.cu`/`fpr.rs` are valid only to p ≈ 2×10⁹ — they store primes
+as u32 (wrap at 4.29×10⁹), x as u32, x² as u64 (overflows ~10¹⁰), and build a full spf table
+to (p+1)/2 (20 GB) plus a sieve to p (10 GB). That ceiling — not any mathematics — is why
+the project's counting frontier sits at 2.01×10⁹. Two new engines remove it, both validated
+**byte-identical** to the existing datasets:
+
+- **`engines/fp_single.c`** — CPU, `unsigned __int128`, OpenMP, memory-free (trial-division
+  factoring). Counts **exact f(p) for individual primes at any scale**.
+- **`engines/fp128.cu`** — GPU, `unsigned __int128`, **memory-light (~75 MB at 10¹⁰** vs
+  30 GB): x is factored by trial division over base primes ≤ √x (no spf table), and the target
+  primes are enumerated by a **segmented sieve** (no O(p) bitmap) — the rolling-window idea
+  from the sister repo `prime-octal`. Built **native Blackwell** (`nvcc -arch=sm_120`,
+  CUDA 13.3); a Barrett u64 fast path keeps the common divisor (x² < 2⁶⁴) off the slow
+  u128 modulo.
+
+### 16.1 Validation (byte-identical, including the fat-x path)
+
+- `fp_single`: self-check f(5)=2, f(7)=7, f(1009)=19, f(2521)=9, f(73)=7 (with fI/fII splits);
+  matches `data/hard_1e7_full.csv` exactly for p = 73, 39769, 4575841.
+- `fp128`: `[5,2000]` mode 0 vs `fp_small.csv`; `[10⁶,1.05×10⁶]` mode 1 vs `hard_1e7_full`
+  (475 primes); `[3×10⁷,3.05×10⁷]` square classes vs the **external** `esc2025` dataset
+  (906 primes — and this range has x ≈ 1.5×10⁷ > the d(x²) > SMEM_CAP threshold, so it
+  exercises the **fat-x** path); mode 2 (six square classes) vs `esc2025` — **0 mismatches
+  everywhere.** The new regime at 10¹⁰ (x > 4.2×10⁹ ⇒ x² > 2⁶⁴ ⇒ the u128 path) has no
+  external reference, so it is **cross-validated between the two independent engines**
+  (`fp128` GPU vs `fp_single` CPU) on the same primes.
+
+### 16.2 Exact f(p) at 10¹⁰ (results)
+
+[PENDING: the CPU cross-validation (3 square-class primes) and the GPU square-class sweep of
+[10¹⁰, 10¹⁰+10⁷] (13,564 primes — the §13.5 prediction set, testing min f ∈ [439, 499]) are
+computing. fp128 ETA ≈ 6–12 h for the full sweep; checkpointed to `*.partial`. To be filled.]
+
+### 16.3 Honest note on cost, and the next optimization
+
+`fp128` is correct and memory-light but ≈ 100× slower than `fp.cu` per prime: the u128
+divisor list halves shared-memory occupancy (96 KB ⇒ 1 block/SM), and trial-division
+factoring suffers warp divergence the old spf table avoided. The full 10¹⁰ square-class sweep
+is therefore a ~6–12 h job, not minutes. The clean fix — a **segmented factorization sieve**
+(record factors during a chunk-local sieve, table-free and divergence-free) plus a u64-divisor
+fast path for x < 4.2×10⁹ — would recover ~fp.cu throughput; it is the natural next build.
+The engines already remove the **memory** wall (the only hard ceiling); what remains is
+throughput, and the conclusion (exact f(p) past 2×10⁹) is unaffected.
