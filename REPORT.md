@@ -2465,3 +2465,39 @@ McKee–Zhou identity `singular series of Σ τ(irreducible quadratic) = 2L(1,χ
 first-moment / average statement, *not* parity-blocked, and (per the 2026-06-18 literature search)
 **unrecorded for f(p)**. That is a real new theorem connecting Erdős–Straus to quadratic L-values; it
 does not prove ESC, but unlike the Cauchy–Schwarz route it is both achievable and not already known.
+
+### 18.6 Attempting the L-modulation as a theorem (McKee–Zhou) — where it succeeds and where it blocks
+
+Goal: derive the singular series of the Type II count as `L(1,χ_p)^{−c}·(Euler product)` from the
+McKee–Zhou identity `[singular series of Σ τ(irreducible quadratic F)] = 2L(1,χ_{disc F})/ζ(2)`,
+turning the measured law into a theorem.
+
+**What is rigorous.** (i) The character structure: grouping hard primes by `p mod ℓ` (`ℓ ∤ 840`, where
+they equidistribute) and Fourier-decomposing the divisor density, the dominant non-trivial character is
+the **quadratic `(p/ℓ)`** at every `ℓ = 11..23`, coefficient `≈ 0.6/ℓ`, at `14–47 σ`
+(`lfunction_connection.py`). (ii) The Euler product of `(p/ℓ)` is, by definition, the small-prime part
+of `L(s, χ_p)`; `corr(ln f, ln L(1,χ_p)) = −0.62`, stable. So the *L-function structure is identified
+and verified* — `f(p)` is modulated by the splitting of primes in `ℚ(√p)`, exactly the `(disc/ℓ)`
+mechanism McKee–Zhou turns into `L(1,χ)`.
+
+**Where it blocks — and this is a genuine obstruction, verified, not a gap in effort.** McKee–Zhou
+needs the count to be `Σ τ(F(n))` for a *single* irreducible quadratic `F`. The Type II count is
+`f_II(p) = Σ_δ r_δ(p)` with the side condition `δ ∣ y'z'`, and that `δ` **splits arbitrarily across
+`y'` and `z'`** in real solutions — e.g. at `p = 2521`, the solution with `δ = 98 = 2·7²` has
+`gcd(δ,y') = gcd(δ,z') = 14`, so `δ` divides *neither* `y'` nor `z'`, only the product. A direct
+reduction to a single quadratic divisor sum therefore **undercounts** (machine-checked: the clean
+`(sk−1)(tk−1)=4pk+1` conic form returns `f_II(2521)=1` vs the true `3`, and similarly low at
+`p=73,1009,1201,1801`). The split is precisely what makes `f_II` a *two-shift divisor correlation*
+(§14), not a single `Σ τ(F)`. So the L-value does not factor out through one class-number formula; it
+is the **shadow of the same δ-correlation whose uniform control is the wall.**
+
+**Honest status.** The `L(1,χ_p)` modulation is a *precise, verified, structurally-identified law* — a
+genuine new finding (unrecorded; the McKee–Zhou mechanism is the right analogy) — but **not a closed
+theorem**. Its derivation does not reduce to McKee–Zhou because the `δ`-split makes the underlying
+object the two-shift Titchmarsh divisor correlation, the same analytic difficulty as everything else
+in §14/§18. The effective exponent `c ≈ 0.6` (and the negative sign = Yamamoto suppression) is the
+*aggregate* of that correlation's character content, not a single clean `L`-power. Making it a theorem
+would require either the δ-split correlation directly (research-level, parity-adjacent) or the
+Browning–Wilsch / Bright–Loughran integral-points density with the boundary divisor's `(p/ℓ)`-splitting
+(deep geometry). Both are beyond a closed elementary argument. The discovery stands; the proof is a
+research programme, and it meets the wall from the same side as the rest.
