@@ -145,4 +145,41 @@ theorem four_sq_add_one_div_one_mod_four (c : ℕ) :
       have hE4 : E % 4 = 1 := ih E hElt hEdvd
       rw [hE, Nat.mul_mod, hℓ4, hE4]
 
+/-- **K2 square obstruction, prime core (machine-verified).** Every prime factor of `8c²+1` is
+`≡ 1 or 3 (mod 8)`: in `ZMod ℓ`, `(4c)² = −2`, so `−2` is a square, hence `ℓ % 8 ∈ {1,3}`
+(Mathlib `ZMod.exists_sq_eq_neg_two_iff`). In particular none is `≡ 7 (mod 8)`. -/
+theorem prime_factor_eight_sq_add_one (ℓ c : ℕ) (hℓ : ℓ.Prime) (hdvd : ℓ ∣ 8 * c ^ 2 + 1) :
+    ℓ % 8 = 1 ∨ ℓ % 8 = 3 := by
+  haveI : Fact ℓ.Prime := ⟨hℓ⟩
+  have hne2 : ℓ ≠ 2 := by rintro rfl; omega
+  have hodd : ℓ % 2 = 1 := Nat.odd_iff.mp (hℓ.odd_of_ne_two hne2)
+  have h0 : ((8 * c ^ 2 + 1 : ℕ) : ZMod ℓ) = 0 := (CharP.cast_eq_zero_iff (ZMod ℓ) ℓ _).mpr hdvd
+  have hsq : IsSquare (-2 : ZMod ℓ) := ⟨4 * c, by push_cast at h0; linear_combination -2 * h0⟩
+  exact (ZMod.exists_sq_eq_neg_two_iff hne2).mp hsq
+
+/-- **K2 square obstruction, full (machine-verified).** Every divisor of `8c²+1` is `≡ 1 or 3
+(mod 8)`; in particular `8c²+1` has no divisor `≡ 7 (mod 8)`, so the K2 criterion never fires at
+`n = c²`. -/
+theorem eight_sq_add_one_div_one_or_three_mod_eight (c : ℕ) :
+    ∀ D, D ∣ 8 * c ^ 2 + 1 → D % 8 = 1 ∨ D % 8 = 3 := by
+  intro D
+  induction D using Nat.strong_induction_on with
+  | _ D ih =>
+    intro hD
+    rcases Nat.lt_or_ge D 2 with hlt | hge
+    · have hpos : 0 < D := Nat.pos_of_dvd_of_pos hD (by positivity)
+      interval_cases D
+      left; rfl
+    · obtain ⟨ℓ, hℓ, hℓD⟩ := Nat.exists_prime_and_dvd (by omega : D ≠ 1)
+      have hℓ8 := prime_factor_eight_sq_add_one ℓ c hℓ (hℓD.trans hD)
+      obtain ⟨E, hE⟩ := hℓD
+      have hEpos : 0 < E := by
+        rcases Nat.eq_zero_or_pos E with rfl | h
+        · rw [Nat.mul_zero] at hE; omega
+        · exact h
+      have hElt : E < D := by have := hℓ.two_le; nlinarith [hE, hEpos]
+      have hE8 := ih E hElt ((Dvd.intro_left ℓ hE.symm).trans hD)
+      rw [hE, Nat.mul_mod]
+      rcases hℓ8 with h1 | h1 <;> rcases hE8 with h2 | h2 <;> rw [h1, h2] <;> decide
+
 end ErdosStraus
