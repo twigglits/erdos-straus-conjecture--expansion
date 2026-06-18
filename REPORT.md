@@ -519,10 +519,13 @@ theorems: `typeI_target_jacobi` (the *required sign*: for `a = 4x − c² ≡ 3 
 *actual sign*: **every** divisor `d ∣ x²` coprime to `a` has `jacobiSym d a = +1` — proved with no
 per-prime factoring, via the squarefree part `d₀ ∣ x ⟹ a ≡ −c² mod d₀` and the fact that the
 reciprocity sign `(−1)^{(d₀/2)(a/2)}` *equals* `χ₄ d₀` when `a ≡ 3 mod 4`, so `J(d₀|a)=(χ₄ d₀)²=1`);
-and `typeI_obstruction`, which combines them to derive `False` from class membership. **12 no-`sorry`
-theorems total**, all `[propext, Classical.choice, Quot.sound]`. What remains for a *full* Lemma D is
-only the Type II stratum (the same machine on `(4y−1)(4z−1)`); the Type I square obstruction — the
-heart of §9.4 — is now formally closed.
+and `typeI_obstruction`, which combines them to derive `False` from class membership. The
+**chirality** is formalized too (`typeI_neg_div_jacobi`, the Lemma K core of §11.4): a *negative*
+divisor `−d` has `jacobiSym (−d) a = −1`, *equal* to the target's required sign — so the obstruction
+empties only the positive windows, never the signed sector. **13 no-`sorry` theorems total**, all
+`[propext, Classical.choice, Quot.sound]`. What remains for a *full* Lemma D is only the Type II
+stratum (the same machine on `(4y−1)(4z−1)`); the Type I square obstruction and its chirality — the
+heart of §9.4 and §11.4 — are now formally closed.
 
 ## 10. The new data (this session's computations)
 
