@@ -1715,9 +1715,16 @@ moment. (ii) **Var/mean² ≈ e^{σ²}−1** (the defining identity of the logno
 ≈ 5–15 %, tightening with window size to ≈ 5 % at 2²²–2²³): f is lognormal, confirming §5 in the second moment and
 giving its mechanism. The over-dispersion is *mild in relative terms* — Var/mean² ≈ 0.05
 means the second factorial moment E[f(f−1)] exceeds the independent value E[f]² by only
-≈ 5 % — i.e. the channels are **nearly independent with a small positive cross-channel
-correlation** (the off-diagonal of §14.2), but that 5 % excess is what lifts Var to ≈ 14×mean
-rather than ≈ mean. The reconciliation with §5's "more concentrated than Poisson": the law is
+≈ 5 %. **Direct measurement (2026-06-18) locates that excess as *within*-channel, not
+cross-channel:** across 4 000 hard primes ~10⁶, the firing of distinct channels is essentially
+uncorrelated — corr(K1,K2) = −0.04, corr(K1,A3) = +0.09, corr(K2,A3) = +0.01 (K1: 4p+1 has a
+factor ≡ 3 mod 4; K2: 8p+1 has a factor ≡ 7 mod 8; A3: (p+3)/4 has a factor ≢ 1 mod 3) — so the
+over-dispersion is each channel's own τ-like spread, not a coupling between channels. This is
+the empirically clean form of the **independence assumption underlying ET's Borel–Cantelli
+safety heuristic** (Remark 1.2): for f = 0 every (near-independent) channel must fail at once,
+so the joint-failure probability really is ≈ the *product* of the per-channel failure rates,
+each → 0 — which is exactly why f stays positive. (Each channel still positively predicts f:
+corr(K_i, ln f) = +0.14 … +0.32.) The 5 % excess lifts Var to ≈ 14×mean rather than ≈ mean. The reconciliation with §5's "more concentrated than Poisson": the law is
 multiplicative (lognormal) with σ(ln f) *shrinking*, so although raw counts are over-
 dispersed, the **left** tail (f → 0, the only tail ESC cares about) is thinner than Poisson —
 over-dispersion and safety are not in conflict. The lognormal itself is the f-shadow of the
