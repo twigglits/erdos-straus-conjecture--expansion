@@ -675,16 +675,24 @@ the literature (all covering-immune), the six square classes in fact carry a **s
 hierarchy** in the positive count `f(p)`, identical across completed datasets:
 > `1²  <  11²  <  13²  <  19²  <  17²  <  23²`   (thinnest → richest by median `f`),
 with class `1²` (residue 1) reliably the hardest and `23²` (residue 529) the richest — median spread
-**9.3% at 10⁸, 8.5% at 10⁹** (and 7.0% on the partial 10¹⁰), the ordering essentially fixed. It is a
-property of the residue, not of scale. The **hard end is mechanistically explained by K1 channel
-supply**: over 400 primes/class near 10⁷, `1²` is the K1-poorest — `P(K1 fires) = 0.44` and mean
-`ω₃(4p+1) = 0.90`, both the lowest of the six — with `11²` next, exactly the two thinnest classes;
-the richest classes (`13²`, `23²`, `17²`) are K1-richer (`P(K1) ≈ 0.51`). (The *full* six-way order
-is not a pure `ω₃` ranking — `13²` leads on `ω₃` but sits mid-table on median `f` — because total
-`f` aggregates K1, K2 and the higher-δ channels; `ω₃(4p+1)` alone fixes only the starved end.) The
-practical upshot for any counterexample search: `1²` is the prime suspect (the floor primes already
-skew to the thin classes — 18 of the 50 thinnest at 10¹⁰ are `13²`, then `19²`, `1²`). Apparently
-unrecorded.
+**9.3% at 10⁸, 8.5% at 10⁹** (and 7.0% on the partial 10¹⁰), the ordering essentially fixed and highly
+significant (≈ 21 SE on the median at 10⁸). It is a property of the residue, not of scale.
+
+What is *concrete and shared* is **why all six are hard**: the two smallest primes `≡ 3 (mod 4)`,
+namely 3 and 7, are *structurally barred* from dividing `4p+1`. Every hard class has `p ≡ 1 (mod 3)`,
+so `4p+1 ≡ 2 (mod 3)` (3 ∤ 4p+1); and every hard class has `p mod 7 ∈ {1, 2, 4}` (the QRs), never the
+`p ≡ 5 (mod 7)` that `7 ∣ 4p+1` requires. So the cheapest K1 factors are killed identically across all
+six — the concrete Schinzel obstruction. **What differentiates the six, however, is NOT K1/K2 channel
+supply.** Over 2,500 primes/class near 10⁷, `mean ω₃(4p+1)` (0.93–1.03), `P(K1)` (0.46–0.50) and
+`P(K1∨K2)` (0.65–0.68) are *flat across the classes* and do **not** track the `f`-order — consistent
+with every prime `≡ 3 (mod 4)` beyond {3,7} being coprime to 840 and so equidistributed over the
+classes. (An earlier draft here claimed a K1-supply mechanism from a 400-prime sample; that was
+small-sample noise and is retracted.) So the differentiation is a *finer* effect — the class-dependent
+**density of divisors in the kernel's residue classes mod `4x−p`** that sets the actual solution
+*count*, not merely whether a channel fires — and it remains unexplained here. The empirical law is
+solid (`class_hierarchy.py`); its mechanism past the shared {3,7}-exclusion is open. Practical upshot
+unchanged: the thinnest primes skew to the lean classes (18 of the 50 thinnest at 10¹⁰ are `13²`,
+then `19²`, `1²`), so a counterexample search should weight them. Apparently unrecorded.
 
 ---
 
