@@ -194,25 +194,84 @@ theorem typeI_target_jacobi (x a : ℕ) (ha3 : a % 4 = 3) (hcop : Int.gcd (2 * x
   rw [e, jacobiSym.mul_left, jacobiSym.sq_one' hcop, mul_one, jacobiSym.at_neg_one hodd,
     ZMod.χ₄_nat_three_mod_four ha3]
 
-/-
-  ## Roadmap: the "actual sign = +1" half (completes the general Lemma D Type I obstruction)
+/-- **General Lemma D — the "actual sign" half (machine-verified).** For `a = 4x − c²` with
+`a ≡ 3 (mod 4)`, *every* divisor `d ∣ x²` coprime to `a` has `jacobiSym d a = +1`. Combined with
+`typeI_target_jacobi` (the Type I target class `≡ −4x²` forces `−1`), **no divisor of `x²` lies in
+the Type I residue class** — the general square obstruction of REPORT §9.4, Type I, in full (the
+K1/K2 theorems above are this argument specialised to the `4c²+1` and `8c²+1` channels).
 
-  To finish the general obstruction one needs: for `d ∣ x²` with `gcd(d, a) = 1` and `a = 4x − c²`
-  (`a ≡ 3 mod 4`), `jacobiSym d a = 1` — contradicting `typeI_target_jacobi` (which gives `−1` for
-  the class `≡ −4x²`), since `jacobiSym` depends only on the numerator mod `a` (`jacobiSym.mod_left`).
+The proof needs no per-prime factorisation: writing `d = b²·d₀` with `d₀` squarefree
+(`sq_mul_squarefree`), `d₀ ∣ x²` gives `d₀ ∣ x` (`Squarefree.dvd_pow_iff_dvd`), so `d₀ ∣ 4x = a+c²`
+and `a ≡ −c² (mod d₀)` for the *whole* `d₀`. Then `J(a|d₀) = χ₄ d₀`, and quadratic reciprocity with
+`a ≡ 3 (mod 4)` makes the sign `(−1)^{(d₀/2)(a/2)}` equal `χ₄ d₀` as well, so `J(d₀|a) = (χ₄ d₀)² = 1`. -/
+theorem typeI_div_jacobi_one (x c a d : ℕ) (hdodd : Odd d) (ha3 : a % 4 = 3)
+    (hsum : a + c ^ 2 = 4 * x) (hda : Nat.Coprime d a) (hdx : d ∣ x ^ 2) :
+    jacobiSym (d : ℤ) a = 1 := by
+  have ha_odd : Odd a := Nat.odd_iff.mpr (by omega)
+  -- squarefree decomposition d = b² · d₀
+  obtain ⟨d0, b, hbd, hsf⟩ := Nat.sq_mul_squarefree d
+  have hd0d : d0 ∣ d := ⟨b ^ 2, by rw [← hbd]; ring⟩
+  have hbdvd : b ∣ d := (dvd_pow_self b (two_ne_zero)).trans ⟨d0, hbd.symm⟩
+  -- d₀ is odd and divides x
+  have hd0odd : Odd d0 := by
+    rcases Nat.even_or_odd d0 with he | ho
+    · exfalso; have : 2 ∣ d := (even_iff_two_dvd.mp he).trans hd0d
+      rw [Nat.odd_iff] at hdodd; omega
+    · exact ho
+  have hd0x : d0 ∣ x := (hsf.dvd_pow_iff_dvd (two_ne_zero)).mp (hd0d.trans hdx)
+  -- coprimalities, lifted to ℤ for the Jacobi API
+  have hcop_ba : Nat.Coprime b a := Nat.Coprime.coprime_dvd_left hbdvd hda
+  have hcop_cd0 : Nat.Coprime c d0 := by
+    have h2 : Nat.gcd c d0 ∣ c := Nat.gcd_dvd_left c d0
+    have h1 : Nat.gcd c d0 ∣ x := (Nat.gcd_dvd_right c d0).trans hd0x
+    have hc2 : Nat.gcd c d0 ∣ c ^ 2 := h2.trans (dvd_pow_self c (two_ne_zero))
+    have hsum' : Nat.gcd c d0 ∣ a + c ^ 2 := by rw [hsum]; exact h1.mul_left 4
+    have hga : Nat.gcd c d0 ∣ a := by
+      have h : Nat.gcd c d0 ∣ c ^ 2 + a := by rw [Nat.add_comm]; exact hsum'
+      exact (Nat.dvd_add_right hc2).mp h
+    have hgd : Nat.gcd c d0 ∣ d := (Nat.gcd_dvd_right c d0).trans hd0d
+    have hdvd1 : Nat.gcd c d0 ∣ Nat.gcd d a := Nat.dvd_gcd hgd hga
+    rw [hda] at hdvd1; exact Nat.dvd_one.mp hdvd1
+  have hgcd_ba : Int.gcd (b : ℤ) (a : ℤ) = 1 := by rw [Int.gcd_natCast_natCast]; exact hcop_ba
+  have hgcd_cd0 : Int.gcd (c : ℤ) (d0 : ℤ) = 1 := by rw [Int.gcd_natCast_natCast]; exact hcop_cd0
+  -- a ≡ −c² (mod d₀), as integers
+  have hsumdvd : d0 ∣ a + c ^ 2 := by rw [hsum]; exact hd0x.mul_left 4
+  have hZ : (d0 : ℤ) ∣ (a : ℤ) + (c : ℤ) ^ 2 := by
+    have := Int.natCast_dvd_natCast.mpr hsumdvd; push_cast at this; exact this
+  have hmod : (a : ℤ) ≡ -(c : ℤ) ^ 2 [ZMOD (d0 : ℤ)] := by
+    rw [Int.modEq_iff_dvd]
+    have he : -(c : ℤ) ^ 2 - a = -((a : ℤ) + c ^ 2) := by ring
+    rw [he]; exact (dvd_neg).mpr hZ
+  -- J(a | d₀) = J(−1 | d₀)
+  have hJa : jacobiSym (a : ℤ) d0 = jacobiSym (-1 : ℤ) d0 := by
+    rw [jacobiSym.mod_left' hmod, show -(c : ℤ) ^ 2 = (-1) * (c : ℤ) ^ 2 by ring,
+      jacobiSym.mul_left, jacobiSym.sq_one' hgcd_cd0, mul_one]
+  -- reduce d to its squarefree part, then apply reciprocity
+  have hbcast : (d : ℤ) = (b : ℤ) ^ 2 * (d0 : ℤ) := by rw [← hbd]; push_cast; ring
+  rw [hbcast, jacobiSym.mul_left, jacobiSym.sq_one' hgcd_ba, one_mul,
+    jacobiSym.quadratic_reciprocity hd0odd ha_odd, hJa, jacobiSym.at_neg_one hd0odd]
+  -- the sign (−1)^{(d₀/2)(a/2)} equals χ₄ d₀, so the product is (χ₄ d₀)² = 1
+  have hd0m2 : d0 % 2 = 1 := Nat.odd_iff.mp hd0odd
+  rcases (show d0 % 4 = 1 ∨ d0 % 4 = 3 by omega) with h41 | h43
+  · rw [ZMod.χ₄_nat_one_mod_four h41,
+      Even.neg_one_pow ((Nat.even_iff.mpr (by omega : d0 / 2 % 2 = 0)).mul_right _)]; ring
+  · rw [ZMod.χ₄_nat_three_mod_four h43,
+      Odd.neg_one_pow ((Nat.odd_iff.mpr (by omega : d0 / 2 % 2 = 1)).mul
+        (Nat.odd_iff.mpr (by omega : a / 2 % 2 = 1)))]; ring
 
-  The key simplification (no per-prime factorisation needed):
-  1. `sq_mul_squarefree d` ⟹ `d = b² · d₀` with `d₀` squarefree;  `jacobiSym d a = jacobiSym d₀ a`
-     (square part is `1` by `jacobiSym.sq_one'`).
-  2. `d₀` squarefree and `d₀ ∣ d ∣ x²` ⟹ **`d₀ ∣ x`** (`Squarefree.dvd_pow`-type).
-  3. `d₀ ∣ x ⟹ d₀ ∣ 4x = a + c² ⟹ a ≡ −c² (mod d₀)` — the crux: the congruence holds for the
-     *whole* `d₀`, so no prime-by-prime work. Hence `jacobiSym a d₀ = jacobiSym (−c²) d₀ = χ₄ d₀`
-     (`mod_left`, `at_neg_one`, `sq_one'`, `gcd(c, d₀) = 1`).
-  4. `jacobiSym.quadratic_reciprocity` + `a % 4 = 3`: `jacobiSym d₀ a = (−1)^{(d₀/2)(a/2)}·χ₄ d₀ = 1`
-     (case `d₀ % 4 ∈ {1,3}`; both give `+1`).
-  The K1 (`four_sq_add_one_div_one_mod_four`) and K2 channels above are this argument fully
-  discharged for `d₀ = 4c²+1`-divisors and `8c²+1`-divisors respectively.
--/
+/-- **General Lemma D, Type I — the obstruction (machine-verified).** When `a = 4x − c² ≡ 3 (mod 4)`
+with `gcd(2x, a) = 1`, *no* divisor `d ∣ x²` coprime to `a` can lie in the Type I residue class
+`d ≡ −4x² (mod a)`: such a `d` would have Jacobi symbol both `+1` (as a divisor of `x²`,
+`typeI_div_jacobi_one`) and `−1` (as a class member, `typeI_target_jacobi`). This is REPORT §9.4's
+general Type I square obstruction, in full and with no `sorry` — the unification the K1/K2 channel
+theorems above specialise. -/
+theorem typeI_obstruction (x c a d : ℕ) (hdodd : Odd d) (ha3 : a % 4 = 3)
+    (hsum : a + c ^ 2 = 4 * x) (h2x : Int.gcd (2 * x) a = 1) (hda : Nat.Coprime d a)
+    (hdx : d ∣ x ^ 2) (hcl : (d : ℤ) ≡ -(4 * (x : ℤ) ^ 2) [ZMOD a]) : False := by
+  have h1 : jacobiSym (d : ℤ) a = 1 := typeI_div_jacobi_one x c a d hdodd ha3 hsum hda hdx
+  have h2 : jacobiSym (d : ℤ) a = -1 := by
+    rw [jacobiSym.mod_left' hcl]; exact typeI_target_jacobi x a ha3 h2x
+  rw [h1] at h2; norm_num at h2
 
 /-! ## Sanity checks (the theorems are non-vacuous). -/
 
