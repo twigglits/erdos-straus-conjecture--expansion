@@ -287,4 +287,11 @@ example (D : ℕ) (hD : D ∣ 4 * 3 ^ 2 + 1) : D % 4 = 1 :=
 example (D : ℕ) (hD : D ∣ 8 * 3 ^ 2 + 1) : D % 8 = 1 ∨ D % 8 = 3 :=
   eight_sq_add_one_div_one_or_three_mod_eight 3 D hD
 
+-- The general Type I "actual sign" half is non-trivial: `x=3, c=1, a=4·3−1=11≡3 mod 4`,
+-- and the divisor `d=3 ∣ 9=x²` (coprime to 11) indeed has `jacobiSym 3 11 = +1`.
+example : jacobiSym (3 : ℤ) 11 = 1 := by
+  have h := typeI_div_jacobi_one 3 1 11 3 (by decide) (by norm_num) (by norm_num)
+    (by decide) (by norm_num)
+  simpa using h
+
 end ErdosStraus
