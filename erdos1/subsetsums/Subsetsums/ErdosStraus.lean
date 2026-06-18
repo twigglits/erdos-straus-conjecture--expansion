@@ -124,6 +124,46 @@ theorem esc_of_typeII (p y z δ : ℕ) (hp : 0 < p) (hy : 0 < y) (hz : 0 < z)
   field_simp
   nlinarith [keyQ, mul_pos (mul_pos hp hy) hz]
 
+/-- **The kernel construction (Lemma A forward, machine-verified).** REPORT §9.1: a divisor of
+`B² = (px)²` lying in the residue class `≡ −B (mod a)`, with `a + p = 4x`, yields an Erdős–Straus
+solution — in the *same `(x, d)` coordinates the obstruction theorems use*. Concretely, if
+`a·y = B + d` and `a·z = B + e` with `d·e = B²` (so `e = B²/d` is the complementary divisor), then
+`4/p = 1/x + 1/y + 1/z`. The identity is two clean steps: `1/y + 1/z = a/B` (from `d·e = B²`, since
+`(B+d)(B+e) = B(2B+d+e)`), then `1/x + a/B = 4/p` (from `a + p = 4x`). The §9.1 divisibility/range
+hypotheses are exactly what make `y, z` positive integers; the rational identity itself needs only
+`d·e = B²` and `a + p = 4x`. -/
+theorem esc_kernel (p x y z d e a B : ℕ) (hp : 0 < p) (hx : 0 < x) (hy : 0 < y) (hz : 0 < z)
+    (ha : a + p = 4 * x) (hB : B = p * x) (hde : d * e = B ^ 2)
+    (hay : a * y = B + d) (haz : a * z = B + e) :
+    (4 : ℚ) / p = 1 / x + 1 / y + 1 / z := by
+  have hpQ : (p : ℚ) ≠ 0 := by exact_mod_cast hp.ne'
+  have hxQ : (x : ℚ) ≠ 0 := by exact_mod_cast hx.ne'
+  have hyQ : (y : ℚ) ≠ 0 := by exact_mod_cast hy.ne'
+  have hzQ : (z : ℚ) ≠ 0 := by exact_mod_cast hz.ne'
+  have haQ : (a : ℚ) + p = 4 * x := by exact_mod_cast ha
+  have hBQ : (B : ℚ) = p * x := by exact_mod_cast hB
+  have hdeQ : (d : ℚ) * e = (B : ℚ) ^ 2 := by exact_mod_cast hde
+  have hayQ : (a : ℚ) * y = B + d := by exact_mod_cast hay
+  have hazQ : (a : ℚ) * z = B + e := by exact_mod_cast haz
+  have hBpos : (0 : ℚ) < B := by rw [hBQ]; positivity
+  have hdnn : (0 : ℚ) ≤ d := by positivity
+  have hane : (a : ℚ) ≠ 0 := by intro h; rw [h, zero_mul] at hayQ; linarith
+  have hkey : (B : ℚ) * (y + z) = a * (y * z) := by
+    apply mul_left_cancel₀ hane
+    have eL : (a : ℚ) * (B * (y + z)) = B * (a * y) + B * (a * z) := by ring
+    have eR : (a : ℚ) * (a * (y * z)) = (a * y) * (a * z) := by ring
+    rw [eL, eR, hayQ, hazQ]; linear_combination -hdeQ
+  have hstep1 : (1 : ℚ) / y + 1 / z = a / B := by
+    rw [div_add_div _ _ hyQ hzQ, div_eq_div_iff (mul_ne_zero hyQ hzQ) (ne_of_gt hBpos)]
+    linear_combination hkey
+  have hstep2 : (1 : ℚ) / x + (a : ℚ) / B = 4 / p := by
+    rw [hBQ, div_add_div _ _ hxQ (mul_ne_zero hpQ hxQ),
+      div_eq_div_iff (mul_ne_zero hxQ (mul_ne_zero hpQ hxQ)) hpQ]
+    linear_combination (p : ℚ) * x * haQ
+  calc (4 : ℚ) / p = 1 / x + a / B := hstep2.symm
+    _ = 1 / x + (1 / y + 1 / z) := by rw [hstep1]
+    _ = 1 / x + 1 / y + 1 / z := by ring
+
 /-- **Theorem G, positive form (machine-verified).** For `p ≡ 3 (mod 4)`, just *two* positive unit
 fractions already give `4/p`: with `x = (p+1)/4`, `4/p = 1/x + 1/(p·x)`. (REPORT §11.2.) -/
 theorem esc_two_term_pos (p : ℕ) (hp : 0 < p) (hp3 : p % 4 = 3) :
@@ -461,6 +501,12 @@ example : jacobiSym (4 : ℤ) 23 = 1 := by
 -- never the full solution set: solutions persist in the mixed/non-coprime strata (§9.1),
 -- exactly consistent with Erdős–Straus being true. A disproof would need an *empty* full set.
 example : (4 : ℚ) / 9 = 1 / 3 + 1 / 12 + 1 / 36 := by norm_num
+
+-- The kernel construction in action: p=3, x=1, B=px=3, divisor d=1 of B²=9 (e=9, d·e=9=B²),
+-- a=4x−p=1 ⟹ y=B+d=4, z=B+e=12, giving 4/3 = 1/1 + 1/4 + 1/12.
+example : (4 : ℚ) / 3 = 1 / 1 + 1 / 4 + 1 / 12 :=
+  esc_kernel 3 1 4 12 1 9 1 3 (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+    (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num)
 
 -- Theorem G in action: `p = 7 ≡ 3 (mod 4)` needs only two POSITIVE terms `4/7 = 1/2 + 1/14`;
 -- `p = 5 ≡ 1 (mod 4)` needs two SIGNED terms `4/5 = 1/1 − 1/5` (no two positive terms exist).
