@@ -506,11 +506,14 @@ p), `esc_of_typeII` (the general Type II sufficient condition `(4y−1)(4z−1)=
 subsuming every K-criterion), `prime_factor_four_sq_add_one` (the **square obstruction core**:
 every prime factor of `4c²+1` is ≡ 1 mod 4, via `(2c)² = −1` in `ZMod ℓ` ⟹ `ℓ % 4 ≠ 3`), and
 `four_sq_add_one_div_one_mod_four` (the **full obstruction**: by strong induction *every* divisor
-of `4c²+1` is ≡ 1 mod 4, so `4c²+1` has no divisor ≡ 3 mod 4 and K1 provably cannot fire at
-`n = c²`). So the **complete K1 story is formally certified** — the elementary method proves ESC
-for a density-1 family and provably fails at the squares (§9.4, coprime Yamamoto for the K1
-channel). The *full* Lemma D (the squarefree/Jacobi argument for all Type I/II strata at general
-`x`, not just the K1 channel) remains a larger formalization target.
+of `4c²+1` is ≡ 1 mod 4, so K1 provably cannot fire at `n = c²`), and the analogous **K2 channel**
+(`prime_factor_eight_sq_add_one` + `eight_sq_add_one_div_one_or_three_mod_eight`: every divisor of
+`8c²+1` is ≡ 1 or 3 mod 8 — via `(4c)² = −2` in `ZMod ℓ` — so none is ≡ 7 mod 8 and K2 cannot fire
+at squares either). So the **complete K1 and K2 stories are formally certified** (8 no-`sorry`
+theorems): the elementary criteria prove ESC for density-1 families and provably fail at the
+squares (§9.4, coprime Yamamoto). The *full* Lemma D (the general squarefree/Jacobi argument for
+all Type I/II strata at general `x`, subsuming all channels at once) remains a larger target —
+the Mathlib `jacobiSym` reciprocity API is available for it.
 
 ## 10. The new data (this session's computations)
 
