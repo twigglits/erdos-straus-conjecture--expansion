@@ -700,13 +700,26 @@ a product of one local density at `ℓ=5` and one at `ℓ=7` — precisely the s
 localised to the two primes where the classes differ. (The *leading* surface count is residue-free:
 substituting `u=1/x` etc., `#{u+v+w ≡ 4/p, all ≠ 0 (mod ℓ)} = ℓ²−3ℓ+3` independent of `p mod ℓ`; the
 ~8 % hierarchy is the finer ℓ-adic / nodal correction at 5, 7.) The measured factors:
-`σ₅(4)/σ₅(1) ≈ 1.034` and `σ₇(1):σ₇(2):σ₇(4) ≈ 1:1.033:1.047`, stable across scales. They track
-**higher residue characters**: `f` is *suppressed* at the most "special" residues — `1` is the unique
-4th power mod 5, and `1` is the unique cube among the QRs `{1,2,4}` mod 7 — so `1² = (1,1)` is
-doubly-suppressed (thinnest) and `23² = (4,4)` doubly-enhanced (richest). This is the concrete face of
-the finer parity/stratum suppression (Yamamoto) that the leading density misses. Practical upshot: the
-thinnest primes skew to the lean classes (18 of the 50 thinnest at 10¹⁰ are `13²`, then `19²`, `1²`),
-so a counterexample search should weight them. Apparently unrecorded.
+`σ₅(4)/σ₅(1) ≈ 1.034` and `σ₇(1):σ₇(2):σ₇(4) ≈ 1:1.033:1.047`, stable across scales. `f` is
+*suppressed* at the most "special" residues — `1` is the unique 4th power mod 5, and `1` is the unique
+cube among the QRs `{1,2,4}` mod 7 — so `1² = (1,1)` is doubly-suppressed (thinnest) and `23² = (4,4)`
+doubly-enhanced (richest).
+
+**Trying to derive a closed form for `σ_ℓ(c)` shows precisely why this is the *finer* (Yamamoto) effect
+and not the geometry.** Two exact facts: (i) the **geometric local density is `σ_ℓ^{geom} = (ℓ+1)/ℓ`,
+independent of `c = p mod ℓ`** — verified exactly as the `ℓ`-adic limit `lim_k ℓ^{-2k}#{4xyz ≡
+c(xy+yz+zx) mod ℓ^k}` for `ℓ = 5,7,11,13` (point count `ℓ²+1` at `k=1`, lifting to `(ℓ+1)/ℓ` via the
+four nodes), the same QR-blindness §17.4 saw in the `ℓ²+1` count. So the class factor is **not** a
+singular-series/geometric density. (ii) The class factor is **not a single Dirichlet character**
+either: `2·4 ≡ 1 (mod 7)`, so `2` and `4` are inverses, and any character forces `Re χ(2) = Re χ(4)`,
+yet `σ₇(4) > σ₇(2)` by ~6 SE. That inversion-asymmetry requires an **odd (imaginary) character
+component** — the arithmetic signature of *chirality* (the signed-sector see-saw, §11.4), not a density.
+So `σ_ℓ(c)` has no clean closed form: it is a multi-character (including chiral/odd) average of the
+**divisor function in the kernel's residue classes** — the very divisor-in-AP object whose uniform
+control is the conjecture's wall (§14). The hierarchy is exactly the shadow of that object's lower-order
+character content, localised to 5 and 7. Practical upshot: the thinnest primes skew to the lean classes
+(18 of the 50 thinnest at 10¹⁰ are `13²`, then `19²`, `1²`), so a counterexample search should weight
+them. Apparently unrecorded.
 
 ---
 
