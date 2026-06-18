@@ -396,4 +396,17 @@ example : jacobiSym (3 : ℤ) 11 = 1 := by
     (by decide) (by norm_num)
   simpa using h
 
+-- The all-divisor extension is non-trivial on an EVEN divisor: `x=6, c=1, a=4·6−1=23≡3 mod 4`,
+-- `a ≡ 7 (mod 8)` (since x even), and `d=4 ∣ 36=x²` (even, coprime to 23) has `jacobiSym 4 23 = +1`.
+example : jacobiSym (4 : ℤ) 23 = 1 := by
+  have h := div_jacobi_one 6 1 23 (by decide) (by norm_num) (by norm_num) 4 (by norm_num) (by decide)
+  simpa using h
+
+-- **The obstruction is NOT a disproof.** ESC holds at the square `n = 9 = 3²` —
+-- `4/9 = 1/3 + 1/12 + 1/36` — even though the Type I/II coprime *pure* strata are empty
+-- there (the square obstruction above). The obstruction empties the coprime pure strata,
+-- never the full solution set: solutions persist in the mixed/non-coprime strata (§9.1),
+-- exactly consistent with Erdős–Straus being true. A disproof would need an *empty* full set.
+example : (4 : ℚ) / 9 = 1 / 3 + 1 / 12 + 1 / 36 := by norm_num
+
 end ErdosStraus
