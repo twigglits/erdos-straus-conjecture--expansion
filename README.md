@@ -366,7 +366,8 @@ Full proofs and checks: [`erdos1/THEOREMS.md`](erdos1/THEOREMS.md).
     ├── THEOREMS.md               variance floor + 1/√3 bound (classical, machine-checked)
     ├── verify_theorems.py        numerical verification of THEOREMS.md
     ├── subsetsums/               Lean 4 + Mathlib, no `sorry`: Erdős #1 (Lemma 0, Theorem 1)
-    │                             AND Subsetsums/ErdosStraus.lean (ESC §9: K1+K2 criteria, Type II, square obstruction — 8 no-sorry theorems)
+    │                             AND Subsetsums/ErdosStraus.lean (ESC §9: K1+K2 criteria, Type II, and the
+    │                             general Type I square obstruction in full — 12 no-sorry theorems)
     ├── hunt.py · sweep.py · plot.py · runscaling.py    the experimental lab
     └── fig1_landscape.png · fig2_obstruction.png       the figures
 ```

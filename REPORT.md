@@ -509,11 +509,20 @@ every prime factor of `4c²+1` is ≡ 1 mod 4, via `(2c)² = −1` in `ZMod ℓ`
 of `4c²+1` is ≡ 1 mod 4, so K1 provably cannot fire at `n = c²`), and the analogous **K2 channel**
 (`prime_factor_eight_sq_add_one` + `eight_sq_add_one_div_one_or_three_mod_eight`: every divisor of
 `8c²+1` is ≡ 1 or 3 mod 8 — via `(4c)² = −2` in `ZMod ℓ` — so none is ≡ 7 mod 8 and K2 cannot fire
-at squares either). So the **complete K1 and K2 stories are formally certified** (8 no-`sorry`
-theorems): the elementary criteria prove ESC for density-1 families and provably fail at the
-squares (§9.4, coprime Yamamoto). The *full* Lemma D (the general squarefree/Jacobi argument for
-all Type I/II strata at general `x`, subsuming all channels at once) remains a larger target —
-the Mathlib `jacobiSym` reciprocity API is available for it.
+at squares either). So the **complete K1 and K2 stories are formally certified**: the elementary
+criteria prove ESC for density-1 families and provably fail at the squares (§9.4, coprime Yamamoto).
+
+The **general Lemma D Type I obstruction is now also machine-verified in full** (no `sorry`),
+subsuming the K1/K2 specialisations into one general statement at arbitrary `x`. Three further
+theorems: `typeI_target_jacobi` (the *required sign*: for `a = 4x − c² ≡ 3 mod 4` with
+`gcd(2x,a)=1`, the Type I target class `−4x²` has `jacobiSym = −1`); `typeI_div_jacobi_one` (the
+*actual sign*: **every** divisor `d ∣ x²` coprime to `a` has `jacobiSym d a = +1` — proved with no
+per-prime factoring, via the squarefree part `d₀ ∣ x ⟹ a ≡ −c² mod d₀` and the fact that the
+reciprocity sign `(−1)^{(d₀/2)(a/2)}` *equals* `χ₄ d₀` when `a ≡ 3 mod 4`, so `J(d₀|a)=(χ₄ d₀)²=1`);
+and `typeI_obstruction`, which combines them to derive `False` from class membership. **12 no-`sorry`
+theorems total**, all `[propext, Classical.choice, Quot.sound]`. What remains for a *full* Lemma D is
+only the Type II stratum (the same machine on `(4y−1)(4z−1)`); the Type I square obstruction — the
+heart of §9.4 — is now formally closed.
 
 ## 10. The new data (this session's computations)
 
