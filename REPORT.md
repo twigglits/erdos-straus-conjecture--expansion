@@ -1981,3 +1981,86 @@ is therefore a ~6–12 h job, not minutes. The clean fix — a **segmented facto
 fast path for x < 4.2×10⁹ — would recover ~fp.cu throughput; it is the natural next build.
 The engines already remove the **memory** wall (the only hard ceiling); what remains is
 throughput, and the conclusion (exact f(p) past 2×10⁹) is unaffected.
+
+---
+
+# Session addendum (2026-06-18, cont.): §17 — two more angles, and the 2026 frontier
+
+## 17. The continued-fraction transformation, the AI/Lean wave, and what is actually new in 2026
+
+Deep research (two agents, full-text reads, primary sources) on the fronts the prior sections
+had not closed: the continued-fraction *transformation* angle, and the 2025–26 frontier
+(universal torsor, AI/Lean proofs, any new partial result). Both **confirm the parity wall**;
+the AI "resolutions" are **hype**; one genuinely orthogonal *heuristic* machine is identified
+and being explored (§17.3).
+
+### 17.1 The ceiling-continued-fraction transformation — a reformulation, not an escape
+
+The one live "transformation" thread (Ventas, *A Ceiling Continued Fraction Approach to ESC*,
+arXiv:2605.04551, May 2026; and Bello-Hernández–Benito–Fernández, *A Divisor Parametrization
+for ESC*, arXiv:2606.10922, Jun 2026):
+
+- **The reduction is additive, not multiplicative.** Ventas expands the *ceiling* (Hirzebruch–
+  Jung / "minus") continued fraction, whose telescoping `1/x = Σ_j 1/(p_{j-1}p_j)` truncated to
+  three terms gives a solution iff (Thm 2.3) **`p+i` has a divisor `d ≡ 3 (mod 4)` with
+  `4i ∣ p+d`** — the *additive* shift `p+i`, with `i = ⌈p/4k⌉`, of which there are **`⌊√p⌋`**
+  distinct values. (Not the standard multiplicative shift `4pm+1`.)
+- **It is provably subsumed.** Bello-Hernández Prop. 17 shows Ventas' condition is exactly the
+  `b=1` layer of their divisor parametrization `f_{ab}`; their Thm 5 (completeness) makes
+  `f_{ab}` an *exhaustive* reparametrization of the length-3 solution set. A clean reformulation
+  — no new theorem.
+- **It hits the parity wall, and the authors say so.** A single shift fails with the
+  Landau–Ramanujan probability `~K/√(ln p)` (Ventas §3.2.1); the argument needs the `√p` shifts
+  to be **independent**, which Ventas supplies only as a **Cramér heuristic** (§3.1) — precisely
+  the parity evasion. Status is an explicit **Borel–Cantelli heuristic** ("*suggests* the
+  exceptional set is finite", Cor. 4.1), title and all; Bello-Hernández is **empirical to
+  10¹⁴**. Neither claims a proof, and neither proves a new infinite family inside the six
+  square classes.
+- **The PSL(2,ℤ) cocycle is real but inert.** The recurrence `p_i = c_i p_{i-1} − p_{i-2}` is an
+  `SL(2,ℤ)` cocycle (`= ST^{c_i}`) — the classical minus-CF, with a known Gauss map and transfer
+  operator. But that structure acts on the *continued-fraction digit geometry*, **not** on the
+  `χ₋₄`-factorisation of `p+i`, where the difficulty lives. Decorative against the wall.
+
+**Verdict:** the CF/modular transformation is a genuine *additive reformulation* with a tidy
+cocycle, but it offers no shorter provable search, no new family, and an explicitly heuristic
+status that stops exactly at parity. It joins the geometric and conditional routes as closed.
+
+### 17.2 The 2026 frontier: the hype debunked, the record unchanged
+
+- **"Tao's 2025 universal-torsor unification" does not exist** — a conflation. The universal-
+  torsor lift of the Cayley cubic to a 3-fold in 𝔸⁶ *is* the original Elsholtz–Tao 2011/2013
+  construction (terminology after Heath-Brown); there is no new 2025–26 layer, and the
+  "removes a loglog" claim is false (ET state the loglog is artificial but cannot remove it).
+- **Every AI/Lean "resolved ESC" claim is hype, verified false.** The official `242.lean` is
+  `sorry` (statement only). The 2026 claims — DeepMind formal-conjectures issue #3952 (companion
+  Goldbach lemma is provably false over ℕ), PR #2859 ("formally solved" = a mislabeled `sorry` +
+  a finite n ≤ 10¹⁴ check), leochlon/erdstrau ("529 mod 840 via CRT" — debunked by Bloom/Alexeev,
+  repo now deleted), sushaan-k (headline carries one `sorry` = the three central sieve estimates,
+  + 7 literature axioms) — **none proves a single new residue class.** The genuine "AI solved an
+  Erdős problem" wave (AlphaProof/AlphaEvolve/GPT-5) touched #12, #124, #125, #333, #728, #1026 —
+  **not #242**; the May 2026 headline was the *unit-distance* problem, a common conflation.
+- **The record partial result is unchanged.** Strongest "almost all": **Vaughan 1970**, exceptions
+  `≤ N·exp(−c(log N)^{2/3})` — *not improved* in 2024–26 (and ET only cite it; their own results
+  are counting/average). The complete proven sufficient classification is **ET Prop. 1.9** (4
+  Type I + 3 Type II polynomial families), covering all primitive classes mod 840 *except the six
+  squares*. **No 2024–26 paper proves a new infinite family inside the six.** Schinzel/Yamamoto
+  (`f_I=f_II=0` on odd squares, by reciprocity) + the `p→p²` obstruction make covering systems
+  provably unable to reach them — Bloom restated this on-forum (Jan 2026): "not a viable path."
+- **Open, frontier 10¹⁸.** erdosproblems.com/242 = "Open" (last edited 7 May 2026, flagged
+  *difficult* by Kovač/Bloom/Tao); verification `n ≤ 10¹⁸` (Mihnea–Dumitru, arXiv:2509.00128,
+  Aug 2025). The canonical proof-bottleneck (Tao, reaffirmed Feb 2026): a better-than-trivial
+  bound for the divisor sum `Σ d(4ℓa²+1)` over the irreducible shift — i.e. the parity wall,
+  which Bright–Loughran's *no Brauer–Manin obstruction* confirms is analytic, not cohomological.
+
+### 17.3 The one untouched orthogonal lead (heuristic): Browning–Wilsch on the Cayley cubic
+
+The single genuinely orthogonal 2025 machine not yet pointed at ESC: **Browning–Wilsch**,
+*Integral points on cubic surfaces* (arXiv:2407.16315, Selecta Math. 31 (2025)) — a
+Batyrev–Manin–Peyre-type heuristic `N°_U(B) ~ c·(log B)^{ρ_U+b}` for integral points on log-K3
+cubic surfaces, with Wilsch's **archimedean (Clemens-complex) obstruction beyond Brauer–Manin**.
+Their worked cases are the Markoff and sum-of-three-cubes surfaces; the **Cayley/ESC cubic is
+not among them.** Whether it can be adapted to predict f(p)'s growth law (the repo's measured
+median `~(ln p)^{3.3}` vs ET's average exponent 2) — by taking the height `B ≍ p` — and what
+exponent `ρ_U + b` the Cayley cubic's invariants give, is under analysis. It is a *heuristic*
+(a predicted growth law), **not** a proof path: the archimedean obstruction refines the leading
+constant, but the existence question for the positive octant remains the parity wall. [pending]
