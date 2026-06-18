@@ -1950,20 +1950,26 @@ counted those exactly:
 > **min f = 534 at p = 10,006,854,841 ≡ 361 = 19² (mod 840); zero-free (all 300 > 0 — ESC
 > holds).** [bottom six: 534, 543, 544, 549, 550, 552]
 
-This 534 is `fp128`'s GPU output; the floor prime has x up to 7.5×10⁹, so it exercises the
-**u128 path** that no existing dataset reaches. `fp128`'s u64 path is byte-identical to all
-data (incl. fat-x), and `fp_single` (CPU, independent __int128) already produced exact f at
-10¹⁰ above (980, 945); an independent `fp_single` recount of the floor prime to confirm the
-u128 path against 534 is the one remaining check (running at time of writing).
+The floor prime has x up to 7.5×10⁹, so it exercises the **u128 path** no existing dataset
+reaches. This is the load-bearing check, and it passes: **`fp128` (GPU) and `fp_single` (CPU,
+independent `__int128`) both give f = 534** (fI = 363, fII = 171) — two independent 128-bit
+implementations in exact agreement, validating the u128 path. (`fp128`'s u64 path was already
+byte-identical to every dataset including fat-x.)
 
 So the observed floor is **534 — ≈ 7% above the predicted band [439, 499], on the safe
-(higher) side**, within the model's stated ~10% accuracy on minima (§5). Two honest caveats:
-(i) 534 is the minimum over the *predicted-thinnest 300* — an **upper bound** on the true
-window floor (true ≤ 534); the exhaustive minimum needs the full sweep. (ii) The score is
+(higher) side**, within the model's stated ~10% accuracy on minima (§5). Sharpening this: among
+the *predicted-thinnest 300* themselves, **not one reaches the [439, 499] band** — their f
+distribution is min 534, p5 586, median 675, max 898. Together with the two typical primes
+(945, 980 vs predicted median 852), the model — fit to p ≤ 2×10⁸ and extrapolated **50×** to
+10¹⁰ — **under-predicts f by ≈ 7–15%**: the conjecture is *safer* at 10¹⁰ than the lognormal-EV
+projection, not closer to failing. Two honest caveats: (i) 534 is the minimum over the
+predicted-thinnest 300 — an **upper bound** on the true window floor (true ≤ 534); the
+exhaustive minimum needs the full sweep (~7 h, factoring-bound, not run). (ii) The score is
 extrapolated 5× past its validation range, so whether it ranked the true-floor prime into its
-top 300 at 10¹⁰ is itself unconfirmed. Net: a clean new exact data point — **ESC holds at 10¹⁰,
-the lognormal floor law holds to ~10% on the safe side, and the counting frontier is extended
-5× (2×10⁹ → 10¹⁰)** with two independent 128-bit engines in agreement.
+top 300 at 10¹⁰ is unconfirmed (though the smooth bottoming at 534, with median 675, makes a
+floor far below 534 unlikely). Net: a clean new exact data point — **ESC holds at 10¹⁰, the
+lognormal floor law holds to ~10% on the safe side, and the counting frontier is extended
+5× (2×10⁹ → 10¹⁰)** with two independent 128-bit engines in exact agreement.
 
 ### 16.3 Honest note on cost, and the next optimization
 
