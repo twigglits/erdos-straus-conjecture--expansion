@@ -117,4 +117,32 @@ theorem prime_factor_four_sq_add_one (ℓ c : ℕ) (hℓ : ℓ.Prime) (hdvd : �
   have hodd : ℓ % 2 = 1 := Nat.odd_iff.mp (hℓ.odd_of_ne_two hne2)
   omega
 
+/-- **Square obstruction, full statement (machine-verified).** Every divisor of `4c²+1` is
+`≡ 1 (mod 4)`. In particular `4c²+1` has no divisor `≡ 3 (mod 4)`, so the K1 criterion
+(`esc_of_K1`) can never fire at `n = c²` — `4n+1 = 4c²+1`. This is REPORT §9.4 (coprime Yamamoto)
+for the K1 channel: the elementary method that proves ESC for a density-1 family provably fails
+at the squares. -/
+theorem four_sq_add_one_div_one_mod_four (c : ℕ) :
+    ∀ D, D ∣ 4 * c ^ 2 + 1 → D % 4 = 1 := by
+  intro D
+  induction D using Nat.strong_induction_on with
+  | _ D ih =>
+    intro hD
+    rcases Nat.lt_or_ge D 2 with hlt | hge
+    · -- D = 0 impossible (D ∣ positive); D = 1 gives 1 % 4 = 1
+      have hpos : 0 < D := Nat.pos_of_dvd_of_pos hD (by positivity)
+      interval_cases D
+      simp
+    · obtain ⟨ℓ, hℓ, hℓD⟩ := Nat.exists_prime_and_dvd (by omega : D ≠ 1)
+      have hℓ4 : ℓ % 4 = 1 := prime_factor_four_sq_add_one ℓ c hℓ (hℓD.trans hD)
+      obtain ⟨E, hE⟩ := hℓD
+      have hEpos : 0 < E := by
+        rcases Nat.eq_zero_or_pos E with rfl | h
+        · rw [Nat.mul_zero] at hE; omega
+        · exact h
+      have hElt : E < D := by have := hℓ.two_le; nlinarith [hE, hEpos]
+      have hEdvd : E ∣ 4 * c ^ 2 + 1 := (Dvd.intro_left ℓ hE.symm).trans hD
+      have hE4 : E % 4 = 1 := ih E hElt hEdvd
+      rw [hE, Nat.mul_mod, hℓ4, hE4]
+
 end ErdosStraus
