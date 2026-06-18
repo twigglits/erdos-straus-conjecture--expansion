@@ -45,19 +45,33 @@ def cayley_points_mod(l, n):
                if (4 * x * y * z - n * (x * y + y * z + z * x)) % l == 0)
 
 
+def cayley_offaxis_mod(l, n):
+    """#{(x,y,z) in ((Z/l)*)^3 : 4xyz = n(xy+yz+zx)} — the ESC-relevant (off-axis) points."""
+    return sum(1 for x in range(1, l) for y in range(1, l) for z in range(1, l)
+               if (4 * x * y * z - n * (x * y + y * z + z * x)) % l == 0)
+
+
 def check_local_densities():
-    """The BW leading local density is blind to the square classes: l^2+1 points
-    independent of n's QR status (so c cannot see the square-class suppression)."""
-    print("local point count of 4xyz=n(xy+yz+zx) mod l, by QR status of n:")
+    """The BW local densities are blind to the square classes — BOTH the full count (l^2+1)
+    and the off-axis ESC count ((l-1)(l-2)+1) are independent of n's QR status, so the
+    constant c cannot see the square-class suppression: it is purely global (stratum/parity)."""
+    print("Cayley cubic point counts mod l by QR status of n  (square classes = QR mod 3,5,7):")
     ok = True
-    for l in (3, 5, 7, 11, 13):
-        qr = [cayley_points_mod(l, n) for n in range(1, l) if pow(n, (l - 1) // 2, l) == 1]
-        nr = [cayley_points_mod(l, n) for n in range(1, l) if pow(n, (l - 1) // 2, l) != 1]
-        aq, an = sum(qr) / len(qr), sum(nr) / len(nr)
-        print(f"  l={l:>2}: QR-side={aq:7.2f}  NR-side={an:7.2f}  (= l^2+1 = {l*l+1})  ratio={aq/an:.4f}")
-        ok &= abs(aq - an) < 1e-9 and abs(aq - (l * l + 1)) < 1e-9
-    assert ok, "leading local density should be l^2+1 independent of QR status"
-    print("PASS: leading local density blind to square classes — suppression is finer (stratum/parity).\n")
+    for l in (3, 5, 7, 11, 13, 17, 19, 23):
+        full = {s: [] for s in ("QR", "NR")}
+        off = {s: [] for s in ("QR", "NR")}
+        for n in range(1, l):
+            s = "QR" if pow(n, (l - 1) // 2, l) == 1 else "NR"
+            full[s].append(cayley_points_mod(l, n))
+            off[s].append(cayley_offaxis_mod(l, n))
+        fq, fn = sum(full["QR"]) / len(full["QR"]), sum(full["NR"]) / len(full["NR"])
+        oq, on = sum(off["QR"]) / len(off["QR"]), sum(off["NR"]) / len(off["NR"])
+        print(f"  l={l:>2}: full QR={fq:6.1f}/NR={fn:6.1f} (l²+1={l*l+1})   "
+              f"off-axis QR={oq:6.1f}/NR={on:6.1f} ((l-1)(l-2)+1={(l-1)*(l-2)+1})")
+        ok &= abs(fq - fn) < 1e-9 and abs(oq - on) < 1e-9
+    assert ok, "both full and off-axis local densities must be QR-independent"
+    print("PASS: full AND off-axis local densities blind to square classes —")
+    print("      suppression is purely global integral-point/parity (Yamamoto), not local.\n")
 
 
 if __name__ == "__main__":

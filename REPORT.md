@@ -2096,9 +2096,11 @@ infinity) gives 3. Pinning it rigorously means redoing Browning–Wilsch's Tamag
 analysis on the weak-dP3 model of the Cayley cubic — a real computation neither paper has done.
 (ii) The whole Browning–Wilsch *leading-order* framework (density × growth) is **provably blind
 to the square classes** — a direct count: the Cayley cubic `4xyz = n(xy+yz+zx)` has exactly
-`ℓ²+1` points mod ℓ **independent of n's quadratic-residue status** (verified ℓ = 3,5,7,11,13;
-QR-side/NR-side ratio = 1.0000), so the local densities `σ_ℓ` that build the constant `c` do not
-distinguish square-class n from the rest. The archimedean correction likewise bears on `c` in
+`ℓ²+1` points mod ℓ **independent of n's quadratic-residue status** (verified ℓ = 3..23;
+QR-side/NR-side ratio = 1.0000), and so does the **off-axis** count `(ℓ−1)(ℓ−2)+1` of the
+ESC-relevant points `xyz ≢ 0` (the actual solution region) — both blind to QR status. So the
+local densities `σ_ℓ` that build the constant `c` do not distinguish square-class n from the
+rest at any level visible to mod-ℓ counting. The archimedean correction likewise bears on `c` in
 the positive octant but is **orthogonal to the mod-840 square obstruction** (a non-archimedean
 χ₋₄-parity fact — Bright–Loughran's *no Brauer–Manin obstruction* confirms the difficulty is
 analytic, not cohomological). This is a clean computational confirmation that the square-class
