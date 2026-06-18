@@ -1,0 +1,72 @@
+import Mathlib
+
+/-!
+# A machine-verified partial result for the Erdős–Straus conjecture
+
+The Erdős–Straus conjecture asserts `4/n = 1/x + 1/y + 1/z` in positive integers for every
+`n ≥ 2`.  This file formalises the **K1 / Obláth sufficient criterion** (REPORT §9.2): if the
+shifted integer `4p+1` has a divisor `≡ 3 (mod 4)`, then `4/p` is a sum of three unit fractions.
+This covers a density-1 family (the failure set has Landau–Ramanujan density → 0).
+
+The heart is a constructive identity: `(4y-1)(4z-1) = 4p+1` forces
+`4/p = 1/(yz) + 1/(p·y) + 1/(p·z)`.  No `sorry`.
+-/
+
+namespace ErdosStraus
+
+/-- **The m = 1 constructive identity.** If `(4y-1)(4z-1) = 4p+1` with `y, z ≥ 1`, then
+`4/p = 1/(y*z) + 1/(p*y) + 1/(p*z)` over `ℚ`. -/
+theorem esc_of_factorization (p y z : ℕ) (hp : 0 < p) (hy : 0 < y) (hz : 0 < z)
+    (h : (4 * y - 1) * (4 * z - 1) = 4 * p + 1) :
+    (4 : ℚ) / p = 1 / (y * z) + 1 / (p * y) + 1 / (p * z) := by
+  -- The defining relation `16yz - 4y - 4z + 1 = 4p+1`, i.e. `4yz = p + y + z`.
+  have key : 4 * y * z = p + y + z := by
+    have h1 : 1 ≤ 4 * y := by omega
+    have h2 : 1 ≤ 4 * z := by omega
+    zify [h1, h2] at h ⊢
+    nlinarith [h]
+  have hpQ : (p : ℚ) ≠ 0 := by exact_mod_cast hp.ne'
+  have hyQ : (y : ℚ) ≠ 0 := by exact_mod_cast hy.ne'
+  have hzQ : (z : ℚ) ≠ 0 := by exact_mod_cast hz.ne'
+  have keyQ : (4 : ℚ) * y * z = p + y + z := by exact_mod_cast key
+  field_simp
+  ring_nf
+  nlinarith [keyQ, mul_pos (mul_pos hp hy) hz]
+
+/-- Helper: the complementary divisor of `4p+1` is also `≡ 3 (mod 4)`. -/
+theorem comp_mod_four (p D : ℕ) (hD : D ∣ 4 * p + 1) (hD3 : D % 4 = 3) :
+    ((4 * p + 1) / D) % 4 = 3 := by
+  have hDpos : 0 < D := Nat.pos_of_dvd_of_pos hD (by omega)
+  obtain ⟨E, hE⟩ := hD
+  have hEval : (4 * p + 1) / D = E := by rw [hE]; exact Nat.mul_div_cancel_left E hDpos
+  rw [hEval]
+  have hmod : (D * E) % 4 = 1 := by rw [← hE]; omega
+  have hDE : (D % 4) * (E % 4) % 4 = 1 := by rwa [Nat.mul_mod] at hmod
+  rw [hD3] at hDE
+  omega
+
+/-- **K1 / Obláth criterion (machine-verified).** If `4p+1` has a divisor `≡ 3 (mod 4)`, then
+`4/p` is a sum of three positive unit fractions — the Erdős–Straus conjecture holds for `p`. -/
+theorem esc_of_K1 (p D : ℕ) (hp : 0 < p) (hD : D ∣ 4 * p + 1) (hD3 : D % 4 = 3) :
+    ∃ x y z : ℕ, 0 < x ∧ 0 < y ∧ 0 < z ∧
+      (4 : ℚ) / p = 1 / x + 1 / y + 1 / z := by
+  have hDpos : 0 < D := Nat.pos_of_dvd_of_pos hD (by omega)
+  set E := (4 * p + 1) / D with hEdef
+  have hDE : D * E = 4 * p + 1 := Nat.mul_div_cancel' hD
+  have hE3 : E % 4 = 3 := comp_mod_four p D hD hD3
+  have hEpos : 0 < E := by nlinarith [hDE, hp]
+  refine ⟨((E + 1) / 4) * ((D + 1) / 4), p * ((E + 1) / 4), p * ((D + 1) / 4), ?_, ?_, ?_, ?_⟩
+  · have h1 : 0 < (E + 1) / 4 := by omega
+    have h2 : 0 < (D + 1) / 4 := by omega
+    positivity
+  · exact Nat.mul_pos hp (by omega)
+  · exact Nat.mul_pos hp (by omega)
+  · have hfac : (4 * ((E + 1) / 4) - 1) * (4 * ((D + 1) / 4) - 1) = 4 * p + 1 := by
+      have hy : 4 * ((E + 1) / 4) - 1 = E := by omega
+      have hz : 4 * ((D + 1) / 4) - 1 = D := by omega
+      rw [hy, hz, mul_comm]; exact hDE
+    have H := esc_of_factorization p ((E + 1) / 4) ((D + 1) / 4) hp (by omega) (by omega) hfac
+    push_cast at H ⊢
+    linarith [H]
+
+end ErdosStraus
