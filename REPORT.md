@@ -2056,11 +2056,45 @@ status that stops exactly at parity. It joins the geometric and conditional rout
 
 The single genuinely orthogonal 2025 machine not yet pointed at ESC: **Browning–Wilsch**,
 *Integral points on cubic surfaces* (arXiv:2407.16315, Selecta Math. 31 (2025)) — a
-Batyrev–Manin–Peyre-type heuristic `N°_U(B) ~ c·(log B)^{ρ_U+b}` for integral points on log-K3
-cubic surfaces, with Wilsch's **archimedean (Clemens-complex) obstruction beyond Brauer–Manin**.
-Their worked cases are the Markoff and sum-of-three-cubes surfaces; the **Cayley/ESC cubic is
-not among them.** Whether it can be adapted to predict f(p)'s growth law (the repo's measured
-median `~(ln p)^{3.3}` vs ET's average exponent 2) — by taking the height `B ≍ p` — and what
-exponent `ρ_U + b` the Cayley cubic's invariants give, is under analysis. It is a *heuristic*
-(a predicted growth law), **not** a proof path: the archimedean obstruction refines the leading
-constant, but the existence question for the positive octant remains the parity wall. [pending]
+Batyrev–Manin–Peyre-type heuristic `N°_U(B) ~ c·(log B)^{ϱ_U+b}` for integral points of height
+≤ B on a log-K3 cubic surface, where `ϱ_U` = rank Pic(U) and `b` = max boundary components of
+the (desingularised) compactification meeting at one real point, with Wilsch's **archimedean
+(Clemens-complex) obstruction beyond Brauer–Manin** (which moves the *constant* `c`, never the
+exponent). Their worked cases are the Markoff and sum-of-three-cubes surfaces; the Cayley/ESC
+cubic is **not among them**, and applying it here appears to be **unpublished**. The result of
+doing so (full-text reads of Browning–Wilsch + Bright–Loughran):
+
+- **Well-posed under `B ≍ p`.** Every ESC solution has denominators polynomial in p
+  (least denominator `x ∈ (p/4, p/2]`, the others `O(p²)`), so the height `H = max(x,y,z) ≍ p^θ`
+  with `log H ≍ log p`; `f(p)` is the *total* integral-point count, recovered as `N°_{U_p}(B)`
+  for `B` past the polynomial saturation height. This predicts the exponent of the **average /
+  typical** `f(p)` — not the per-prime value (the local densities, i.e. the mod-840 channels,
+  ride inside `c` and make `f` lognormal), and **nothing about existence** (`f ≥ 1`).
+- **The invariants.** Bright–Loughran (arXiv:1908.02526, Lemma 2.1) give the open part
+  `V_p ≅ 𝔾_m²` (geometric unit group `k̄* ⊕ ℤ²`, rank 2); the boundary is the triangle of lines
+  at infinity (Clemens complex a triangle, as in the Markoff calibration). Calibrating exactly
+  against Browning–Wilsch's own Markoff computation (Picard-3 compactification, triangle
+  boundary ⟹ `ϱ_U = 0`, `b = 2`, exponent 2 = Zagier's law), the Cayley cubic's rank-2 unit
+  group + boundary log give **`ϱ_U + b = 3`**, hence
+  > **`f(p) = N°_{U_p}(B) ~ c·(log B)³ ~ c·(log p)³`.**
+- **This matches the truth — and corrects an exponent slip.** Elsholtz–Tao's
+  `Σ_{p≤N} f(p) ≍ N log²N` is the **sum**; dividing by `π(N) ~ N/log N` gives **average
+  `f(p) ≍ log³p` — exponent 3** (the "2" is the *sum*'s exponent; an earlier draft of this note
+  miswrote the average as 2, now fixed — and §2 already had it right at "average order log³p").
+  So the geometry predicts exponent **3**, exactly the ET average, and = the repo's measured
+  median `~(ln p)^{3.27–3.30}` (the +0.3 is the loglog factor in ET's upper bound + finite-range
+  curvature; median ≈ mean here since `σ(ln f)` is small). A clean, independent **arithmetic-
+  geometry derivation of the f(p) growth law** — confirming what ET proved on average.
+
+**Two honest hedges.** (i) `b` is **model-dependent**: read literally in Bright–Loughran's
+one-chart model (one node resolved, three *disjoint* boundary lines, Pic ≅ ℤ) it gives the wrong
+exponent 1; the calibration-consistent full-desingularisation reading (weak dP3, the triangle at
+infinity) gives 3. Pinning it rigorously means redoing Browning–Wilsch's Tamagawa/Clemens
+analysis on the weak-dP3 model of the Cayley cubic — a real computation neither paper has done.
+(ii) The archimedean correction bears on the *constant in the positive octant* (the true ESC
+region) but is **orthogonal to the mod-840 square obstruction** (a non-archimedean χ₋₄-parity
+fact — Bright–Loughran's *no Brauer–Manin obstruction* confirms the difficulty is analytic, not
+cohomological) and says nothing about existence. **Verdict:** a genuinely new but heuristic
+re-derivation of the *average* growth law `f(p) ~ (log p)³` from the geometry of the Cayley
+cubic — confirming Elsholtz–Tao and the repo's data — **not** a route to ESC, whose content is
+the thin square-class left tail (`f ≥ 1`), still the parity wall.
