@@ -280,4 +280,33 @@ for _ in range(2000):
     if d0 > 1 and gcd(d0, a) == 1 and gcd(d0, c) == 1:
         check(jacobi(d0 % a, a) == 1, f"fact2 a={a} d0={d0}")
 
+# facts 3–5: the additional Jacobi identities completed in Lean this session
+#   (typeII_target_jacobi, typeI_div_jacobi_one in full, typeI_neg_div_jacobi).
+# fact 3:  J(−x | a) = −1            — the Type II target sign (Lemma D, Type II)
+# fact 4:  J(d  | a) = +1  ∀ d | x²  — the actual sign, EVERY divisor (odd: reciprocity;
+#                                       even ⇒ x even ⇒ a ≡ 7 mod 8 ⇒ J(2|a)=+1, harmless)
+# fact 5:  J(−d | a) = −1  ∀ d | x²  — the chirality (Lemma K): negative divisors are
+#                                       sign-compatible with the target, so the obstruction
+#                                       empties only the positive windows.
+print("Jacobi facts for the Type II target, full actual sign, and chirality ...")
+for _ in range(1500):
+    c = random.randrange(1, 200) * 2 + 1
+    x = random.randrange(2, 3000)
+    n = c * c
+    if 4 * x <= n or 4 * x > 3 * n:
+        continue
+    a = 4 * x - n
+    if a <= 0 or a % 4 != 3:
+        continue
+    if gcd(x, a) != 1 or gcd(c, a) != 1:
+        continue
+    check(jacobi((-x) % a, a) == -1, f"fact3 (Type II target) a={a} x={x}")
+    if x % 2 == 0:
+        check(a % 8 == 7, f"x even ⇒ a≡7 mod 8 (so J(2|a)=+1): a={a} x={x}")
+    for d in divisors(x * x):
+        if gcd(d, a) == 1:
+            check(jacobi(d % a, a) == 1, f"fact4 (actual sign, all d) a={a} d={d}")
+            check(jacobi((-d) % a, a) == -1, f"fact5 (chirality) a={a} d={d}")
+print("  ok: Type II target = −1, every divisor of x² gives +1, every −divisor gives −1")
+
 print(f"\nALL CHECKS PASSED ({ok_count} assertions)")
