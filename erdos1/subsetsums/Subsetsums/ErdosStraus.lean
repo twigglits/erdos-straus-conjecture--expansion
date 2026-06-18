@@ -164,6 +164,33 @@ theorem esc_kernel (p x y z d e a B : ℕ) (hp : 0 < p) (hx : 0 < x) (hy : 0 < y
     _ = 1 / x + (1 / y + 1 / z) := by rw [hstep1]
     _ = 1 / x + 1 / y + 1 / z := by ring
 
+/-- **The kernel, converse (Lemma A reverse, machine-verified).** Every Erdős–Straus solution comes
+from a divisor of `B² = (px)²`. Given `4/p = 1/x + 1/y + 1/z` with `a + p = 4x`, `B = px`, the
+integers `d = a·y − B`, `e = a·z − B` satisfy `d·e = B²` (so `d ∣ B²`) and `a·y = B+d`, `a·z = B+e`,
+with `d ≡ −B (mod a)` automatic. This is the full §9.1 bijection paired with `esc_kernel`: the
+divisor `d` it produces is exactly the object the §9.4 obstruction reasons about — at a square `n=c²`,
+this `d` exists for every solution but provably (`typeI/II_obstruction`) never lands in the *pure*
+strata's residue class, so the solution's `d` must sit in a mixed stratum. -/
+theorem esc_kernel_converse (p x y z a B : ℕ) (hp : 0 < p) (hx : 0 < x) (hy : 0 < y) (hz : 0 < z)
+    (ha : a + p = 4 * x) (hB : B = p * x) (hsol : (4 : ℚ) / p = 1 / x + 1 / y + 1 / z) :
+    ∃ d e : ℤ, d * e = (B : ℤ) ^ 2 ∧ (a : ℤ) * y = B + d ∧ (a : ℤ) * z = B + e := by
+  have hpQ : (p : ℚ) ≠ 0 := by exact_mod_cast hp.ne'
+  have hxQ : (x : ℚ) ≠ 0 := by exact_mod_cast hx.ne'
+  have hyQ : (y : ℚ) ≠ 0 := by exact_mod_cast hy.ne'
+  have hzQ : (z : ℚ) ≠ 0 := by exact_mod_cast hz.ne'
+  have haQ : (a : ℚ) + p = 4 * x := by exact_mod_cast ha
+  have hBQ : (B : ℚ) = p * x := by exact_mod_cast hB
+  -- the equation says exactly a·yz = B·(y+z)  (i.e. 1/y + 1/z = a/B)
+  have hkey2 : (a : ℚ) * (y * z) = B * (y + z) := by
+    have hs := hsol
+    field_simp at hs
+    rw [hBQ, show (a : ℚ) = 4 * x - p by linarith [haQ]]
+    linear_combination hs
+  have hkey2N : a * (y * z) = B * (y + z) := by exact_mod_cast hkey2
+  refine ⟨(a : ℤ) * y - B, (a : ℤ) * z - B, ?_, by ring, by ring⟩
+  have hk : (a : ℤ) * (y * z) = B * (y + z) := by exact_mod_cast hkey2N
+  linear_combination (a : ℤ) * hk
+
 /-- **Theorem G, positive form (machine-verified).** For `p ≡ 3 (mod 4)`, just *two* positive unit
 fractions already give `4/p`: with `x = (p+1)/4`, `4/p = 1/x + 1/(p·x)`. (REPORT §11.2.) -/
 theorem esc_two_term_pos (p : ℕ) (hp : 0 < p) (hp3 : p % 4 = 3) :
