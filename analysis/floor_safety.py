@@ -19,11 +19,14 @@ Run:  python3 analysis/floor_safety.py
 """
 import math
 
-# measured (scale, lnln p, μ=E[ln f], σ=SD[ln f]) from the hard-class datasets
+# measured (scale, lnln p, μ=E[ln f], σ=SD[ln f]) from the hard-class datasets.
+# NOTE: the 10¹⁰ point is from an IN-PROGRESS engine run (partial, accumulating counts), so its μ
+# is an UNDER-estimate; the true μ is higher ⇒ μ/σ higher ⇒ this safety estimate is CONSERVATIVE.
+# The 10⁸, 10⁹ points are from completed runs.
 DATA = [
     (1.0e8, math.log(math.log(1.5e8)), 6.084, 0.1661),
     (1.0e9, math.log(math.log(1.0e9)), 6.412, 0.1480),
-    (1.0e10, math.log(math.log(1.0e10)), 6.743, 0.1348),
+    (1.0e10, math.log(math.log(1.0e10)), 6.743, 0.1348),   # partial → conservative
 ]
 
 

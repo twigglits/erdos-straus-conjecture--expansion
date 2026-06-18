@@ -653,17 +653,22 @@ rising, relatively tightening* lognormal sheet whose lowest points are pure orde
 statistics in the six channel-starved classes — with not a single anomalous prime in
 263,982 computed across 73 → 1.01×10⁹.
 
-**The 10¹⁰ window (2026-06-18).** A full count of all **13,564 six-square-class primes in
-[10¹⁰, 10¹⁰+10⁷]** (`engines/fp128`, 128-bit): **zero-free — f, f_I, f_II all positive on every
-one** (ESC holds across the window), median f = 847, **min f = 525** at p = 10,006,854,841 ≡ 19²
-(mod 840), f_I = 354, f_II = 171. The lognormal-EV floor estimate for this window was ≈ 534; the
-observed 525 sits within 2%, and the floor's slow climb (191 → 347 → 405 → 525 over 2×10⁸ → 10⁹ →
-2×10⁹ → 10¹⁰) tracks `(ln p)^{≈3.5}` as before. ESC (existence of a solution) was **independently
-re-confirmed** for the five thinnest primes of the window by an exact K-channel solution
-(`verify_large_primes.py`, e.g. the floor prime via δ=8), so the *zero-freeness* does not rest on
-the counting engine alone. *Provenance note:* these counts are from a completed prior `fp128` run;
-an authoritative re-run is in progress for byte cross-validation, and the exact per-prime counts
-(not the verified ESC-positivity) are pending that confirmation.
+**The 10¹⁰ window (2026-06-18, IN PROGRESS).** `engines/fp128` (128-bit) is counting f(p) for all
+**13,564 six-square-class primes in [10¹⁰, 10¹⁰+10⁷]**. **Zero-freeness is established**: every prime
+already shows f, f_I, f_II > 0 (and the partial counts only grow), and ESC was **independently
+re-confirmed** — an exact K-channel solution exhibited (`verify_large_primes.py`) for the five
+thinnest primes, e.g. the floor prime p = 10,006,854,841 ≡ 19² (mod 840) via δ = 8 — so the
+*zero-freeness does not rest on the counting engine at all*.
+
+*The exact counts are NOT yet final.* The engine accumulates each f(p) as a shared kernel variable
+`x` sweeps `(p/4, 3p/4)`, and its checkpoint file (`data/hard_1e10_sqclass.csv.partial`) is rewritten
+with growing partial counts (the floor prime read f_I = 354 then 357 across checkpoints). At ~53%
+completion the running floor is `min(f_I+f_II) ≈ 528` and **rising**; the final floor, the proper
+median, and the test against the lognormal-EV estimate (≈ 534) all await completion (~3 h). The
+earlier draft of this note quoted the partial floor (525) as if final and claimed a 2% prediction
+hit — that was premature and is retracted here; what is solid now is the *positivity*, not the
+extremal value. (The partial counts also slightly *under*-anchor the §14.4 safety calc's 10¹⁰ point,
+which makes that estimate conservative: a higher final μ only lowers the counterexample probability.)
 
 ---
 
