@@ -676,8 +676,12 @@ hierarchy** in the positive count `f(p)`, identical across completed datasets:
 > `1²  <  11²  <  13²  <  19²  <  17²  <  23²`   (thinnest → richest by median `f`),
 with class `1²` (residue 1) reliably the hardest and `23²` (residue 529) the richest — median spread
 **9.3% at 10⁸, 8.5% at 10⁹** (and 7.0% on the partial 10¹⁰), the ordering essentially fixed. It is a
-property of the residue, not of scale: it tracks the average channel supply (`corr(ω₃(4p+1), ln f) >
-0`, §14.4) — residues whose shifted integers carry more divisors in the live classes are richer. The
+property of the residue, not of scale. The **hard end is mechanistically explained by K1 channel
+supply**: over 400 primes/class near 10⁷, `1²` is the K1-poorest — `P(K1 fires) = 0.44` and mean
+`ω₃(4p+1) = 0.90`, both the lowest of the six — with `11²` next, exactly the two thinnest classes;
+the richest classes (`13²`, `23²`, `17²`) are K1-richer (`P(K1) ≈ 0.51`). (The *full* six-way order
+is not a pure `ω₃` ranking — `13²` leads on `ω₃` but sits mid-table on median `f` — because total
+`f` aggregates K1, K2 and the higher-δ channels; `ω₃(4p+1)` alone fixes only the starved end.) The
 practical upshot for any counterexample search: `1²` is the prime suspect (the floor primes already
 skew to the thin classes — 18 of the 50 thinnest at 10¹⁰ are `13²`, then `19²`, `1²`). Apparently
 unrecorded.
