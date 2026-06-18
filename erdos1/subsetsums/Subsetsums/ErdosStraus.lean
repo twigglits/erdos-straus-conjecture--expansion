@@ -1,8 +1,6 @@
-/-
-  Copyright (c) 2026 math-conjectures (Erdős–Straus project). All rights reserved.
-  Released under Apache 2.0 license. Authors: repository owner + Claude (Anthropic).
--/
 import Mathlib
+
+set_option linter.style.header false
 
 /-!
 # A machine-verified partial result for the Erdős–Straus conjecture
@@ -103,5 +101,20 @@ theorem esc_of_typeII (p y z δ : ℕ) (hp : 0 < p) (hy : 0 < y) (hz : 0 < z)
   field_simp
   nlinarith [keyQ, mul_pos (mul_pos hp hy) hz]
 
-end ErdosStraus
+/-- **The square obstruction, prime core (machine-verified).** Every prime factor of `4c²+1` is
+`≡ 1 (mod 4)`. Hence `4c²+1` has no prime factor `≡ 3 (mod 4)`, so the K1 criterion can never
+fire at `n = c²` — the quadratic-reciprocity reason elementary methods fail at squares (REPORT
+§9.4, the coprime case of Yamamoto's theorem). -/
+theorem prime_factor_four_sq_add_one (ℓ c : ℕ) (hℓ : ℓ.Prime) (hdvd : ℓ ∣ 4 * c ^ 2 + 1) :
+    ℓ % 4 = 1 := by
+  haveI : Fact ℓ.Prime := ⟨hℓ⟩
+  have hne2 : ℓ ≠ 2 := by rintro rfl; omega
+  have h0 : ((4 * c ^ 2 + 1 : ℕ) : ZMod ℓ) = 0 :=
+    (CharP.cast_eq_zero_iff (ZMod ℓ) ℓ _).mpr hdvd
+  have h4c2 : (4 : ZMod ℓ) * (c : ZMod ℓ) ^ 2 = -1 := by push_cast at h0; linear_combination h0
+  have hsq : IsSquare (-1 : ZMod ℓ) := ⟨2 * c, by linear_combination -h4c2⟩
+  have hne3 : ℓ % 4 ≠ 3 := ZMod.exists_sq_eq_neg_one_iff.mp hsq
+  have hodd : ℓ % 2 = 1 := Nat.odd_iff.mp (hℓ.odd_of_ne_two hne2)
+  omega
 
+end ErdosStraus
