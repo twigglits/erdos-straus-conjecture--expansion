@@ -515,10 +515,12 @@ via §12-targeted counting of the predicted-thinnest 300 square-class primes: **
 (at 10006854841 ≡ 19² mod 840, **zero-free**) — ≈7% above the band on the safe side, within the
 model's ~10% minima accuracy. Honest: 534 is an upper bound on the true floor (targeted, not the
 full 13,564-prime sweep), and the score is extrapolated 5× past its validation.
-Open: the 10¹⁰ blind prediction ([439, 499] for min f in [10¹⁰, 10¹⁰+10⁷] —
-requires a fresh GPU run); a rigorous limit (if one exists) for the Type III ratio
-f₁III/f₁ ≈ 0.436, via the singular-series-ratio route (§13.2);
-OEIS submission of f̃₁ and F̃; Lean formalization of Lemma D.
+Progress (2026-06-18): the 10¹⁰ blind prediction **was tested** (§16.2, the new 128-bit
+engines): targeted floor min f = 534 at 10¹⁰, ~7% above the [439,499] band on the safe side,
+cross-validated CPU vs GPU (an exhaustive sweep to certify it is running); **OEIS packets for
+f̃₁ and F̃ are prepared** (`data/oeis/`, `analysis/prepare_oeis.py`). Still open: a rigorous
+limit (if one exists) for the Type III ratio f₁III/f₁ ≈ 0.436 via the singular-series-ratio
+route (§13.2); Lean formalization of Lemma D (needs the Mathlib build toolchain set up).
 
 </div>
 
