@@ -1848,11 +1848,14 @@ new directions, each machine-checked or literature-verified. Nothing here is a p
 *negative* results (geometry, conditional theorems) sharpen *why* no elementary or
 conditional proof exists, and two new *computations* widen the empirical margin.
 
-1. **Verification to 10⁵⁰ on adversarial primes** (`analysis/find_solution.py`). ESC holds —
-   with an *explicit exhibited solution* — for square-class (and K1-starved) primes at every
-   scale 10⁹ … 10²² and on to 10²⁵, 10³⁰, 10⁴⁰ (the lognormal counterexample scale), 10⁵⁰ —
-   i.e. 10³²× past the published 10¹⁸ sweep, each found in < 0.5 s via the smallest channel
-   a = 4x−p ∈ {3, 7}. (Individual adversarial primes, not a sweep.)
+1. **Verification to 10⁵⁰ — and via the K-channel to 10³⁰⁰ — on adversarial primes**
+   (`analysis/find_solution.py`, `analysis/verify_large_primes.py`). ESC holds — with an
+   *explicit exhibited solution* — for square-class (and K1-starved) primes at every scale 10⁹ …
+   10²² and on to 10²⁵, 10³⁰, 10⁴⁰ (the lognormal counterexample scale), 10⁵⁰ via the kernel
+   small-a search; and, removing the factor-`x` ceiling, for all six hard classes at 10¹⁵ …
+   **10³⁰⁰** (300-digit primes, 36/36, exact, channel depth δ ≤ 18) via the scalable K-channel
+   `esc_of_typeII` construction — ~290 orders of magnitude past the 10¹⁰ counting frontier, each
+   found in under a second. (Individual adversarial primes, not a sweep.)
 2. **The Erdős–Kac channel margin persists to 10¹⁵** (`analysis/channel_survey.py`, using the
    `prime-octal` rolling-window/segmented-sieve technique). ω₃(4p+1) keeps mean ≈ Var ≈ ½ lnln p
    and the K1-starvation density keeps the Landau–Ramanujan shape K1-fail·√(ln p) ≈ 1.8 across
@@ -1902,6 +1905,22 @@ trend, so the smallest channels never approach all-failing as p → ∞. Robust 
 not degrade with scale, not a near-miss. **Honest scope:** these are adversarially-*selected individual*
 primes, not a contiguous sweep — they show per-prime solubility is robust at unprecedented
 scale, not ESC for all p in any interval.
+
+**Extended to 10³⁰⁰ via the scalable K-channel (2026-06-18, `verify_large_primes.py`).** The
+kernel search above must factor `x ≈ p/4`, which stalls past ~10⁵⁰. The K-channel construction
+(Lean `esc_of_typeII`) removes that ceiling entirely: to certify `p` it suffices to find *one*
+small divisor `q ≡ −1 (mod 4δ)` of `N = 4pδ + 1`, after which `E = N/q` is a single big-integer
+division (no factorisation of the cofactor, and never any factorisation of `x`) and
+`y = (q+1)/4, z = (E+1)/4, x = yz/δ` give `4/p = 1/x + 1/(py) + 1/(pz)` exactly. Run over the six
+hard square classes at 10¹⁵, 10³⁰, 10⁶⁰, 10¹²⁰, 10²⁰⁰, **10³⁰⁰**: **36/36 primes certified, exact
+`Fraction` check, 0 failures**, each in well under a second, with channel depth **δ ≤ 18** (the
+denominators reach ~600 digits). This is ~290 orders of magnitude past the 10¹⁰ counting frontier
+and ~250 past the kernel verifier. The reach is bounded only by trial division for a small factor
+of `N` in one residue class — never by factoring `p` — so a cheap-search miss (rare, e.g. a
+K1/K2-starved prime whose qualifying factor is large) is honestly a *search-budget* limit, not a
+counterexample; for `N ≲ 10⁴⁵` the script factors `N` completely and exhausts the channel. Same
+honest scope: selected individual primes, robust per-prime solubility at a scale where the count
+`f(p)` is utterly uncomputable.
 
 ### 15.2 The channel margin past the counting frontier (`channel_survey.py`)
 

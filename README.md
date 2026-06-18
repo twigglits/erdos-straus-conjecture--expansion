@@ -352,6 +352,7 @@ Full proofs and checks: [`erdos1/THEOREMS.md`](erdos1/THEOREMS.md).
 │   ├── local_solubility.py       local solubility + stratum vanishing (the BM "local" half)
 │   ├── second_moment.py          §14 2nd-moment reduction + Erdős–Kac channel law
 │   ├── find_solution.py          §15 exhibits an ESC solution per prime to 10²² (adversarial)
+│   ├── verify_large_primes.py    §15.1 K-channel verifier — exact ESC solutions for hard primes to 10³⁰⁰
 │   ├── channel_survey.py         §15 rolling-window channel-margin survey 10⁹–10¹⁵
 │   ├── plot_types.py             figures 1–5
 │   ├── plot_residual.py          figures 6–7
