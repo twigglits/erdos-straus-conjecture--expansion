@@ -1,3 +1,7 @@
+/-
+  Copyright (c) 2026 math-conjectures (Erdős–Straus project). All rights reserved.
+  Released under Apache 2.0 license. Authors: repository owner + Claude (Anthropic).
+-/
 import Mathlib
 
 /-!
@@ -69,4 +73,35 @@ theorem esc_of_K1 (p D : ℕ) (hp : 0 < p) (hD : D ∣ 4 * p + 1) (hD3 : D % 4 =
     push_cast at H ⊢
     linarith [H]
 
+/-- **General Type II criterion (machine-verified).** If `(4y-1)(4z-1) = 4pδ+1` with `δ ∣ y*z`,
+then with `x = y*z/δ` one has `4/p = 1/x + 1/(p*y) + 1/(p*z)` — a positive Erdős–Straus solution.
+This is the master sufficient condition behind every K-criterion (K1 is `δ=1`); see REPORT §14. -/
+theorem esc_of_typeII (p y z δ : ℕ) (hp : 0 < p) (hy : 0 < y) (hz : 0 < z)
+    (hdvd : δ ∣ y * z) (h : (4 * y - 1) * (4 * z - 1) = 4 * p * δ + 1) :
+    ∃ x : ℕ, 0 < x ∧ (4 : ℚ) / p = 1 / x + 1 / (p * y) + 1 / (p * z) := by
+  obtain ⟨x, hx⟩ := hdvd
+  have hxpos : 0 < x := by
+    rcases Nat.eq_zero_or_pos x with rfl | h0
+    · simp only [Nat.mul_zero] at hx
+      have := Nat.mul_pos hy hz; omega
+    · exact h0
+  refine ⟨x, hxpos, ?_⟩
+  have key : 4 * y * z = p * δ + y + z := by
+    have h1 : 1 ≤ 4 * y := by omega
+    have h2 : 1 ≤ 4 * z := by omega
+    zify [h1, h2] at h ⊢
+    nlinarith [h]
+  have hpQ : (p : ℚ) ≠ 0 := by exact_mod_cast hp.ne'
+  have hyQ : (y : ℚ) ≠ 0 := by exact_mod_cast hy.ne'
+  have hzQ : (z : ℚ) ≠ 0 := by exact_mod_cast hz.ne'
+  have hxQ : (x : ℚ) ≠ 0 := by exact_mod_cast hxpos.ne'
+  have hxrel : (y : ℚ) * z = δ * x := by exact_mod_cast hx
+  have keyQ : (4 : ℚ) * y * z = p * δ + y + z := by exact_mod_cast key
+  have hxinv : (1 : ℚ) / (x : ℚ) = (δ : ℚ) / ((y : ℚ) * z) := by
+    rw [div_eq_div_iff hxQ (by positivity)]; linarith [hxrel]
+  rw [hxinv]
+  field_simp
+  nlinarith [keyQ, mul_pos (mul_pos hp hy) hz]
+
 end ErdosStraus
+
