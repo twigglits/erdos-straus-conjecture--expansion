@@ -36,3 +36,5 @@ files/
 
 # §16 targeted-floor intermediate artifact (regenerable via analysis/target_1e10.py)
 data/target_1e10_bottomK.txt
+engines/fp128
+engines/fp_single
