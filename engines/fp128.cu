@@ -210,10 +210,16 @@ static void write_csv(const char* path, const std::vector<u64>& primes,
 
 int main(int argc, char** argv)
 {
-    if (argc < 5) { fprintf(stderr,"usage: %s pmin pmax mode(0|1) out.csv\n",argv[0]); return 1; }
+    if (argc < 5) { fprintf(stderr,"usage: %s pmin pmax mode(0=all|1=p%%24==1|2=sq-classes) out.csv\n",argv[0]); return 1; }
     u64 pmin = strtoull(argv[1],0,10), pmax = strtoull(argv[2],0,10);
     int mode = atoi(argv[3]); const char* out_path = argv[4];
-    auto in_mode = [&](u64 p){ return mode==0 || p%24==1; };
+    // mode 0 = all; 1 = p≡1 (mod 24); 2 = six square classes mod 840 (the hard set)
+    auto in_mode = [&](u64 p){
+        if (mode == 0) return true;
+        if (mode == 1) return p % 24 == 1;
+        u64 r = p % 840;
+        return r==1 || r==121 || r==169 || r==289 || r==361 || r==529;
+    };
     auto t_start = std::chrono::steady_clock::now();
 
     // base primes to √pmax (covers both factoring x ≤ (pmax+1)/2 and the segmented sieve)
