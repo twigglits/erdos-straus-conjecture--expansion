@@ -182,6 +182,18 @@ theorem eight_sq_add_one_div_one_or_three_mod_eight (c : ℕ) :
       rw [hE, Nat.mul_mod]
       rcases hℓ8 with h1 | h1 <;> rcases hE8 with h2 | h2 <;> rw [h1, h2] <;> decide
 
+/-- **General Lemma D — the "required sign" half (machine-verified).** For `a ≡ 3 (mod 4)` odd
+with `gcd(2x, a) = 1`, the Jacobi symbol of the Type I target `−4x²` is `−1`. So *any* divisor of
+`x²` lying in the Type I class `≡ −4x² (mod a)` would have Jacobi symbol `−1` — whereas a divisor
+of `x²` has symbol `+1` (the squarefree/reciprocity "actual sign" half, discharged in full for the
+K1/K2 channels above). This is the clean half of REPORT §9.4's general obstruction. -/
+theorem typeI_target_jacobi (x a : ℕ) (ha3 : a % 4 = 3) (hcop : Int.gcd (2 * x) a = 1) :
+    jacobiSym (-(4 * (x : ℤ) ^ 2)) a = -1 := by
+  have hodd : Odd a := Nat.odd_iff.mpr (by omega)
+  have e : -(4 * (x : ℤ) ^ 2) = (-1) * (2 * (x : ℤ)) ^ 2 := by ring
+  rw [e, jacobiSym.mul_left, jacobiSym.sq_one' hcop, mul_one, jacobiSym.at_neg_one hodd,
+    ZMod.χ₄_nat_three_mod_four ha3]
+
 /-! ## Sanity checks (the theorems are non-vacuous). -/
 
 -- ESC holds for p = 2 via K1: `4·2+1 = 9 = 3²` has the divisor `3 ≡ 3 (mod 4)`.
