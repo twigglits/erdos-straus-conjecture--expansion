@@ -2501,3 +2501,43 @@ would require either the δ-split correlation directly (research-level, parity-a
 Browning–Wilsch / Bright–Loughran integral-points density with the boundary divisor's `(p/ℓ)`-splitting
 (deep geometry). Both are beyond a closed elementary argument. The discovery stands; the proof is a
 research programme, and it meets the wall from the same side as the rest.
+
+### 18.7 The δ-split correlation upper bound — is it parity-safe and winnable? Assessment.
+
+**The object, structured.** From the kernel, `f_II(p) = Σ_{p/4<x≤3p/4} #{d' ∣ x² : (4x−p) ∣ (d'+x)}`
+(the congruence `d' ≡ −x (mod 4x−p)` is `(4x−p)∣(d'+x)`). Each solution **pins** `p`: writing `e = 4x−p`,
+the condition is `e ∣ (d'+x)` and `p = 4x − e`. Hence
+> `Σ_{p≤N} f_II(p)² = #{ (x₁,d₁',x₂,d₂') : d_i' ∣ x_i², e_i ∣ (d_i'+x_i), 4x₁−e₁ = 4x₂−e₂ = p prime }`,
+a **divisor-correlation quadruple count** with a *matching condition* `4x₁−e₁ = 4x₂−e₂` and a single
+`p prime` constraint (machine-verified pinning, `p = 73, 2521`).
+
+**Is it parity-safe? Yes.** The only place a prime appears is the constraint `p = 4x₁−e₁` prime; bounding
+the number of admissible tuples by **Brun–Titchmarsh** (`#{p≤N : p≡a (mod q)} ≤ 2N/(φ(q)log(N/q))`) — or
+a Selberg-sieve majorant — is a one-sided *upper* bound and **does not see the parity of `Ω`**. Selberg's
+barrier blocks *asymptotics and lower bounds* for `d(n)` over primes; it does not block majorants. The
+remaining content (`d_i' ∣ x_i²`, the matching) is deterministic divisor combinatorics. So **there is no
+hidden parity obstruction to the upper bound** — unlike the asymptotic, the lower bound, and the
+exceptional set, which all do meet it.
+
+**Is it winnable?** In principle, yes, at research level. The **diagonal** (`x₁=x₂, d₁'=d₂', e₁=e₂`)
+is `Σ_p Σ_x #{d'∣x²:…}` of the squared inner count — a divisor-moment sum giving the main term
+`≍ N (log N)^{5.5}` (numerically confirmed, §18.5). The **off-diagonal** is the genuine work: bound
+`#{(x₁,d₁',x₂,d₂') : 4x₁−e₁ = 4x₂−e₂, d_i'∣x_i²}` by divisor-correlation technology (Henriot / Nair–
+Tenenbaum for the `d'∣x²` structure) summed against the matching condition, with Brun–Titchmarsh on the
+prime. Substantial but standard-flavoured; no step is parity-blocked.
+
+**The honest catch — why I am NOT recommending it as the next effort.** Even proven, its only consequence
+is Cauchy–Schwarz: `#{p≤N : f(p)>0} ≥ (Σf)²/Σf² ≍ n/C` → a **positive proportion**, which is *weaker than
+the known density 1* (Vaughan 1970, exceptional set `≪ N exp(−c(log N)^{2/3})`). And it yields only the
+*order* `Σf² ≪ N(log N)^A`, not the leading constant — so it does **not** even establish the `L(1,χ_p)`
+modulation rigorously (that is the asymptotic, which needs the matching lower bound = the two-shift
+Titchmarsh estimate = parity-blocked). So the upper bound is the rare parity-*safe* target here, but its
+payoff is `≤` known and it does not capture the session's actual discovery.
+
+**Verdict.** The δ-split correlation upper bound is **parity-safe and winnable** (Brun–Titchmarsh +
+divisor correlation, no hidden wall) — a clean answer to the standing question — but its payoff (positive
+proportion, order only) sits *below* Vaughan and *short of* the `L`-constant. The genuinely valuable
+statements — the asymptotic second moment, the exact `L(1,χ_p)^{−c}` singular series, the `L`-controlled
+exceptional set — all require the *lower* bound and are parity-blocked. So the honest map is now complete:
+**one parity-safe but low-payoff target (this upper bound), and a fence of parity-blocked high-value ones
+beyond it.** The session's real advance is the `L(1,χ_p)` lens itself (§18.1–18.3), not a new bound.
