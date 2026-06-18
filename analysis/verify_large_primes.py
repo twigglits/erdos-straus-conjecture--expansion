@@ -104,7 +104,35 @@ def check(p, sol) -> bool:
     return Fraction(1, x) + Fraction(1, Y) + Fraction(1, Z) == Fraction(4, p)
 
 
+def verify_interval(N: int, W: int):
+    """Verify EVERY hard-class prime in [N, N+W] (a contiguous window, not selected primes) —
+    i.e. ESC for all hard primes in an interval at a scale of choice, past any brute-force sweep."""
+    print(f"\n=== contiguous window [{N}, {N}+{W}] (every hard-class prime) ===")
+    t0 = time.time()
+    checked = misses = deepest = 0
+    p = N - (N % 840)
+    while p <= N + W:
+        for r in SQ_RES:
+            q = p + r
+            if q < N or q > N + W or not sympy.isprime(q):
+                continue
+            sol = solve_esc(q, budget_s=4.0)
+            if sol is None:
+                misses += 1
+                print(f"  p={q} (class {r}): cheap channels exhausted (deeper search needed)")
+                continue
+            assert check(q, sol), f"exact check failed for p={q}"
+            checked += 1
+            deepest = max(deepest, sol[3])
+        p += 840
+    print(f"  {checked} hard-class primes in the window, ALL verified exact "
+          f"({misses} needed deeper search); deepest channel δ={deepest}; {time.time()-t0:.1f}s.")
+
+
 if __name__ == "__main__":
+    if len(sys.argv) >= 4 and sys.argv[1] == "interval":
+        verify_interval(int(float(sys.argv[2])), int(float(sys.argv[3])))
+        sys.exit(0)
     rng = __import__("random").Random(20260618)
     # exponentially growing sizes: 10^15 … 10^300 (≈ 1000-bit), every hard class at each
     exponents = [15, 30, 60, 120, 200, 300]
