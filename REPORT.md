@@ -2411,3 +2411,57 @@ L-function reformulation is **more promising as a map than as a route through**:
 needed inequality cleanly, proves the magnitudes are never the obstacle, confines any counterexample to
 a super-rare L-extreme set, and hands over a genuinely attainable parity-safe second-moment bound as
 the next concrete step.
+
+### 18.5 The Cauchy–Schwarz / second-moment route — worked out, and honestly assessed
+
+Attempting the parity-safe target of §18.4 to its conclusion. The chain is:
+
+**(R) Reduction.** `f(p) = 3 f_I(p) + 3 f_II(p)`, and by the kernel (§9.1) `f_I(p) = Σ_{p/4<x≤3p/4}
+#{ d ∣ x² : d ≡ −4x² (mod 4x−p) }`, with the analogous Type II count over divisors `u ≡ 3 (mod 4)`
+of the shifted integers `4pδ+1`. So `f(p)` is a divisor sum, bounded above by a two-shift divisor
+correlation — the ET Remark 1.3 object.
+
+**(N) Numerics (verified).** Per-prime second moment `E[f²] ~ (log p)^{6.49}`, so
+`Σ_{p≤N} f(p)² ≍ N (log N)^{5.5}` (the idealized `N log⁵N` assumes the asymptotic mean exponent 3;
+the measured `3.37` is the slowly-falling pre-asymptotic). The dispersion ratio
+`C := E[f²]/E[f]² = 1 + Var/mean² = e^{σ²}` falls `1.086 → 1.028 → 1.022` over `10⁷ → 10⁸ → 10⁹`
+(`σ(ln f): 0.337 → 0.166 → 0.148`).
+
+**(CS) Cauchy–Schwarz.** `#{p≤N hard : f(p)>0} ≥ (Σf)² / Σf² = n/C`. With the measured `C`, this
+*already* certifies `≥ 92% → 97.8%` of hard primes soluble, rising toward 100% as `σ → 0`.
+
+**Honest verdict — this route does NOT advance the count, and here is exactly why.** Three gaps,
+each real:
+
+1. **Cauchy–Schwarz gives only a positive proportion `1/C`, not density 1.** Density 1 needs `C → 1`,
+   i.e. `Var(f) = o(mean²)` — the asymptotic second moment with matching leading constant. The
+   *upper* bound `Σf² ≪ N (log N)^A` alone yields `C ≤ A`-shaped constant `> 1`, hence a fixed
+   proportion. The data shows `C → 1`, but proving it *is* the two-shift Titchmarsh asymptotic — the
+   wall.
+2. **A positive proportion is weaker than what is already known.** ESC holds for **almost all** primes
+   (density 1) — Vaughan (1970), exceptional set `≪ N·exp(−c(log N)^{2/3})`. So the Cauchy–Schwarz
+   route re-derives a *weaker* statement by a cleaner path; it does not beat the count bound.
+3. **The exceptional set is not controlled by the upper bound alone.** `#{f=0} ≤ Σf²/min(f)²` is
+   trivial; a non-trivial exceptional bound needs `Σ(f−μ)²` *with cancellation* — again the asymptotic,
+   the wall. And the `L(1,χ_p)`-exceptional-set refinement needs the matching **lower** bound
+   `f ≫ (log p)³ L^{−C}`, which is the singular-series asymptotic — the wall once more.
+
+Even the *upper* bound `Σf² ≪ N (log N)^A` is not the soft Nair–Tenenbaum exercise it first looks like:
+the naive divisor majorant `f_II(p) ≤ Σ_{δ} τ(4pδ+1)` over the full `δ`-range overcounts by a power
+of `p` (it discards the constraint `δ ∣ y'z'` / `d ∣ x²` that pins `f ~ log³p` rather than `~ p`), so
+the constraint must be carried through — a genuine research theorem, parity-*safer* than the asymptotic
+but not free.
+
+**Conclusion.** The Cauchy–Schwarz/second-moment route is a clean *map* of the problem — it shows the
+solubility proportion is `1/C = 1/(1+Var/mean²)`, ties the residual `1−1/C` to the very dispersion the
+`L(1,χ_p)` law explains (38% of `Var(ln f)`), and confirms the size budget is never the issue — but it
+**provably cannot exceed Vaughan's density 1**, and every step to density 1 / an `L`-exceptional bound
+re-meets the two-shift Titchmarsh wall. It is not the route to *new* progress.
+
+**The genuinely new, achievable target is one rung lower and to the side:** make the `L(1,χ_p)`
+modulation of the singular series a *theorem* (not the density consequence). Concretely: prove that the
+singular series of the Type II divisor sum equals `L(1,χ_p)^{−c}·(explicit Euler product)` via the
+McKee–Zhou identity `singular series of Σ τ(irreducible quadratic) = 2L(1,χ_{disc})/ζ(2)` — a
+first-moment / average statement, *not* parity-blocked, and (per the 2026-06-18 literature search)
+**unrecorded for f(p)**. That is a real new theorem connecting Erdős–Straus to quadratic L-values; it
+does not prove ESC, but unlike the Cauchy–Schwarz route it is both achievable and not already known.
