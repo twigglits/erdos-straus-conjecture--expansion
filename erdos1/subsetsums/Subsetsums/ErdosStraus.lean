@@ -3,15 +3,38 @@ import Mathlib
 set_option linter.style.header false
 
 /-!
-# A machine-verified partial result for the Erdős–Straus conjecture
+# The elementary theory of the Erdős–Straus conjecture, machine-verified
 
 The Erdős–Straus conjecture asserts `4/n = 1/x + 1/y + 1/z` in positive integers for every
-`n ≥ 2`.  This file formalises the **K1 / Obláth sufficient criterion** (REPORT §9.2): if the
-shifted integer `4p+1` has a divisor `≡ 3 (mod 4)`, then `4/p` is a sum of three unit fractions.
-This covers a density-1 family (the failure set has Landau–Ramanujan density → 0).
+`n ≥ 2`.  This file formalises, with **no `sorry`** (every theorem reduces to the three standard
+axioms `propext, Classical.choice, Quot.sound`), the complete *elementary* theory of the problem —
+both what the elementary toolbox proves and a rigorous account of why it cannot settle the
+conjecture.  Three movements (REPORT §9, §11.2, §11.4):
 
-The heart is a constructive identity: `(4y-1)(4z-1) = 4p+1` forces
-`4/p = 1/(yz) + 1/(p·y) + 1/(p·z)`.  No `sorry`.
+* **Sufficient conditions** — how to *prove* ESC for a given prime.
+  `esc_of_factorization` (the constructive identity `(4y-1)(4z-1)=4p+1 ⟹ 4/p = 1/(yz)+1/(py)+1/(pz)`),
+  `esc_of_K1` (Obláth's criterion: `4p+1` has a divisor `≡ 3 mod 4`), and `esc_of_typeII` (the master
+  Type II condition `(4y-1)(4z-1)=4pδ+1, δ ∣ yz`, subsuming every K-criterion).  Each covers a
+  density-1 family.
+
+* **The square obstruction** — *why* those conditions provably fail at the hard square classes
+  `n = c²` (Mordell–Schinzel–Yamamoto).  The K1 and K2 channels are dead at every square
+  (`four_sq_add_one_div_one_mod_four`, `eight_sq_add_one_div_one_or_three_mod_eight`).  The general
+  statement, both strata and *all* divisors: for `a = 4x − c² ≡ 3 (mod 4)`, every `d ∣ x²` has
+  `jacobiSym d a = +1` (`div_jacobi_one`), while the Type I and Type II target classes force `−1`
+  (`typeI_target_jacobi`, `typeII_target_jacobi`) — so `typeI_obstruction`, `typeII_obstruction`
+  derive `False`.  The obstruction is **chiral** (`typeI_neg_div_jacobi`): it empties only the
+  positive windows.
+
+* **Positivity is the whole subject** — Theorem G (`esc_two_term_pos`, `esc_two_term_signed`): two
+  unit fractions already give `4/p`, positive for `p ≡ 3 (mod 4)` and *signed* for `p ≡ 1 (mod 4)`.
+  The third Erdős–Straus term is an artifact of demanding positivity exactly where the obstruction
+  is chiral.  And the obstruction is *not* a disproof: ESC still holds at squares via mixed strata
+  (`4/9 = 1/3 + 1/12 + 1/36`).
+
+Net: the elementary/identity toolbox is fully characterised, and it provably cannot close ESC — the
+gap is a *non-elementary* uniform pointwise divisor estimate (a two-shift Titchmarsh sum, REPORT
+§14), not addressed here.  Companion numeric cross-checks: `analysis/verify_lemmas.py`.
 -/
 
 namespace ErdosStraus
