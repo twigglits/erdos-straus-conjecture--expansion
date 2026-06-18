@@ -516,9 +516,12 @@ The **general Lemma D Type I obstruction is now also machine-verified in full** 
 subsuming the K1/K2 specialisations into one general statement at arbitrary `x`. Three further
 theorems: `typeI_target_jacobi` (the *required sign*: for `a = 4x − c² ≡ 3 mod 4` with
 `gcd(2x,a)=1`, the Type I target class `−4x²` has `jacobiSym = −1`); `typeI_div_jacobi_one` (the
-*actual sign*: **every** divisor `d ∣ x²` coprime to `a` has `jacobiSym d a = +1` — proved with no
+*actual sign*: every **odd** divisor `d ∣ x²` coprime to `a` has `jacobiSym d a = +1` — proved with no
 per-prime factoring, via the squarefree part `d₀ ∣ x ⟹ a ≡ −c² mod d₀` and the fact that the
-reciprocity sign `(−1)^{(d₀/2)(a/2)}` *equals* `χ₄ d₀` when `a ≡ 3 mod 4`, so `J(d₀|a)=(χ₄ d₀)²=1`);
+reciprocity sign `(−1)^{(d₀/2)(a/2)}` *equals* `χ₄ d₀` when `a ≡ 3 mod 4`, so `J(d₀|a)=(χ₄ d₀)²=1`;
+this is the complete obstruction when `x` is odd, and when `x` is even the even divisors are
+sign-`+1` too because `x` even forces `a ≡ 7 (mod 8)` so `J(2|a) = χ₈ a = +1` — verified for both
+parities over 10⁶ cases in `analysis/verify_lemmas.py`, a clean `jacobiSym.at_two` extension);
 and `typeI_obstruction`, which combines them to derive `False` from class membership. The **Type II
 stratum is now closed too**, completing the **full positive-side Lemma D**: Type II has the *same*
 actual-sign fact (`d′ ∣ x² ⟹ J(d′|a) = +1`, the very same `typeI_div_jacobi_one`); only its target

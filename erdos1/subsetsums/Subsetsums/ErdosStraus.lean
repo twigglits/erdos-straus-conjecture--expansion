@@ -195,10 +195,17 @@ theorem typeI_target_jacobi (x a : ℕ) (ha3 : a % 4 = 3) (hcop : Int.gcd (2 * x
     ZMod.χ₄_nat_three_mod_four ha3]
 
 /-- **General Lemma D — the "actual sign" half (machine-verified).** For `a = 4x − c²` with
-`a ≡ 3 (mod 4)`, *every* divisor `d ∣ x²` coprime to `a` has `jacobiSym d a = +1`. Combined with
-`typeI_target_jacobi` (the Type I target class `≡ −4x²` forces `−1`), **no divisor of `x²` lies in
-the Type I residue class** — the general square obstruction of REPORT §9.4, Type I, in full (the
-K1/K2 theorems above are this argument specialised to the `4c²+1` and `8c²+1` channels).
+`a ≡ 3 (mod 4)`, every **odd** divisor `d ∣ x²` coprime to `a` has `jacobiSym d a = +1`. Combined
+with `typeI_target_jacobi` (the Type I target class `≡ −4x²` forces `−1`), **no odd divisor of `x²`
+lies in the Type I residue class** — the general square obstruction of REPORT §9.4, Type I (the K1/K2
+theorems above are this argument specialised to the `4c²+1` and `8c²+1` channels).
+
+This is the complete obstruction whenever `x` is odd (then every divisor of `x²` is odd). When `x`
+is even, the even divisors are obstructed too — but for a different reason: `x` even forces
+`a = 4x − c² ≡ 0 − 1 ≡ 7 (mod 8)` (`c` odd), so `J(2|a) = χ₈ a = +1` (`jacobiSym.at_two`) and the
+2-part is harmless, giving `J(d|a) = +1` for *all* `d ∣ x²` (verified for both parities over 10⁶
+cases in `analysis/verify_lemmas.py`, facts 4–5). Formalising that even case is a clean extension
+via `jacobiSym.at_two`; the odd case below carries the reciprocity content.
 
 The proof needs no per-prime factorisation: writing `d = b²·d₀` with `d₀` squarefree
 (`sq_mul_squarefree`), `d₀ ∣ x²` gives `d₀ ∣ x` (`Squarefree.dvd_pow_iff_dvd`), so `d₀ ∣ 4x = a+c²`
@@ -260,7 +267,7 @@ theorem typeI_div_jacobi_one (x c a d : ℕ) (hdodd : Odd d) (ha3 : a % 4 = 3)
         (Nat.odd_iff.mpr (by omega : a / 2 % 2 = 1)))]; ring
 
 /-- **General Lemma D, Type I — the obstruction (machine-verified).** When `a = 4x − c² ≡ 3 (mod 4)`
-with `gcd(2x, a) = 1`, *no* divisor `d ∣ x²` coprime to `a` can lie in the Type I residue class
+with `gcd(2x, a) = 1`, *no* **odd** divisor `d ∣ x²` coprime to `a` can lie in the Type I residue class
 `d ≡ −4x² (mod a)`: such a `d` would have Jacobi symbol both `+1` (as a divisor of `x²`,
 `typeI_div_jacobi_one`) and `−1` (as a class member, `typeI_target_jacobi`). This is REPORT §9.4's
 general Type I square obstruction, in full and with no `sorry` — the unification the K1/K2 channel
@@ -314,8 +321,8 @@ theorem typeII_target_jacobi (x c a : ℕ) (ha3 : a % 4 = 3) (hsum : a + c ^ 2 =
   rw [show (-(x : ℤ)) = (-1) * x by ring, jacobiSym.mul_left, jacobiSym.at_neg_one ha_odd,
     ZMod.χ₄_nat_three_mod_four ha3, hJx]; ring
 
-/-- **General Lemma D, Type II — the obstruction (machine-verified).** No divisor `d ∣ x²` coprime
-to `a = 4x − c² ≡ 3 (mod 4)` lies in the Type II class `d ≡ −x (mod a)`: it would have Jacobi symbol
+/-- **General Lemma D, Type II — the obstruction (machine-verified).** No **odd** divisor `d ∣ x²`
+coprime to `a = 4x − c² ≡ 3 (mod 4)` lies in the Type II class `d ≡ −x (mod a)`: it would have Jacobi symbol
 `+1` (divisor of `x²`, `typeI_div_jacobi_one` — the same actual-sign fact both strata use) and `−1`
 (class member, `typeII_target_jacobi`). With `typeI_obstruction` this closes **both positive pure
 strata** of §9.4 (`ν_p ∈ {0,1}`), the full square obstruction for the standard parametrisation. -/
