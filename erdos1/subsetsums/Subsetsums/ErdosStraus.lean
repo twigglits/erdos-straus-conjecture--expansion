@@ -194,6 +194,26 @@ theorem typeI_target_jacobi (x a : ℕ) (ha3 : a % 4 = 3) (hcop : Int.gcd (2 * x
   rw [e, jacobiSym.mul_left, jacobiSym.sq_one' hcop, mul_one, jacobiSym.at_neg_one hodd,
     ZMod.χ₄_nat_three_mod_four ha3]
 
+/-
+  ## Roadmap: the "actual sign = +1" half (completes the general Lemma D Type I obstruction)
+
+  To finish the general obstruction one needs: for `d ∣ x²` with `gcd(d, a) = 1` and `a = 4x − c²`
+  (`a ≡ 3 mod 4`), `jacobiSym d a = 1` — contradicting `typeI_target_jacobi` (which gives `−1` for
+  the class `≡ −4x²`), since `jacobiSym` depends only on the numerator mod `a` (`jacobiSym.mod_left`).
+
+  The key simplification (no per-prime factorisation needed):
+  1. `sq_mul_squarefree d` ⟹ `d = b² · d₀` with `d₀` squarefree;  `jacobiSym d a = jacobiSym d₀ a`
+     (square part is `1` by `jacobiSym.sq_one'`).
+  2. `d₀` squarefree and `d₀ ∣ d ∣ x²` ⟹ **`d₀ ∣ x`** (`Squarefree.dvd_pow`-type).
+  3. `d₀ ∣ x ⟹ d₀ ∣ 4x = a + c² ⟹ a ≡ −c² (mod d₀)` — the crux: the congruence holds for the
+     *whole* `d₀`, so no prime-by-prime work. Hence `jacobiSym a d₀ = jacobiSym (−c²) d₀ = χ₄ d₀`
+     (`mod_left`, `at_neg_one`, `sq_one'`, `gcd(c, d₀) = 1`).
+  4. `jacobiSym.quadratic_reciprocity` + `a % 4 = 3`: `jacobiSym d₀ a = (−1)^{(d₀/2)(a/2)}·χ₄ d₀ = 1`
+     (case `d₀ % 4 ∈ {1,3}`; both give `+1`).
+  The K1 (`four_sq_add_one_div_one_mod_four`) and K2 channels above are this argument fully
+  discharged for `d₀ = 4c²+1`-divisors and `8c²+1`-divisors respectively.
+-/
+
 /-! ## Sanity checks (the theorems are non-vacuous). -/
 
 -- ESC holds for p = 2 via K1: `4·2+1 = 9 = 3²` has the divisor `3 ≡ 3 (mod 4)`.
