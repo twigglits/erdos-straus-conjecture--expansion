@@ -228,9 +228,17 @@ int main(int argc, char** argv)
         std::vector<char> c(lim+1,0);
         for (u64 i=2;i<=lim;i++) if(!c[i]){ base.push_back((u32)i); for(u64 j=i*i;j<=lim;j+=i) c[j]=1; }
     }
-    // segmented sieve → target primes (u64), no O(p) bitmap
+    // target primes (u64): from a file if a 5th arg is given (targeted mode — feed the
+    // §12 predicted-thinnest list to get the window floor at ~1% of full-sweep cost),
+    // else a segmented sieve over [pmin,pmax] (no O(p) bitmap).
     std::vector<u64> primes;
-    { const u64 SEG = 1u<<22; std::vector<char> seg(SEG);
+    if (argc >= 6) {
+        FILE* pf = fopen(argv[5], "r"); if(!pf){ perror("prime file"); return 1; }
+        u64 v; while (fscanf(pf, "%llu", &v) == 1) if (v>=pmin && v<=pmax && in_mode(v)) primes.push_back(v);
+        fclose(pf); std::sort(primes.begin(), primes.end());
+        fprintf(stderr, "targeted mode: %zu primes from %s\n", primes.size(), argv[5]);
+    } else {
+      const u64 SEG = 1u<<22; std::vector<char> seg(SEG);
       u64 start = pmin<5?5:pmin;
       for (u64 lo=start; lo<=pmax; lo+=SEG) {
         u64 hi=std::min(lo+SEG-1,pmax), sz=hi-lo+1;
