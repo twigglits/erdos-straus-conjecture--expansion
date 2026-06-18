@@ -39,7 +39,29 @@ def fit_exponent(pts):
     return k, my - k * mx
 
 
+def cayley_points_mod(l, n):
+    """#{(x,y,z) in (Z/l)^3 : 4xyz = n(xy+yz+zx) mod l} — the leading local count."""
+    return sum(1 for x in range(l) for y in range(l) for z in range(l)
+               if (4 * x * y * z - n * (x * y + y * z + z * x)) % l == 0)
+
+
+def check_local_densities():
+    """The BW leading local density is blind to the square classes: l^2+1 points
+    independent of n's QR status (so c cannot see the square-class suppression)."""
+    print("local point count of 4xyz=n(xy+yz+zx) mod l, by QR status of n:")
+    ok = True
+    for l in (3, 5, 7, 11, 13):
+        qr = [cayley_points_mod(l, n) for n in range(1, l) if pow(n, (l - 1) // 2, l) == 1]
+        nr = [cayley_points_mod(l, n) for n in range(1, l) if pow(n, (l - 1) // 2, l) != 1]
+        aq, an = sum(qr) / len(qr), sum(nr) / len(nr)
+        print(f"  l={l:>2}: QR-side={aq:7.2f}  NR-side={an:7.2f}  (= l^2+1 = {l*l+1})  ratio={aq/an:.4f}")
+        ok &= abs(aq - an) < 1e-9 and abs(aq - (l * l + 1)) < 1e-9
+    assert ok, "leading local density should be l^2+1 independent of QR status"
+    print("PASS: leading local density blind to square classes — suppression is finer (stratum/parity).\n")
+
+
 if __name__ == "__main__":
+    check_local_densities()
     pts = windowed_medians(os.path.join(DATA, "hard_1e7_full.csv"))
     pts.append((2e9, 681))            # README F2 median at [2e9,2.01e9]
     k, b = fit_exponent(pts)
