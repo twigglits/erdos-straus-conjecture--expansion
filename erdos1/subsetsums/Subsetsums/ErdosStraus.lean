@@ -273,6 +273,21 @@ theorem typeI_obstruction (x c a d : ℕ) (hdodd : Odd d) (ha3 : a % 4 = 3)
     rw [jacobiSym.mod_left' hcl]; exact typeI_target_jacobi x a ha3 h2x
   rw [h1] at h2; norm_num at h2
 
+/-- **Chirality of the obstruction (Lemma K core, machine-verified).** The Type I obstruction is
+one-sided. For `a = 4x − c² ≡ 3 (mod 4)`, a *negative* divisor `−d` (with `d ∣ x²` coprime to `a`)
+has `jacobiSym (−d) a = −1` — **equal** to the required sign of the target class `−4x²`
+(`typeI_target_jacobi`), not opposite to it. So while no positive divisor of `x²` lies in the Type I
+class (`typeI_obstruction`), the negative windows are sign-compatible: the Jacobi obstruction empties
+only the positive side (REPORT §11.4, the chirality see-saw — squares' solution mass sits in the
+signed sector). -/
+theorem typeI_neg_div_jacobi (x c a d : ℕ) (hdodd : Odd d) (ha3 : a % 4 = 3)
+    (hsum : a + c ^ 2 = 4 * x) (hda : Nat.Coprime d a) (hdx : d ∣ x ^ 2) :
+    jacobiSym (-(d : ℤ)) a = -1 := by
+  have ha_odd : Odd a := Nat.odd_iff.mpr (by omega)
+  rw [show (-(d : ℤ)) = (-1) * (d : ℤ) by ring, jacobiSym.mul_left,
+    jacobiSym.at_neg_one ha_odd, ZMod.χ₄_nat_three_mod_four ha3,
+    typeI_div_jacobi_one x c a d hdodd ha3 hsum hda hdx]; ring
+
 /-! ## Sanity checks (the theorems are non-vacuous). -/
 
 -- ESC holds for p = 2 via K1: `4·2+1 = 9 = 3²` has the divisor `3 ≡ 3 (mod 4)`.
