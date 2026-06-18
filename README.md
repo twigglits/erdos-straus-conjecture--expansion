@@ -572,3 +572,15 @@ OEIS submission of f̃₁ and F̃; Lean formalization of Lemma D.
 - (ESC-adjacent 2026, partial: Mballa, *natural-density-one parametrisation* —
   <https://arxiv.org/abs/2602.20036>; Bello-Hernández et al., *a divisor parametrisation* —
   <https://arxiv.org/abs/2606.10922>)
+
+**Transformation + arithmetic-statistics angles (§17)**
+
+- A. Ventas, *A Ceiling Continued Fraction Approach to the Erdős–Straus Conjecture* (2026) —
+  <https://arxiv.org/abs/2605.04551> (additive p+i reformulation; Borel–Cantelli heuristic)
+- T. Browning, R. Wilsch, *Integral points on cubic surfaces: heuristics and numerics*,
+  Selecta Math. 31 (2025) — <https://arxiv.org/abs/2407.16315> (the (log B)^{ϱ_U+b} machine;
+  §17.3 applies it to the Cayley cubic ⟹ f(p) ~ (log p)³)
+- M. Bright, D. Loughran, *Brauer–Manin obstruction for Erdős–Straus surfaces* (2020) —
+  <https://arxiv.org/abs/1908.02526> (V_n ≅ 𝔾_m²; no Brauer–Manin obstruction)
+- S. Mihnea, D. Bogdan, *Further verification … to 10¹⁸* (2025) —
+  <https://arxiv.org/abs/2509.00128>
