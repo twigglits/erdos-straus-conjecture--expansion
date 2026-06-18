@@ -688,11 +688,25 @@ supply.** Over 2,500 primes/class near 10⁷, `mean ω₃(4p+1)` (0.93–1.03), 
 with every prime `≡ 3 (mod 4)` beyond {3,7} being coprime to 840 and so equidistributed over the
 classes. (An earlier draft here claimed a K1-supply mechanism from a 400-prime sample; that was
 small-sample noise and is retracted.) So the differentiation is a *finer* effect — the class-dependent
-**density of divisors in the kernel's residue classes mod `4x−p`** that sets the actual solution
-*count*, not merely whether a channel fires — and it remains unexplained here. The empirical law is
-solid (`class_hierarchy.py`); its mechanism past the shared {3,7}-exclusion is open. Practical upshot
-unchanged: the thinnest primes skew to the lean classes (18 of the 50 thinnest at 10¹⁰ are `13²`,
-then `19²`, `1²`), so a counterexample search should weight them. Apparently unrecorded.
+**density of divisors in the kernel's residue classes** that sets the actual solution *count*, not
+merely whether a channel fires.
+
+**That mechanism is now pinned (`class_local_density.py`).** The six hard classes are *exactly* the
+six combinations of `(p mod 5 ∈ {1,4}) × (p mod 7 ∈ {1,2,4})` — they agree mod 8 (all `≡1`) and mod 3
+(all `≡1`), so the only moduli on which they differ are **5 and 7**, the odd primes dividing 840. And
+the class-dependence of `f` **factors accordingly**:
+> `f̄(class)  ≈  σ₅(p mod 5) · σ₇(p mod 7)`,   to **< 0.55 %** on both completed datasets (10⁸, 10⁹),
+a product of one local density at `ℓ=5` and one at `ℓ=7` — precisely the singular-series shape,
+localised to the two primes where the classes differ. (The *leading* surface count is residue-free:
+substituting `u=1/x` etc., `#{u+v+w ≡ 4/p, all ≠ 0 (mod ℓ)} = ℓ²−3ℓ+3` independent of `p mod ℓ`; the
+~8 % hierarchy is the finer ℓ-adic / nodal correction at 5, 7.) The measured factors:
+`σ₅(4)/σ₅(1) ≈ 1.034` and `σ₇(1):σ₇(2):σ₇(4) ≈ 1:1.033:1.047`, stable across scales. They track
+**higher residue characters**: `f` is *suppressed* at the most "special" residues — `1` is the unique
+4th power mod 5, and `1` is the unique cube among the QRs `{1,2,4}` mod 7 — so `1² = (1,1)` is
+doubly-suppressed (thinnest) and `23² = (4,4)` doubly-enhanced (richest). This is the concrete face of
+the finer parity/stratum suppression (Yamamoto) that the leading density misses. Practical upshot: the
+thinnest primes skew to the lean classes (18 of the 50 thinnest at 10¹⁰ are `13²`, then `19²`, `1²`),
+so a counterexample search should weight them. Apparently unrecorded.
 
 ---
 
