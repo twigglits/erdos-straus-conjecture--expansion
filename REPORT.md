@@ -1734,6 +1734,15 @@ shifts). So the tractable single-shift diagonal does not merely sit below the tw
 *hardens* with scale, foreclosing any approach that would route a pointwise `f_II > 0` through the
 diagonal part alone.
 
+The vanishing is a clean law with a clean mechanism. The δ-**multiplicity** (solutions per distinct
+shift, `f_II / #{δ used}`) stays `≈ 1.08`, essentially constant across `10⁴–10⁶`: *distinct Type II
+solutions of a prime occupy near-unique shifts* `δ`, so `Σ_δ r_δ² ≈ Σ_δ r_δ = f_II` and the diagonal
+fraction `≈ f_II / f_II² = 1/f_II`. Indeed `diag-fraction × mean f_II ≈ 1.18` (measured `1.20, 1.15,
+1.19`) is constant, so with `f_II ≍ (log p)³` (the Browning–Wilsch order, §17.4) the diagonal fraction
+falls like **`C/(log p)³ → 0`**. The second moment of `f_II` is therefore *asymptotically pure
+two-shift Titchmarsh*: the single analytic input ESC requires is precisely the part of its own second
+moment that no 2026 method evaluates, and that part grows to fill the whole. [Machine: `offdiag_scaling.py`.]
+
 **The wall, explicit.** The shift δ runs up to ~ 5p (measured d_max ≈ 5p), so 4δp+1 has
 conductor ~ p², and the inner sum needs the divisor function in the progression n ≡ 1
 (mod 4p) — p prime — handled uniformly over two simultaneous shifts up to that conductor.
