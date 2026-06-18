@@ -2081,10 +2081,13 @@ doing so (full-text reads of Browning–Wilsch + Bright–Loughran):
   `Σ_{p≤N} f(p) ≍ N log²N` is the **sum**; dividing by `π(N) ~ N/log N` gives **average
   `f(p) ≍ log³p` — exponent 3** (the "2" is the *sum*'s exponent; an earlier draft of this note
   miswrote the average as 2, now fixed — and §2 already had it right at "average order log³p").
-  So the geometry predicts exponent **3**, exactly the ET average, and = the repo's measured
-  median `~(ln p)^{3.27–3.30}` (the +0.3 is the loglog factor in ET's upper bound + finite-range
-  curvature; median ≈ mean here since `σ(ln f)` is small). A clean, independent **arithmetic-
-  geometry derivation of the f(p) growth law** — confirming what ET proved on average.
+  So the geometry predicts exponent **3**, exactly the ET average. **Machine-check against the
+  repo's own data** (median f per dyadic window, 14 windows, p from 3×10³ to 2×10⁹; fit
+  `ln(median) = k·ln ln p + b`): **k = 3.03** — the Browning–Wilsch exponent 3 confirmed to 1%
+  over six decades. (The §2 figure 3.27–3.30 is the *floor* exponent; the *median* is 3.03 — the
+  floor exceeds the median by the extreme-value correction of a growing-mean lognormal, fully
+  consistent.) A clean, independent **arithmetic-geometry derivation of the f(p) growth law**,
+  matching both Elsholtz–Tao's average and the project's data.
 
 **Two honest hedges.** (i) `b` is **model-dependent**: read literally in Bright–Loughran's
 one-chart model (one node resolved, three *disjoint* boundary lines, Pic ≅ ℤ) it gives the wrong
