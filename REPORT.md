@@ -519,13 +519,21 @@ theorems: `typeI_target_jacobi` (the *required sign*: for `a = 4x − c² ≡ 3 
 *actual sign*: **every** divisor `d ∣ x²` coprime to `a` has `jacobiSym d a = +1` — proved with no
 per-prime factoring, via the squarefree part `d₀ ∣ x ⟹ a ≡ −c² mod d₀` and the fact that the
 reciprocity sign `(−1)^{(d₀/2)(a/2)}` *equals* `χ₄ d₀` when `a ≡ 3 mod 4`, so `J(d₀|a)=(χ₄ d₀)²=1`);
-and `typeI_obstruction`, which combines them to derive `False` from class membership. The
-**chirality** is formalized too (`typeI_neg_div_jacobi`, the Lemma K core of §11.4): a *negative*
-divisor `−d` has `jacobiSym (−d) a = −1`, *equal* to the target's required sign — so the obstruction
-empties only the positive windows, never the signed sector. **13 no-`sorry` theorems total**, all
-`[propext, Classical.choice, Quot.sound]`. What remains for a *full* Lemma D is only the Type II
-stratum (the same machine on `(4y−1)(4z−1)`); the Type I square obstruction and its chirality — the
-heart of §9.4 and §11.4 — are now formally closed.
+and `typeI_obstruction`, which combines them to derive `False` from class membership. The **Type II
+stratum is now closed too**, completing the **full positive-side Lemma D**: Type II has the *same*
+actual-sign fact (`d′ ∣ x² ⟹ J(d′|a) = +1`, the very same `typeI_div_jacobi_one`); only its target
+class differs (`−x` not `−4x²`), and `typeII_target_jacobi` gives the required sign `J(−x|a) = −1`
+(because `a = 4x − c²` makes `4x ≡ c² (mod a)`, forcing `J(x|a) = +1`), so `typeII_obstruction`
+derives `False` from `d ≡ −x (mod a)`. Since the positive windows admit only `ν_p ∈ {0,1}` (Type
+I/II; `ν_p = 2` Type III needs `d ≥ p² > B`, no positive analogue, §11.3), **both positive pure
+strata of §9.4 are formally obstructed** — the full positive-side square obstruction, machine-verified.
+The **chirality** is formalized too (`typeI_neg_div_jacobi`, Lemma K core, §11.4): a *negative* divisor
+`−d` has `jacobiSym (−d) a = −1`, *equal* to the target sign — the obstruction empties only the
+positive windows, never the signed sector. **15 no-`sorry` theorems total**, all `[propext,
+Classical.choice, Quot.sound]`. The square obstruction of §9.4 and its chirality (§11.4) are now
+formally closed; what a fully general Lemma D would still add is only the change of variables from the
+`(4y−1)(4z−1) = 4pδ+1` form to the kernel's `(x, d)` coordinates (§9.1), pure bookkeeping with no new
+Jacobi content.
 
 ## 10. The new data (this session's computations)
 

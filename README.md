@@ -367,7 +367,7 @@ Full proofs and checks: [`erdos1/THEOREMS.md`](erdos1/THEOREMS.md).
     ├── verify_theorems.py        numerical verification of THEOREMS.md
     ├── subsetsums/               Lean 4 + Mathlib, no `sorry`: Erdős #1 (Lemma 0, Theorem 1)
     │                             AND Subsetsums/ErdosStraus.lean (ESC §9: K1+K2 criteria, Type II, and the
-    │                             general Type I square obstruction + its chirality (Lemma K) in full — 13 no-sorry theorems)
+    │                             the full positive-side square obstruction (Type I + Type II + chirality, §9.4/§11.4) — 15 no-sorry theorems)
     ├── hunt.py · sweep.py · plot.py · runscaling.py    the experimental lab
     └── fig1_landscape.png · fig2_obstruction.png       the figures
 ```
