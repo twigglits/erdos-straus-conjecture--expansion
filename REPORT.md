@@ -2327,3 +2327,87 @@ new but heuristic
 re-derivation of the *average* growth law `f(p) ~ (log p)³` from the geometry of the Cayley
 cubic — confirming Elsholtz–Tao and the repo's data — **not** a route to ESC, whose content is
 the thin square-class left tail (`f ≥ 1`), still the parity wall.
+
+# Session addendum (2026-06-18, cont.): §18 — f(p) is governed by L(1, χ_p), and the parity-safe next step
+
+## 18. The L-function reformulation of the Erdős–Straus count
+
+### 18.1 The discovery (`analysis/lfunction_connection.py`, `sigma7_char_fit.py`)
+
+Decomposing the **local divisor density** of `f(p)` over Dirichlet characters mod ℓ — measurable
+because the hard primes equidistribute mod every ℓ ∤ 840 — reveals one dominant signal at *every*
+prime. For ℓ = 11, 13, 17, 19, 23 the leading non-trivial character is the **quadratic (Legendre)
+character `(p/ℓ)`**, with a *negative* coefficient scaling as `≈ 0.6/ℓ`, at 14–47 σ (166 k primes).
+That is the Euler product of an L-function:
+> `f(p)  ≈  (log p)³ · ∏_ℓ (1 − c·(p/ℓ)/ℓ)  ≈  (log p)³ · L(1, χ_p)^{−c}`,  `χ_p = (·/p)`,  `c ≈ 0.6`,
+
+with `χ_p` the real quadratic character of `ℚ(√p)` (here `p ≡ 1 (mod 4)`, disc `= p`, `(p/ℓ)=(ℓ/p)`).
+By Dirichlet's class number formula `L(1,χ_p) = 2 h(p) log ε_p / √p`, **`f(p)` is modulated by the
+class number / regulator of `ℚ(√p)`: larger `L(1,χ_p)` ⇒ fewer Erdős–Straus solutions.** Direct test:
+`corr(ln f, ln L(1,χ_p)) = −0.62`, stable across truncation `X = 50…1500` of the Euler product,
+regression slope `≈ −0.53`. The class-classes mod 5,7 are the *finer* higher-character residue of the
+same object (the cubic-character + ~17° **chiral** phase of §`class hierarchy`); the quadratic L-value
+is its dominant, all-primes part.
+
+### 18.2 Status: a genuine synthesis (deep literature search, 2026-06-18)
+
+The connection appears **new**. Its rigorous engine is classical — `Σ_{n≤N} τ(F(n))` for an
+irreducible quadratic `F` has singular series `= 2 L(1,χ_{disc F})/ζ(2)` via the class number formula
+(McKee, *Math. Proc. Camb. Phil. Soc.* 126 (1999); explicit constant Zhou, arXiv:1611.10186; Lapkova
+arXiv:1704.02498/06453; the Gauss/Siegel precedent that ternary representation counts `= H(Δ) ∝
+L(1,χ)`). Elsholtz–Tao build `f(p)` from exactly such divisor sums `τ(kab²+1)` but invoke McKee (their
+ref [43]) only as an `O`-bound, never extracting the constant where `L(1,χ_p)` lives — so the L-value
+modulation of `f(p)`, and the measured correlation, are unrecorded. Crucially, an `L(1,χ_p)^{−c}`
+factor has mean ≈ const, so it leaves ET's first moment `Σ_{p≤N} f(p) ≍ N log²N` untouched while
+explaining the **prime-by-prime variance** a first-moment bound is blind to.
+
+### 18.3 Does it prove ESC? No — and the L-lens shows *exactly* why, and what it does buy
+
+**The size budget never threatens `f > 0`.** The best unconditional ceiling is `L(1,χ_p) ≤
+(0.197+o(1)) log p` (Stephens; `≤ ½ log p` explicit), the true maximal order only `e^γ log log p`
+(Granville–Soundararajan). Granting `f ≍ (log p)³ L^{−c}` and inserting the ceiling gives
+`f(p) ≫ (log p)^{3−c} = (log p)^{2.4} → ∞` — and with the realistic maximal order,
+`f ≫ (log p)³/(log log p)^c → ∞`. **Even `c = 3` leaves `f ≫ const`.** The difficulty is *entirely* in
+upgrading `≍` from a fit to a proven inequality, never in the magnitudes.
+
+Why that upgrade is the wall, in L-language: **`L(1,χ_p)` is the singular series itself, not an
+external special value.** The Type II count `f_II(p)` is the divisor sum over `4pδ+1` whose ℓ-local
+densities are set by the splitting `χ_p(ℓ)=(p/ℓ)` of ℓ in `ℚ(√p)`, and `∏_ℓ(1+χ_p(ℓ)/ℓ+…)` *is* a
+power of `L(1,χ_p)`. So bounding `L(1,χ_p)` controls the **main term** (which it already predicts); the
+unproven content is the **error term** — that the two-shift divisor sum is asymptotic to its singular
+series with a power saving, at conductor `~p²`, over primes — i.e. the two-shift Titchmarsh estimate
+of ET Remark 1.3, parity-obstructed (Granville–Shao 2023). The reformulation re-describes the main
+term beautifully; it supplies no new mechanism for the error term. **Same wall, re-mapped.**
+
+But the L-lens buys three real things:
+
+1. **The exceptional set is theorem-controlled.** Empirically thin ⟺ large `L(1,χ_p)`; the
+   Granville–Soundararajan distribution makes `#{p≤N : L(1,χ_p) ≥ e^γτ}` drop super-exponentially in
+   `τ`. Any ESC-exceptional prime must lie in the **extreme-class-number tail** — a provably super-rare,
+   density-controlled set. (Cf. the unconditional "almost all p" of Vaughan 1970.)
+2. **Siegel zeros are the BEST case, not the worst.** A Siegel zero `β→1` forces `L(1,χ_p)` *small* ⇒
+   `f(p)` *large*. ESC's adversary is the **anti-Siegel / extreme-regulator** regime (`L` maximal), and
+   even there the size budget gives `f ≫ (log p)³/(log log p)^c → ∞`. ESC is *robust to the classic
+   Landau–Siegel nightmare.*
+3. **A parity-safe target appears.** By Cauchy–Schwarz `#{p≤N: f(p)>0} ≥ (Σ_{p≤N} f)² / Σ_{p≤N} f²`;
+   the numerator is ET's `≍ N log²N`, the denominator is the §14 second moment. Its *expected* order is
+   `Σ f² ≍ N log⁵N` (diagonal).
+
+### 18.4 The concrete next theorem (parity-safe, the recommended attack)
+
+> **Prove the one-sided upper bound `Σ_{p≤N} f(p)² ≪ N (log N)⁵`.**
+
+This is the right target because **upper bounds dodge parity** — Selberg's barrier blocks asymptotics
+and *lower* bounds, not majorants. It is attainable in principle by divisor-sums-on-binary-forms
+technology (Nair–Tenenbaum; Henriot) applied to `d(4δp+1)`, pushed to the two-shift correlation over
+primes via a large-sieve / Brun–Titchmarsh majorant. Payoff: combined with ET's first moment it yields
+ESC for a **positive proportion / density-1** of primes by Cauchy–Schwarz (the Iwaniec–Sarnak
+mollification skeleton), *and* — the new part — it bounds the **variance**, hence the **exceptional
+set**, in terms of the `L(1,χ_p)` distribution, formalising "the only possible counterexamples are
+extreme-class-number primes." The *full* ESC still needs the **lower** bound `f(p) ≫ (log p)³
+L(1,χ_p)^{−C}` (then `L ≤ ½ log p` closes it to `(log p)^{3−C}` instantly) — but that lower bound *is*
+the singular-series asymptotic, the same two-shift Titchmarsh estimate, the same parity wall. The
+L-function reformulation is **more promising as a map than as a route through**: it isolates the one
+needed inequality cleanly, proves the magnitudes are never the obstacle, confines any counterexample to
+a super-rare L-extreme set, and hands over a genuinely attainable parity-safe second-moment bound as
+the next concrete step.
