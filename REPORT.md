@@ -503,11 +503,14 @@ Mathlib, no `sorry` (`erdos1/subsetsums/Subsetsums/ErdosStraus.lean`, axioms
 `[propext, Classical.choice, Quot.sound]` only): `esc_of_factorization` (the m=1 constructive
 identity), `esc_of_K1` (the K1/Obláth criterion — `4p+1` has a divisor ≡ 3 mod 4 ⟹ ESC holds for
 p), `esc_of_typeII` (the general Type II sufficient condition `(4y−1)(4z−1)=4pδ+1, δ∣yz ⟹ ESC`,
-subsuming every K-criterion), and `prime_factor_four_sq_add_one` (the **square obstruction core**:
-every prime factor of `4c²+1` is ≡ 1 mod 4, so K1 provably cannot fire at `n = c²`). So both the
-constructive sufficient conditions and the quadratic-reciprocity obstruction of §9.4 are now
-formally certified; the *full* Lemma D (the complete squarefree/Jacobi argument for all strata)
-remains a larger formalization target.
+subsuming every K-criterion), `prime_factor_four_sq_add_one` (the **square obstruction core**:
+every prime factor of `4c²+1` is ≡ 1 mod 4, via `(2c)² = −1` in `ZMod ℓ` ⟹ `ℓ % 4 ≠ 3`), and
+`four_sq_add_one_div_one_mod_four` (the **full obstruction**: by strong induction *every* divisor
+of `4c²+1` is ≡ 1 mod 4, so `4c²+1` has no divisor ≡ 3 mod 4 and K1 provably cannot fire at
+`n = c²`). So the **complete K1 story is formally certified** — the elementary method proves ESC
+for a density-1 family and provably fails at the squares (§9.4, coprime Yamamoto for the K1
+channel). The *full* Lemma D (the squarefree/Jacobi argument for all Type I/II strata at general
+`x`, not just the K1 channel) remains a larger formalization target.
 
 ## 10. The new data (this session's computations)
 
