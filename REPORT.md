@@ -717,7 +717,17 @@ component** — the arithmetic signature of *chirality* (the signed-sector see-s
 So `σ_ℓ(c)` has no clean closed form: it is a multi-character (including chiral/odd) average of the
 **divisor function in the kernel's residue classes** — the very divisor-in-AP object whose uniform
 control is the conjecture's wall (§14). The hierarchy is exactly the shadow of that object's lower-order
-character content, localised to 5 and 7. Practical upshot: the thinnest primes skew to the lean classes
+character content, localised to 5 and 7.
+
+The QR residues mod 7, `{1,2,4}`, form the cyclic order-3 subgroup `⟨2⟩`, so `σ₇` admits an *exact*
+3-term Fourier fit over the cubic character `ψ` (`ψ(2)=ω=e^{2πi/3}`), `σ₇(c) = a₀ + 2 Re(b ψ(c))`
+(`sigma7_char_fit.py`): `a₀` is the mean, and the complex coefficient `b` carries the structure as
+`b = 8.40·e^{163°i}` (10⁹; `6.85·e^{162°i}` at 10⁸ — stable). Its real part `Re b < 0` (relative
+`−0.027`) is the symmetric cubic term that suppresses `c=1` — the dominant effect making `1²` thinnest;
+its imaginary part `Im b > 0` (relative `+0.008`, ~⅓ the size) is the **chiral/odd** term, antisymmetric
+under `c → c⁻¹` (`2 ↔ 4`), splitting `σ₇(2) ≠ σ₇(4)`. Equivalently `arg b ≈ 163°`: a pure density would
+sit at `180°` (real), and the **~17° offset is the chiral angle** — the local, single-prime shadow of
+the §11.4 signed-sector see-saw, the precise reason no single Dirichlet character fits. Practical upshot: the thinnest primes skew to the lean classes
 (18 of the 50 thinnest at 10¹⁰ are `13²`, then `19²`, `1²`), so a counterexample search should weight
 them. Apparently unrecorded.
 
