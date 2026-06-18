@@ -670,6 +670,18 @@ hit — that was premature and is retracted here; what is solid now is the *posi
 extremal value. (The partial counts also slightly *under*-anchor the §14.4 safety calc's 10¹⁰ point,
 which makes that estimate conservative: a higher final μ only lowers the counterexample probability.)
 
+**The six hard classes are not equally hard (`class_hierarchy.py`).** Treated as interchangeable in
+the literature (all covering-immune), the six square classes in fact carry a **stable richness
+hierarchy** in the positive count `f(p)`, identical across completed datasets:
+> `1²  <  11²  <  13²  <  19²  <  17²  <  23²`   (thinnest → richest by median `f`),
+with class `1²` (residue 1) reliably the hardest and `23²` (residue 529) the richest — median spread
+**9.3% at 10⁸, 8.5% at 10⁹** (and 7.0% on the partial 10¹⁰), the ordering essentially fixed. It is a
+property of the residue, not of scale: it tracks the average channel supply (`corr(ω₃(4p+1), ln f) >
+0`, §14.4) — residues whose shifted integers carry more divisors in the live classes are richer. The
+practical upshot for any counterexample search: `1²` is the prime suspect (the floor primes already
+skew to the thin classes — 18 of the 50 thinnest at 10¹⁰ are `13²`, then `19²`, `1²`). Apparently
+unrecorded.
+
 ---
 
 # Session addendum (2026-06-12): the signed extension — Erdős–Straus over ℤ
