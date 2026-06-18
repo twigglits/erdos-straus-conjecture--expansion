@@ -1927,9 +1927,16 @@ denominators reach ~600 digits). This is ~290 orders of magnitude past the 10¹�
 and ~250 past the kernel verifier. The reach is bounded only by trial division for a small factor
 of `N` in one residue class — never by factoring `p` — so a cheap-search miss (rare, e.g. a
 K1/K2-starved prime whose qualifying factor is large) is honestly a *search-budget* limit, not a
-counterexample; for `N ≲ 10⁴⁵` the script factors `N` completely and exhausts the channel. Same
-honest scope: selected individual primes, robust per-prime solubility at a scale where the count
-`f(p)` is utterly uncomputable.
+counterexample; for `N ≲ 10⁴⁵` the script factors `N` completely and exhausts the channel.
+
+And — closing the "selected primes, not a sweep" gap — the same verifier runs in **contiguous-window
+mode** (`interval N W`): *every* hard-class prime in `[N, N+W]` certified, not a hand-picked sample.
+Result: **all 2,282 hard-class primes in a window at 10¹², and all 4,523 in a window at 10¹⁵, solved
+exactly with zero failures** (deepest channel δ = 56 and 59 respectively — bounded across thousands of
+consecutive primes). That is contiguous ESC coverage 10²×–10⁵× past the 10¹⁰ counting frontier:
+not merely robust per-prime solubility on adversarial samples, but *every* hard prime in an interval
+at a scale where computing `f(p)` is hopeless. (Still finite intervals, of course — not a proof for
+all `p`; the uniform bound remains the open seam.)
 
 ### 15.2 The channel margin past the counting frontier (`channel_survey.py`)
 
