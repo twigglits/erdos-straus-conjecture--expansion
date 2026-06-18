@@ -516,12 +516,12 @@ The **general Lemma D Type I obstruction is now also machine-verified in full** 
 subsuming the K1/K2 specialisations into one general statement at arbitrary `x`. Three further
 theorems: `typeI_target_jacobi` (the *required sign*: for `a = 4x − c² ≡ 3 mod 4` with
 `gcd(2x,a)=1`, the Type I target class `−4x²` has `jacobiSym = −1`); `typeI_div_jacobi_one` (the
-*actual sign*: every **odd** divisor `d ∣ x²` coprime to `a` has `jacobiSym d a = +1` — proved with no
-per-prime factoring, via the squarefree part `d₀ ∣ x ⟹ a ≡ −c² mod d₀` and the fact that the
-reciprocity sign `(−1)^{(d₀/2)(a/2)}` *equals* `χ₄ d₀` when `a ≡ 3 mod 4`, so `J(d₀|a)=(χ₄ d₀)²=1`;
-this is the complete obstruction when `x` is odd, and when `x` is even the even divisors are
-sign-`+1` too because `x` even forces `a ≡ 7 (mod 8)` so `J(2|a) = χ₈ a = +1` — verified for both
-parities over 10⁶ cases in `analysis/verify_lemmas.py`, a clean `jacobiSym.at_two` extension);
+*actual sign*: every divisor `d ∣ x²` coprime to `a` has `jacobiSym d a = +1` — proved with no
+per-prime factoring. The odd case (`typeI_div_jacobi_one`) uses the squarefree part `d₀ ∣ x ⟹ a ≡
+−c² mod d₀` and the fact that the reciprocity sign `(−1)^{(d₀/2)(a/2)}` *equals* `χ₄ d₀` when `a ≡ 3
+mod 4`, so `J(d₀|a)=(χ₄ d₀)²=1`; the all-divisor version (`div_jacobi_one`, `c` odd) then strips the
+2-part by strong induction, since `x` even forces `a ≡ 7 (mod 8)` so `J(2|a) = χ₈ a = +1` — so the
+`+1` holds for **all** `d ∣ x²`, machine-verified, no parity caveat);
 and `typeI_obstruction`, which combines them to derive `False` from class membership. The **Type II
 stratum is now closed too**, completing the **full positive-side Lemma D**: Type II has the *same*
 actual-sign fact (`d′ ∣ x² ⟹ J(d′|a) = +1`, the very same `typeI_div_jacobi_one`); only its target
@@ -532,7 +532,7 @@ I/II; `ν_p = 2` Type III needs `d ≥ p² > B`, no positive analogue, §11.3), 
 strata of §9.4 are formally obstructed** — the full positive-side square obstruction, machine-verified.
 The **chirality** is formalized too (`typeI_neg_div_jacobi`, Lemma K core, §11.4): a *negative* divisor
 `−d` has `jacobiSym (−d) a = −1`, *equal* to the target sign — the obstruction empties only the
-positive windows, never the signed sector. **15 no-`sorry` theorems total**, all `[propext,
+positive windows, never the signed sector. **16 no-`sorry` theorems total**, all `[propext,
 Classical.choice, Quot.sound]`. The square obstruction of §9.4 and its chirality (§11.4) are now
 formally closed; what a fully general Lemma D would still add is only the change of variables from the
 `(4y−1)(4z−1) = 4pδ+1` form to the kernel's `(x, d)` coordinates (§9.1), pure bookkeeping with no new
