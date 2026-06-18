@@ -182,4 +182,18 @@ theorem eight_sq_add_one_div_one_or_three_mod_eight (c : ℕ) :
       rw [hE, Nat.mul_mod]
       rcases hℓ8 with h1 | h1 <;> rcases hE8 with h2 | h2 <;> rw [h1, h2] <;> decide
 
+/-! ## Sanity checks (the theorems are non-vacuous). -/
+
+-- ESC holds for p = 2 via K1: `4·2+1 = 9 = 3²` has the divisor `3 ≡ 3 (mod 4)`.
+example : ∃ x y z : ℕ, 0 < x ∧ 0 < y ∧ 0 < z ∧ (4 : ℚ) / 2 = 1 / x + 1 / y + 1 / z :=
+  esc_of_K1 2 3 (by norm_num) (by norm_num) (by norm_num)
+
+-- The obstruction bites at `n = 9 = 3²`: every divisor of `4·9+1 = 37` is `≡ 1 (mod 4)`.
+example (D : ℕ) (hD : D ∣ 4 * 3 ^ 2 + 1) : D % 4 = 1 :=
+  four_sq_add_one_div_one_mod_four 3 D hD
+
+-- K2 obstruction at `n = 9`: every divisor of `8·9+1 = 73` is `≡ 1 or 3 (mod 8)`, never 7.
+example (D : ℕ) (hD : D ∣ 8 * 3 ^ 2 + 1) : D % 8 = 1 ∨ D % 8 = 3 :=
+  eight_sq_add_one_div_one_or_three_mod_eight 3 D hD
+
 end ErdosStraus
