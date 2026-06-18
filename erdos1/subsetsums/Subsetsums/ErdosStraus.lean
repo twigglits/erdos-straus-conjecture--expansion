@@ -288,6 +288,45 @@ theorem typeI_neg_div_jacobi (x c a d : ℕ) (hdodd : Odd d) (ha3 : a % 4 = 3)
     jacobiSym.at_neg_one ha_odd, ZMod.χ₄_nat_three_mod_four ha3,
     typeI_div_jacobi_one x c a d hdodd ha3 hsum hda hdx]; ring
 
+/-- **General Lemma D — the Type II required sign (machine-verified).** The Type II target residue
+class is `−x (mod a)` (REPORT §9.1: `d′ ∣ x²`, `d′ ≡ −x`). For `a = 4x − c² ≡ 3 (mod 4)` with
+`gcd(c,a) = gcd(x,a) = 1`, its Jacobi symbol is `−1`. The key extra fact over Type I: `4x ≡ c²
+(mod a)` (because `a = 4x − c²`) forces `J(x|a) = J(4x|a) = J(c²|a) = +1`, hence
+`J(−x|a) = χ₄(a)·J(x|a) = (−1)(+1) = −1`. -/
+theorem typeII_target_jacobi (x c a : ℕ) (ha3 : a % 4 = 3) (hsum : a + c ^ 2 = 4 * x)
+    (hca : Int.gcd (c : ℤ) a = 1) (hxa : Int.gcd (x : ℤ) a = 1) :
+    jacobiSym (-(x : ℤ)) a = -1 := by
+  have ha_odd : Odd a := Nat.odd_iff.mpr (by omega)
+  have h2a : Int.gcd (2 : ℤ) (a : ℤ) = 1 := by
+    rw [show (2 : ℤ) = ((2 : ℕ) : ℤ) by norm_num, Int.gcd_natCast_natCast]
+    exact Nat.coprime_two_left.mpr ha_odd
+  have hcong : (4 * (x : ℤ)) ≡ (c : ℤ) ^ 2 [ZMOD (a : ℤ)] := by
+    rw [Int.modEq_iff_dvd]
+    have he : (c : ℤ) ^ 2 - 4 * x = -(a : ℤ) := by
+      have hc : (a : ℤ) + (c : ℤ) ^ 2 = 4 * x := by exact_mod_cast hsum
+      linarith
+    rw [he]; exact dvd_neg.mpr (dvd_refl _)
+  have h4 : jacobiSym (4 * (x : ℤ)) a = jacobiSym (x : ℤ) a := by
+    rw [show (4 * (x : ℤ)) = (2 : ℤ) ^ 2 * x by ring, jacobiSym.mul_left,
+      jacobiSym.sq_one' h2a, one_mul]
+  have hJx : jacobiSym (x : ℤ) a = 1 := by
+    rw [← h4, jacobiSym.mod_left' hcong]; exact jacobiSym.sq_one' hca
+  rw [show (-(x : ℤ)) = (-1) * x by ring, jacobiSym.mul_left, jacobiSym.at_neg_one ha_odd,
+    ZMod.χ₄_nat_three_mod_four ha3, hJx]; ring
+
+/-- **General Lemma D, Type II — the obstruction (machine-verified).** No divisor `d ∣ x²` coprime
+to `a = 4x − c² ≡ 3 (mod 4)` lies in the Type II class `d ≡ −x (mod a)`: it would have Jacobi symbol
+`+1` (divisor of `x²`, `typeI_div_jacobi_one` — the same actual-sign fact both strata use) and `−1`
+(class member, `typeII_target_jacobi`). With `typeI_obstruction` this closes **both positive pure
+strata** of §9.4 (`ν_p ∈ {0,1}`), the full square obstruction for the standard parametrisation. -/
+theorem typeII_obstruction (x c a d : ℕ) (hdodd : Odd d) (ha3 : a % 4 = 3)
+    (hsum : a + c ^ 2 = 4 * x) (hca : Int.gcd (c : ℤ) a = 1) (hxa : Int.gcd (x : ℤ) a = 1)
+    (hda : Nat.Coprime d a) (hdx : d ∣ x ^ 2) (hcl : (d : ℤ) ≡ -(x : ℤ) [ZMOD a]) : False := by
+  have h1 : jacobiSym (d : ℤ) a = 1 := typeI_div_jacobi_one x c a d hdodd ha3 hsum hda hdx
+  have h2 : jacobiSym (d : ℤ) a = -1 := by
+    rw [jacobiSym.mod_left' hcl]; exact typeII_target_jacobi x c a ha3 hsum hca hxa
+  rw [h1] at h2; norm_num at h2
+
 /-! ## Sanity checks (the theorems are non-vacuous). -/
 
 -- ESC holds for p = 2 via K1: `4·2+1 = 9 = 3²` has the divisor `3 ≡ 3 (mod 4)`.
