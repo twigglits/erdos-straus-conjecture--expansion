@@ -1811,6 +1811,19 @@ lognormal law of the divisor function of the shifted integers 4pδ+1 (Erdős–K
 distribution of divisors in residue classes and intervals, Ford 2008, *Annals* 168,
 arXiv:math/0401223 — the rigorous template for "divisors ≡ 3 (mod 4) in a window").
 
+**The safety, quantified** (`floor_safety.py`, 2026-06-18). With the two trends now pinned by
+four blind-hit floors — `μ = E[ln f] = 3.27·lnln p − 3.51` (rising; median f ~ (ln p)^3.3) and
+`σ` *shrinking* (0.337 → 0.166 → 0.148 → 0.135 over 10⁷ → 10¹⁰) — the measured floor at 10¹⁰ sits
+**≈ 50 σ above f = 0**. A counterexample needs `ln f ≤ 0`, of per-prime lognormal probability
+`Φ(−μ/σ)`; freezing σ at its largest-scale (most pessimistic) value, the expected number of
+counterexamples beyond 10¹⁰ is `Σ_p Φ(−μ(p)/σ(p)) ≈ 10^{−539}`, and the per-decade terms fall
+super-exponentially (`μ/σ` climbs 50 → 106 over 10¹⁰ → 10¹⁰⁰), so the **Borel–Cantelli sum
+converges** — the model predicts *zero* counterexamples with a ~540-order-of-magnitude margin. This
+is the quantitative form of ET Remark 1.2, sharpened by the measured `(μ↑, σ↓)`. **Honestly: it is a
+heuristic, not a proof** — it assumes f is lognormal ~50 σ into its left tail, and "the tail never
+reaches 0" is precisely what Erdős–Straus asserts. It says *how* safe the conjecture is under its own
+measured law (extravagantly), not *that* it is true.
+
 ### 14.4 The Erdős–Kac channel law, and the floor as a large deviation
 
 This is the one rigorous distributional statement available, and it is a theorem, not a
