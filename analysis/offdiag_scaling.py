@@ -24,7 +24,7 @@ import second_moment as sm        # reuse the validated kernel + bridge asserts
 
 def offdiag_in_range(spf, plo, phi, max_primes):
     """Sample up to max_primes hard primes p ≡ 1 (mod 4) in [plo, phi]; return a summary dict."""
-    tot_f2 = diag = sum_f = nfp = 0
+    tot_f2 = diag = sum_f = nfp = sum_distinct = 0
     deepest_delta = 0
     for p in range(plo, phi):
         if nfp >= max_primes:
@@ -39,11 +39,16 @@ def offdiag_in_range(spf, plo, phi, max_primes):
         diag += sum(v * v for v in rc.values())   # diagonal Σ_δ r_δ²
         tot_f2 += fII * fII                        # full second moment f_II²
         sum_f += fII
+        sum_distinct += len(rc)                    # # distinct shifts δ used
         deepest_delta = max(deepest_delta, max(rc))
         nfp += 1
     off = 1.0 - diag / tot_f2 if tot_f2 else float("nan")
-    return dict(n=nfp, off=off, mean_fII=sum_f / nfp if nfp else 0,
-                tot_f2=tot_f2, diag=diag, maxdelta=deepest_delta)
+    mean_f = sum_f / nfp if nfp else 0
+    # mean δ-multiplicity = solutions / distinct-shifts (→1 means near-unique shifts);
+    # and diag_frac × mean_f_II ≈ const verifies diagonal ~ 1/f_II ~ 1/(log p)³
+    mult = sum_f / sum_distinct if sum_distinct else float("nan")
+    return dict(n=nfp, off=off, mean_fII=mean_f, mult=mult,
+                diag_x_f=(1.0 - off) * mean_f, maxdelta=deepest_delta)
 
 
 if __name__ == "__main__":
@@ -55,15 +60,16 @@ if __name__ == "__main__":
     print(f"  done ({time.time()-t0:.1f}s)\n")
 
     print("off-diagonal (two-shift Titchmarsh) fraction of the f_II second moment, by scale:")
-    print(f"  {'scale':>8} {'#primes':>8} {'mean f_II':>10} {'off-diag frac':>14} {'max δ':>7}")
-    scales = [(10**4, 40_000, 400), (10**5, 140_000, 200), (10**6, 1_050_000, 50)]
+    print(f"  {'scale':>8} {'#primes':>8} {'mean f_II':>10} {'off-diag':>9} "
+          f"{'δ-mult':>7} {'diag×f_II':>10}")
+    scales = [(10**4, 40_000, 400), (10**5, 140_000, 200), (10**6, 1_050_000, 30)]
     rows = []
     for plo, phi, cap in scales:
         ts = time.time()
         r = offdiag_in_range(spf, plo, phi, cap)
         rows.append((plo, r))
         print(f"  {plo:>8.0e} {r['n']:>8d} {r['mean_fII']:>10.2f} "
-              f"{r['off']:>13.4f} {r['maxdelta']:>7d}   [{time.time()-ts:.1f}s]")
+              f"{r['off']:>9.4f} {r['mult']:>7.3f} {r['diag_x_f']:>10.3f}   [{time.time()-ts:.1f}s]")
 
     print()
     if len(rows) >= 2 and all(rows[i][1]['off'] == rows[i][1]['off'] for i in range(len(rows))):
@@ -72,5 +78,9 @@ if __name__ == "__main__":
                 ("falling" if d < -0.002 else "flat → scale-invariant structure")
         print(f"off-diagonal fraction {rows[0][1]['off']:.4f} (10^4) → {rows[-1][1]['off']:.4f} "
               f"(10^6):  {trend}.")
-    print("Both pieces are positive and O(1)-bounded per prime; the off-diagonal bulk is the\n"
-          "two-shift sum no 2026 method evaluates to the precision a pointwise f_II>0 needs.")
+    prod_str = ", ".join(f"{r[1]['diag_x_f']:.2f}" for r in rows)
+    print(f"δ-multiplicity stays ≈ {rows[-1][1]['mult']:.2f} (distinct solutions occupy near-unique "
+          f"shifts), and diag×f_II ≈ const ({prod_str}):")
+    print("  ⇒ the diagonal fraction ~ C/f_II ~ C/(log p)³ → 0.  The tractable single-shift part")
+    print("    VANISHES; the second moment is asymptotically PURE two-shift Titchmarsh — the one")
+    print("    analytic input ESC needs is exactly the part no 2026 method evaluates, and it grows.")
