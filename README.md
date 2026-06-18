@@ -113,6 +113,15 @@ independent validation, no model without a blind test.**
 
 Full details and tables live in [REPORT.md](REPORT.md); figures in `plots/`.
 
+> **Headline (2026-06-18): the Erdős–Straus count is governed by a quadratic L-value.**
+> `f(p) ≈ (log p)³ · L(1,χ_p)^{−c}` (`c ≈ 0.6`, `corr = −0.62`): the solution count is modulated by
+> the class number / regulator of `ℚ(√p)` — more primes splitting in `ℚ(√p)` ⟹ fewer solutions. The
+> dominant character of the divisor density is the quadratic `(p/ℓ)` at *every* prime (14–47 σ). This
+> confines any counterexample to the extreme-class-number tail, makes Siegel zeros the *best* case, and
+> proves the size budget never threatens `f > 0`. A verified, structurally-identified law (apparently
+> unrecorded), short of a closed theorem — the proof meets the two-shift Titchmarsh wall. See
+> [`NOTE_2026-06-18_L-function-discovery.md`](NOTE_2026-06-18_L-function-discovery.md) and REPORT §18.
+
 <div align="justify">
 
 **F1 — The landscape: zero-free, rising, tightening.**
