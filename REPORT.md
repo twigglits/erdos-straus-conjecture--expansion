@@ -1843,10 +1843,13 @@ of primes ≡ 1 mod 4, the closed-cheapest-channel case) at 10¹⁸–10²¹. Ex
 counterexample scale and past it:** square-class primes at 10²⁵, 10³⁰, 10³⁵, **10⁴⁰** (the
 scale at which the §5 lognormal model places a ≳30σ would-be counterexample), 10⁴⁵, **10⁵⁰** —
 all solved via the smallest channel a ∈ {3, 7} in < 0.5 s each. The point this sharpens: a
-counterexample needs *every* channel to fail simultaneously, but the *smallest* channel (a=3:
-(p+3)/4 having a prime factor ≢ 1 mod 3; a=7 likewise) essentially never fails — the failure set
-has density → 0 (Landau–Ramanujan), so finding *one* solution stays trivial at any scale even
-as the *count* f(p) tightens. **Honest scope:** these are adversarially-*selected individual*
+counterexample needs *every* channel to fail simultaneously, but a *small* channel essentially
+never fails (a=3: (p+3)/4 having a prime factor ≢ 1 mod 3; a=7 likewise; each failure set has
+density → 0, Landau–Ramanujan), so finding *one* solution stays trivial at any scale even as the
+*count* f(p) tightens. Quantified: over the 25 **thinnest** 10¹⁰ floor primes (lowest f) plus the
+documented record-lows (2521, 4201, …), the **channel depth** — the smallest a = 4x−p yielding a
+solution — never exceeds **a = 27** (distribution {3,7,11,15,19,23,27}); a=3 alone can close for
+these hardest cases, but a tiny channel always fires. Robust solubility, not a near-miss. **Honest scope:** these are adversarially-*selected individual*
 primes, not a contiguous sweep — they show per-prime solubility is robust at unprecedented
 scale, not ESC for all p in any interval.
 
