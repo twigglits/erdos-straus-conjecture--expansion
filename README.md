@@ -331,7 +331,9 @@ Full proofs and checks: [`erdos1/THEOREMS.md`](erdos1/THEOREMS.md).
 ├── engines/                      solution-counting engines (cross-validated)
 │   ├── fp.c                      f(p) counter — C reference
 │   ├── fpr.rs                    f(p) counter — Rust (multi-threaded, std-only)
-│   ├── fp.cu                     f(p) counter — CUDA
+│   ├── fp.cu                     f(p) counter — CUDA (≤2×10⁹: u32/u64-bound)
+│   ├── fp128.cu                  §16 f(p) counter — CUDA, 128-bit, native sm_120 (reaches 10¹⁰)
+│   ├── fp_single.c              §16 exact f(p) per prime — CPU, 128-bit, any scale
 │   ├── fsigned.c                 signed graded-census engine (§11)
 │   └── census_ref.py             Python reference for the signed census
 ├── analysis/                     verification, analyses, figure generators
@@ -504,6 +506,15 @@ Aut S₄ — no Vieta/Markoff descent, no mod-p graph); and **no non-circular co
 theorem** possible (parity barrier + average-vs-pointwise gap). Honest: the 10¹⁰ blind
 prediction is still **untested** — the engines are 32-bit/u64-bound and cap at ~2×10⁹ (a
 128-bit engine is the next build).
+§16 (2026-06-18) builds that engine and reaches 10¹⁰. Two validated **128-bit** f(p) counters
+— `engines/fp_single.c` (CPU) and `engines/fp128.cu` (GPU, native Blackwell sm_120, memory-light
+via segmented-sieve factoring) — lift the 2×10⁹ counting wall. First exact f(p) past the
+frontier: f(10000001041)=980, f(10000003129)=945 (both **above** the predicted median 852 — the
+model under-predicts, ESC even safer). The §13.5 floor prediction min f ∈ [439, 499] is tested
+via §12-targeted counting of the predicted-thinnest 300 square-class primes: **min f = 534**
+(at 10006854841 ≡ 19² mod 840, **zero-free**) — ≈7% above the band on the safe side, within the
+model's ~10% minima accuracy. Honest: 534 is an upper bound on the true floor (targeted, not the
+full 13,564-prime sweep), and the score is extrapolated 5× past its validation.
 Open: the 10¹⁰ blind prediction ([439, 499] for min f in [10¹⁰, 10¹⁰+10⁷] —
 requires a fresh GPU run); a rigorous limit (if one exists) for the Type III ratio
 f₁III/f₁ ≈ 0.436, via the singular-series-ratio route (§13.2);
