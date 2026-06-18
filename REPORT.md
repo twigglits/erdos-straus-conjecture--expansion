@@ -336,13 +336,16 @@ composite n the same divisor conditions still produce solutions, but two further
 open up — gcd(4x − n, nx) > 1, and mixed divisors with 1 < gcd(d, n) < n — which have no
 analogue at primes. Everything below turns on that asymmetry.
 
-The forward half of this kernel is now machine-verified in Lean (`esc_kernel`, no `sorry`): for
-`a + p = 4x`, `B = px`, a divisor `d` of `B²` with complementary `e = B²/d` and `a·y = B+d`,
+This kernel is now machine-verified in Lean **both directions**, no `sorry`. Forward (`esc_kernel`):
+for `a + p = 4x`, `B = px`, a divisor `d` of `B²` with complementary `e = B²/d` and `a·y = B+d`,
 `a·z = B+e` gives `4/p = 1/x + 1/y + 1/z` — the rational identity needing only `d·e = B²` and
-`a + p = 4x` (via `1/y + 1/z = a/B` then `1/x + a/B = 4/p`). It is stated in the *same `(x, d, a, B)`
-coordinates* as the §9.4 obstruction theorems, so "a divisor in the class yields a solution" and "no
-divisor of `x²` lies in the pure-stratum class at squares" are now two formal statements about the
-same object.
+`a + p = 4x` (via `1/y + 1/z = a/B` then `1/x + a/B = 4/p`). Converse (`esc_kernel_converse`): every
+solution yields `d = a·y − B`, `e = a·z − B` with `d·e = B²` (so `d ∣ B²`) and `d ≡ −B (mod a)` —
+because the equation *is* `a·yz = B(y+z)`, whence `(ay−B)(az−B) = a²yz − aB(y+z) + B² = B²`. Both sit
+in the *same `(x, d, a, B)` coordinates* as the §9.4 obstruction, so the bijection and the obstruction
+reason about one object: at a square `n = c²` the converse produces a divisor `d` for *every*
+solution, and `typeI/II_obstruction` proves that `d` can never lie in the pure-stratum class — so it
+must sit in a mixed stratum (exactly §9.1's "two further strata" that open only at composites).
 
 ### 9.2 What was proved: explicit sufficient criteria (Lemma B)
 
@@ -540,7 +543,7 @@ I/II; `ν_p = 2` Type III needs `d ≥ p² > B`, no positive analogue, §11.3), 
 strata of §9.4 are formally obstructed** — the full positive-side square obstruction, machine-verified.
 The **chirality** is formalized too (`typeI_neg_div_jacobi`, Lemma K core, §11.4): a *negative* divisor
 `−d` has `jacobiSym (−d) a = −1`, *equal* to the target sign — the obstruction empties only the
-positive windows, never the signed sector. **19 no-`sorry` theorems total** (incl. the kernel construction §9.1 and Theorem G §11.2), all `[propext,
+positive windows, never the signed sector. **20 no-`sorry` theorems total** (incl. the full kernel bijection §9.1 and Theorem G §11.2), all `[propext,
 Classical.choice, Quot.sound]`. The square obstruction of §9.4 and its chirality (§11.4) are now
 formally closed; what a fully general Lemma D would still add is only the change of variables from the
 `(4y−1)(4z−1) = 4pδ+1` form to the kernel's `(x, d)` coordinates (§9.1), pure bookkeeping with no new
