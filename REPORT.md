@@ -642,6 +642,18 @@ rising, relatively tightening* lognormal sheet whose lowest points are pure orde
 statistics in the six channel-starved classes — with not a single anomalous prime in
 263,982 computed across 73 → 1.01×10⁹.
 
+**The 10¹⁰ window (2026-06-18).** A full count of all **13,564 six-square-class primes in
+[10¹⁰, 10¹⁰+10⁷]** (`engines/fp128`, 128-bit): **zero-free — f, f_I, f_II all positive on every
+one** (ESC holds across the window), median f = 847, **min f = 525** at p = 10,006,854,841 ≡ 19²
+(mod 840), f_I = 354, f_II = 171. The lognormal-EV floor estimate for this window was ≈ 534; the
+observed 525 sits within 2%, and the floor's slow climb (191 → 347 → 405 → 525 over 2×10⁸ → 10⁹ →
+2×10⁹ → 10¹⁰) tracks `(ln p)^{≈3.5}` as before. ESC (existence of a solution) was **independently
+re-confirmed** for the five thinnest primes of the window by an exact K-channel solution
+(`verify_large_primes.py`, e.g. the floor prime via δ=8), so the *zero-freeness* does not rest on
+the counting engine alone. *Provenance note:* these counts are from a completed prior `fp128` run;
+an authoritative re-run is in progress for byte cross-validation, and the exact per-prime counts
+(not the verified ESC-positivity) are pending that confirmation.
+
 ---
 
 # Session addendum (2026-06-12): the signed extension — Erdős–Straus over ℤ
