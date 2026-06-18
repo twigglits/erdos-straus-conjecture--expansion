@@ -498,6 +498,17 @@ honest state of the art, sharpened: ESC for the six square classes mod 840 is eq
 to a pointwise divisor-distribution lower bound that current analytic number theory
 delivers only on average. The gap "density 1 → all primes" *is* the conjecture.
 
+**Lean formalization (2026-06-18).** The heart of §9 is now machine-verified in Lean 4 +
+Mathlib, no `sorry` (`erdos1/subsetsums/Subsetsums/ErdosStraus.lean`, axioms
+`[propext, Classical.choice, Quot.sound]` only): `esc_of_factorization` (the m=1 constructive
+identity), `esc_of_K1` (the K1/Obláth criterion — `4p+1` has a divisor ≡ 3 mod 4 ⟹ ESC holds for
+p), `esc_of_typeII` (the general Type II sufficient condition `(4y−1)(4z−1)=4pδ+1, δ∣yz ⟹ ESC`,
+subsuming every K-criterion), and `prime_factor_four_sq_add_one` (the **square obstruction core**:
+every prime factor of `4c²+1` is ≡ 1 mod 4, so K1 provably cannot fire at `n = c²`). So both the
+constructive sufficient conditions and the quadratic-reciprocity obstruction of §9.4 are now
+formally certified; the *full* Lemma D (the complete squarefree/Jacobi argument for all strata)
+remains a larger formalization target.
+
 ## 10. The new data (this session's computations)
 
 ### 10.1 The full 1-mod-24 dataset to 10⁷ — complete and triple-validated

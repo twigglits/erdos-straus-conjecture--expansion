@@ -365,7 +365,8 @@ Full proofs and checks: [`erdos1/THEOREMS.md`](erdos1/THEOREMS.md).
     ├── NOTES.md                  the barrier map (the genuinely new content)
     ├── THEOREMS.md               variance floor + 1/√3 bound (classical, machine-checked)
     ├── verify_theorems.py        numerical verification of THEOREMS.md
-    ├── subsetsums/               Lean 4 + Mathlib proof, no `sorry` (Lemma 0, Theorem 1)
+    ├── subsetsums/               Lean 4 + Mathlib, no `sorry`: Erdős #1 (Lemma 0, Theorem 1)
+    │                             AND Subsetsums/ErdosStraus.lean (ESC §9: K1, Type II, square obstruction)
     ├── hunt.py · sweep.py · plot.py · runscaling.py    the experimental lab
     └── fig1_landscape.png · fig2_obstruction.png       the figures
 ```
@@ -518,9 +519,12 @@ full 13,564-prime sweep), and the score is extrapolated 5× past its validation.
 Progress (2026-06-18): the 10¹⁰ blind prediction **was tested** (§16.2, the new 128-bit
 engines): targeted floor min f = 534 at 10¹⁰, ~7% above the [439,499] band on the safe side,
 cross-validated CPU vs GPU (an exhaustive sweep to certify it is running); **OEIS packets for
-f̃₁ and F̃ are prepared** (`data/oeis/`, `analysis/prepare_oeis.py`). Still open: a rigorous
-limit (if one exists) for the Type III ratio f₁III/f₁ ≈ 0.436 via the singular-series-ratio
-route (§13.2); Lean formalization of Lemma D (needs the Mathlib build toolchain set up).
+f̃₁ and F̃ are prepared** (`data/oeis/`, `analysis/prepare_oeis.py`); **§9 is now Lean-formalised**
+— `erdos1/subsetsums/Subsetsums/ErdosStraus.lean` machine-verifies (no `sorry`) the K1/Obláth
+criterion, the general Type II sufficient condition, AND the square-obstruction core (every prime
+factor of 4c²+1 is ≡ 1 mod 4, so K1 cannot fire at squares). Still open: a rigorous limit (if one
+exists) for the Type III ratio f₁III/f₁ ≈ 0.436 via the singular-series-ratio route (§13.2); the
+*full* Lemma D in Lean (the complete Jacobi/squarefree argument, beyond the prime core done here).
 
 </div>
 
