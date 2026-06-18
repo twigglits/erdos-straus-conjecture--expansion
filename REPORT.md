@@ -532,7 +532,7 @@ I/II; `ν_p = 2` Type III needs `d ≥ p² > B`, no positive analogue, §11.3), 
 strata of §9.4 are formally obstructed** — the full positive-side square obstruction, machine-verified.
 The **chirality** is formalized too (`typeI_neg_div_jacobi`, Lemma K core, §11.4): a *negative* divisor
 `−d` has `jacobiSym (−d) a = −1`, *equal* to the target sign — the obstruction empties only the
-positive windows, never the signed sector. **16 no-`sorry` theorems total**, all `[propext,
+positive windows, never the signed sector. **18 no-`sorry` theorems total** (incl. Theorem G's two-term identities, §11.2), all `[propext,
 Classical.choice, Quot.sound]`. The square obstruction of §9.4 and its chirality (§11.4) are now
 formally closed; what a fully general Lemma D would still add is only the change of variables from the
 `(4y−1)(4z−1) = 4pδ+1` form to the kernel's `(x, d)` coordinates (§9.1), pure bookkeeping with no new
@@ -738,6 +738,15 @@ positive integers even the *existence* of a threshold n_k is delicate and
 exceptions provably persist to exp(k^{1/3−ε}) (Pomerance–Weingartner 2025, §7a),
 collapses to logarithmic length over ℤ*. Positivity is the entire subject.
 [Machine: S6.]
+
+**Formalised in Lean (2026-06-18).** The mod-4 duality core of Theorem G is now machine-verified,
+no `sorry` (`esc_two_term_pos`, `esc_two_term_signed`): for `p ≡ 3 (mod 4)`, `4/p = 1/x + 1/(p x)`
+with `x = (p+1)/4` (two *positive* terms); for `p ≡ 1 (mod 4)`, `4/p = 1/x − 1/(p x)` with
+`x = (p−1)/4` (two *signed* terms). So Erdős–Straus's third term is provably an artifact of demanding
+positivity at `p ≡ 1 (mod 4)` — precisely the residue where the square obstruction's chirality
+(`typeI_neg_div_jacobi`) shows the Jacobi wall sits only on the positive side. The "where the hardness
+lives" picture is thus formally closed from both ends: the obstruction empties the positive windows,
+and two signed terms always fill them.
 
 **Three-term graded existence.** f̃₁(n) ≥ 1 for every n ≥ 3 **except exactly
 n ∈ {2, 4}** (and f̃₁(2) = f̃₂(2) = 0 makes n = 2 the unique signless point:
