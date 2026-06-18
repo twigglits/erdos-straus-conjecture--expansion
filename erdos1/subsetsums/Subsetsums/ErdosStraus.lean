@@ -101,6 +101,36 @@ theorem esc_of_typeII (p y z δ : ℕ) (hp : 0 < p) (hy : 0 < y) (hz : 0 < z)
   field_simp
   nlinarith [keyQ, mul_pos (mul_pos hp hy) hz]
 
+/-- **Theorem G, positive form (machine-verified).** For `p ≡ 3 (mod 4)`, just *two* positive unit
+fractions already give `4/p`: with `x = (p+1)/4`, `4/p = 1/x + 1/(p·x)`. (REPORT §11.2.) -/
+theorem esc_two_term_pos (p : ℕ) (hp : 0 < p) (hp3 : p % 4 = 3) :
+    (4 : ℚ) / p = 1 / ((p + 1) / 4 : ℕ) + 1 / (p * ((p + 1) / 4 : ℕ)) := by
+  have hxpos : 0 < (p + 1) / 4 := by omega
+  set X : ℚ := (((p + 1) / 4 : ℕ) : ℚ) with hX
+  have hXpos : 0 < X := by rw [hX]; exact_mod_cast hxpos
+  have h4X : 4 * X = (p : ℚ) + 1 := by
+    rw [hX]; push_cast; exact_mod_cast (by omega : 4 * ((p + 1) / 4) = p + 1)
+  have hpX : (p : ℚ) = 4 * X - 1 := by linarith [h4X]
+  have hd : 4 * X - 1 ≠ 0 := by rw [← hpX]; exact_mod_cast hp.ne'
+  rw [hpX]; field_simp; ring
+
+/-- **Theorem G, signed form (machine-verified).** For `p ≡ 1 (mod 4)`, two *signed* unit fractions
+suffice: with `x = (p−1)/4`, `4/p = 1/x − 1/(p·x)`. Together with `esc_two_term_pos` this is the
+mod-4 duality of REPORT §11.2: every `4/p` is a sum of two signed unit fractions, and the third
+term of Erdős–Straus is forced purely by the positivity demand at `p ≡ 1 (mod 4)`. -/
+theorem esc_two_term_signed (p : ℕ) (hp : 1 < p) (hp1 : p % 4 = 1) :
+    (4 : ℚ) / p = 1 / ((p - 1) / 4 : ℕ) - 1 / (p * ((p - 1) / 4 : ℕ)) := by
+  have hxpos : 0 < (p - 1) / 4 := by omega
+  set X : ℚ := (((p - 1) / 4 : ℕ) : ℚ) with hX
+  have hXpos : 0 < X := by rw [hX]; exact_mod_cast hxpos
+  have h4X : 4 * X = (p : ℚ) - 1 := by
+    have hc : (4 : ℚ) * X = ((p - 1 : ℕ) : ℚ) := by
+      rw [hX]; exact_mod_cast (by omega : 4 * ((p - 1) / 4) = p - 1)
+    rw [hc, Nat.cast_sub (by omega : 1 ≤ p), Nat.cast_one]
+  have hpX : (p : ℚ) = 4 * X + 1 := by linarith [h4X]
+  have hd : 4 * X + 1 ≠ 0 := by rw [← hpX]; exact_mod_cast (by omega : p ≠ 0)
+  rw [hpX]; field_simp; ring
+
 /-- **The square obstruction, prime core (machine-verified).** Every prime factor of `4c²+1` is
 `≡ 1 (mod 4)`. Hence `4c²+1` has no prime factor `≡ 3 (mod 4)`, so the K1 criterion can never
 fire at `n = c²` — the quadratic-reciprocity reason elementary methods fail at squares (REPORT
@@ -408,5 +438,12 @@ example : jacobiSym (4 : ℤ) 23 = 1 := by
 -- never the full solution set: solutions persist in the mixed/non-coprime strata (§9.1),
 -- exactly consistent with Erdős–Straus being true. A disproof would need an *empty* full set.
 example : (4 : ℚ) / 9 = 1 / 3 + 1 / 12 + 1 / 36 := by norm_num
+
+-- Theorem G in action: `p = 7 ≡ 3 (mod 4)` needs only two POSITIVE terms `4/7 = 1/2 + 1/14`;
+-- `p = 5 ≡ 1 (mod 4)` needs two SIGNED terms `4/5 = 1/1 − 1/5` (no two positive terms exist).
+example : (4 : ℚ) / 7 = 1 / ((7 + 1) / 4 : ℕ) + 1 / (7 * ((7 + 1) / 4 : ℕ)) :=
+  esc_two_term_pos 7 (by norm_num) (by norm_num)
+example : (4 : ℚ) / 5 = 1 / ((5 - 1) / 4 : ℕ) - 1 / (5 * ((5 - 1) / 4 : ℕ)) :=
+  esc_two_term_signed 5 (by norm_num) (by norm_num)
 
 end ErdosStraus
