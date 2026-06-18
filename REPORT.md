@@ -1725,6 +1725,15 @@ distinct Type II solutions of a prime, only **1.5 %** share a δ; **98.5 %** are
 So the second moment is *not* reducible to the easier diagonal — its mass is the two-shift
 sum. This is the precise, quantitative form of ET Remark 1.3.
 
+**And the off-diagonal share RISES with `p`** (`offdiag_scaling.py`, 2026-06-18; exact
+δ-decomposition `r_δ(p)`, samples of hard primes `p ≡ 1 mod 4`): writing the off-diagonal
+fraction as `1 − Σ_p Σ_δ r_δ(p)² / Σ_p f_II(p)²`, it climbs **0.9554 (10⁴) → 0.9754 (10⁵) →
+0.9836 (10⁶)** as the mean `f_II` grows `27 → 47 → 73` (more solutions spread over more distinct
+shifts). So the tractable single-shift diagonal does not merely sit below the two-shift bulk — its
+*relative* contribution **vanishes** as `p → ∞`. The wall does not just dominate at fixed scale; it
+*hardens* with scale, foreclosing any approach that would route a pointwise `f_II > 0` through the
+diagonal part alone.
+
 **The wall, explicit.** The shift δ runs up to ~ 5p (measured d_max ≈ 5p), so 4δp+1 has
 conductor ~ p², and the inner sum needs the divisor function in the progression n ≡ 1
 (mod 4p) — p prime — handled uniformly over two simultaneous shifts up to that conductor.
