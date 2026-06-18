@@ -110,8 +110,9 @@ if __name__ == "__main__":
     for p in (2521, 1009, 8101, 73):
         report(p, f"p={p}")
 
-    print("\n[frontier] square-class primes at and BEYOND the 10^18 published sweep:")
-    for k in range(9, 23):
+    print("\n[frontier] square-class primes at and BEYOND the 10^18 published sweep,")
+    print("           up to and past the lognormal counterexample scale (~10^40):")
+    for k in list(range(9, 23)) + [25, 30, 35, 40, 45, 50]:
         p = next_square_class_prime(10 ** k)
         report(p, f"10^{k}")
 

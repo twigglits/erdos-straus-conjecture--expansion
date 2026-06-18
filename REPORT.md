@@ -1801,10 +1801,11 @@ new directions, each machine-checked or literature-verified. Nothing here is a p
 *negative* results (geometry, conditional theorems) sharpen *why* no elementary or
 conditional proof exists, and two new *computations* widen the empirical margin.
 
-1. **Verification to 10²² on adversarial primes** (`analysis/find_solution.py`). ESC holds —
+1. **Verification to 10⁵⁰ on adversarial primes** (`analysis/find_solution.py`). ESC holds —
    with an *explicit exhibited solution* — for square-class (and K1-starved) primes at every
-   scale 10⁹ … 10²², i.e. 10⁴× past the published 10¹⁸ sweep, each found in < 0.25 s via the
-   smallest channel a = 4x−p ∈ {3, 7}. (Individual adversarial primes, not a sweep.)
+   scale 10⁹ … 10²² and on to 10²⁵, 10³⁰, 10⁴⁰ (the lognormal counterexample scale), 10⁵⁰ —
+   i.e. 10³²× past the published 10¹⁸ sweep, each found in < 0.5 s via the smallest channel
+   a = 4x−p ∈ {3, 7}. (Individual adversarial primes, not a sweep.)
 2. **The Erdős–Kac channel margin persists to 10¹⁵** (`analysis/channel_survey.py`, using the
    `prime-octal` rolling-window/segmented-sieve technique). ω₃(4p+1) keeps mean ≈ Var ≈ ½ lnln p
    and the K1-starvation density keeps the Landau–Ramanujan shape K1-fail·√(ln p) ≈ 1.8 across
@@ -1838,9 +1839,16 @@ a ⟹ the class −px (mod a) is one of a few and (px)² has 3·τ(x²) divisors
 a ∈ {3, 7} essentially always. Verified (exact `Fraction` arithmetic, 0 failures): every
 square-class prime at 10⁹, 10¹⁰, …, **10²²**, and K1-starved square-class primes (4p+1 a product
 of primes ≡ 1 mod 4, the closed-cheapest-channel case) at 10¹⁸–10²¹. Example at 10²²:
-4/p = 1/(2.5×10²¹) + 1/(8.3×10³⁹) + 1/(2.6×10⁷¹) for p = 10²²+81. **Honest scope:** these are
-adversarially-*selected individual* primes, not a contiguous sweep — they show per-prime
-solubility is robust at unprecedented scale, not ESC for all p in any interval.
+4/p = 1/(2.5×10²¹) + 1/(8.3×10³⁹) + 1/(2.6×10⁷¹) for p = 10²²+81. **Extended (2026-06-18) to the
+counterexample scale and past it:** square-class primes at 10²⁵, 10³⁰, 10³⁵, **10⁴⁰** (the
+scale at which the §5 lognormal model places a ≳30σ would-be counterexample), 10⁴⁵, **10⁵⁰** —
+all solved via the smallest channel a ∈ {3, 7} in < 0.5 s each. The point this sharpens: a
+counterexample needs *every* channel to fail simultaneously, but the *smallest* channel (a=3:
+(p+3)/4 having a prime factor ≢ 1 mod 3; a=7 likewise) essentially never fails — the failure set
+has density → 0 (Landau–Ramanujan), so finding *one* solution stays trivial at any scale even
+as the *count* f(p) tightens. **Honest scope:** these are adversarially-*selected individual*
+primes, not a contiguous sweep — they show per-prime solubility is robust at unprecedented
+scale, not ESC for all p in any interval.
 
 ### 15.2 The channel margin past the counting frontier (`channel_survey.py`)
 
