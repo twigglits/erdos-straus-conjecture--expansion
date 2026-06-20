@@ -2641,3 +2641,84 @@ diagnostic and negative-direction: it converts "the diagonal might suffice" into
 cannot, by a factor `(log N)³`," and pinpoints the off-diagonal two-shift correlation as the sole locus of
 difficulty — the same wall, now measured to the exponent. Reproducible: `engines/fp_delta.c`,
 `analysis/fit_diagonal.py`, `data/delta_moment_1e6.csv`.
+
+# Session addendum (2026-06-20, cont.): §20 — executing the Henriot majorant (what it closes, and what it does not)
+
+## 20. The off-diagonal upper bound, attempted with Henriot's theorem — the partial result and the exact wall
+
+§18.4/§18.7 called the upper bound `Σ_{p≤N} f(p)² ≪ N(log N)⁵` "winnable in principle … by Nair–Tenenbaum /
+Henriot." Acting on the §19 conclusion (the bulk is the off-diagonal two-shift correlation), this section
+*executes* that attempt against Henriot's actual theorem. The honest result has two halves: **a genuine
+rigorous piece (the primitive part), and a precise obstruction (the bulk), which is the same δ-split that
+blocks McKee–Zhou (§18.6) — now seen on the upper-bound side.** It corrects the optimistic "off-the-shelf"
+reading of §18.7.
+
+### 20.1 What Henriot's theorem actually bounds
+
+Henriot (*Nair–Tenenbaum bounds uniform w.r.t. the discriminant*, arXiv:1102.1643, MPCPS 153 (2012),
+Thm 1 & 3; built on Shiu 1980 and Nair–Tenenbaum) bounds, for **fixed** pairwise-coprime irreducible
+polynomials `Q₁,…,Q_k ∈ ℤ[X]` and `F` in Shiu's class `M` (multiplicative, `F(pˡ) ≤ Aˡ`, `F(n) ≪_ε nᵋ`):
+> `Σ_{x<n≤x+y} F(|Q₁(n)|,…,|Q_k(n)|) ≪ Δ_D · y ∏_{p≤x}(1−ρ(p)/p) Σ_{n₁⋯n_k≤x} F(n₁,…,n_k)·ρ_{Q₁}(n₁)⋯ρ_{Q_k}(n_k)/(n₁⋯n_k)`,
+extendable to `n` prime (Nair–Tenenbaum). **The decisive structural requirement: the summand must be
+`F` evaluated at fixed polynomials in the summation variable.** To bound `Σ_p f_II(p)²` this way, `f_II(p)`
+must be `F(|Q(p)|)` for fixed `Q`.
+
+### 20.2 The reformulation: a Type II solution is a pair `(y',z')`, and the primitive part is a single shift
+
+From the kernel (machine-verified, `analysis/primitive_typeII.py [A]`, 0 mismatches): writing a Type II
+solution via `4/p = 1/x + 1/(py') + 1/(pz')`, one has `m := 4y'z'−y'−z' = p·δ` and `x = y'z'/δ ∈ (p/4, p/2)`.
+Hence the **primitive** solutions (`δ=1`, `m=p`) are exactly
+> `(4y'−1)(4z'−1) = 4p+1`  ⟺  `u | 4p+1`, `u = 4y'−1 ≡ 3 (mod 4)`,
+so `f_II^{(1)}(p) = #{u | 4p+1 : u ≡ 3 (mod 4), u ≤ √(4p+1)}` is a **single-shift divisor function of the
+fixed linear form `4p+1`** — precisely Henriot/Shiu's `F(|Q(p)|)`, `Q(p)=4p+1`. The general count is the
+multi-shift sum `f_II(p) = Σ_δ r_δ(p)`, `r_δ(p) = #{` factorisations of the shifted integer `4pδ+1 }`.
+
+### 20.3 What Henriot DOES close: the primitive part, rigorously
+
+For `Q(p)=4p+1` (linear, irreducible) and `F=τ²∈M` (`τ²(p)=4`), Shiu's bound (the `k=1` base case of
+Henriot, extended to primes) gives unconditionally
+> `Σ_{p≤N} f_II^{(1)}(p)²  ≤  Σ_{p≤N} τ(4p+1)²  ≪  N(log N)³.`
+
+This is a genuine, rigorous, **parity-free** bound on the primitive Type II second moment — no obstruction,
+the linear form is non-degenerate, Shiu applies directly. Machine-check (`primitive_typeII.py [B]`,
+82 887 hard primes): the true exponent is even smaller, `Σ_p f_II^{(1)}(p)² ~ N(log N)^{1.1}` (because
+`f_II^{(1)}` counts only the *small* 3-mod-4 divisors), comfortably inside the `≪ N(log N)³` ceiling.
+
+### 20.4 What it does NOT close: the bulk is a vanishing-shadow away
+
+The catch is quantitative and decisive (`primitive_typeII.py [C]`): the primitive part is an **asymptotically
+vanishing fraction** of `f_II`,
+> `f_II^{(1)}(p) / f_II(p)  ≈  C/(log p)²  → 0`   (the `frac·(log p)²` column is flat at `≈ 3.6` over 12 octaves),
+because `f_II^{(1)} ~ log p` while `f_II ~ (log p)³`. So Henriot's clean application captures only the `δ=1`
+shadow; the **bulk** `f_II = Σ_{δ≥1} r_δ` needs the shifted forms `4pδ+1`, and here Henriot stalls for a
+structural reason. Per *fixed* `(δ₁,δ₂)`, Henriot does apply — `Σ_{p≤N} τ(4δ₁p+1)τ(4δ₂p+1) ≪ N(log N)·G(δ₁,δ₂)`
+— but the off-diagonal needs these summed over the **admissible** `δ`, which (i) range up to `δ ≤ 6p²` and
+(ii) **couple to `p`** (only `~(log p)³` of them are realised, and *which* ones depends on `p`). Summing the
+per-pair bound over all `δ₁,δ₂ ≲ N²` overcounts by powers of `N` (it counts every shift for every prime,
+not the realised ones); keeping only the realised shifts is bounding `f_II(p)` itself — circular. So:
+
+> **Off-the-shelf Henriot bounds only the primitive `δ=1` part (`≪ N(log N)³`, a `1/(log p)²` slice). The
+> bulk `Σf² ≍ N(log N)⁵` is the coupled multi-shift δ-correlation — the *same* `δ`-split that blocks
+> McKee–Zhou (§18.6), now obstructing the upper bound.** The split makes `f_II` a genuine two-shift (indeed
+> multi-shift) divisor correlation, not `F(`fixed poly`(p))`; Henriot's hypothesis fails exactly there.
+
+### 20.5 Honest verdict, and the correction to §18.7
+
+The upper bound `Σf² ≪ N(log N)⁵` is **true** (numerically `~ N(log N)^{5.3}`, §19) and **parity-safe in
+principle** (it is a majorant; Selberg's barrier does not block it). But §18.7's "winnable in principle via
+Henriot" overstated the *availability*: it is **not an off-the-shelf Henriot application.** What Henriot
+delivers cleanly is the primitive shadow (`≪ N(log N)³`); the bulk requires genuine **multi-shift /
+two-dimensional additive-divisor technology** — the de la Bretèche–Browning binary-form divisor machinery
+(Henriot's own motivating case), summing `Σ_{(y',z')} ` over the conic `4y'z'≡y'+z' (mod p)` with the
+realised-shift constraint, or equivalently the two-shift Titchmarsh estimate with admissibility control.
+That is research-level, and it is blocked from the asymptotic/lower-bound side by parity, exactly as the rest
+of §14/§18. And — unchanged — even the completed upper bound yields, by Cauchy–Schwarz, only a positive
+proportion `≤ Vaughan` (§18.5), not the `L(1,χ_p)` constant.
+
+**Net (the executed lead).** Two concrete deliverables, both machine-verified: (i) a clean new structural
+identity — *the primitive Type II solutions are the 3-mod-4 divisors of `4p+1`*, making the multi-shift
+structure of `f_II` explicit; (ii) a rigorous parity-free bound on the primitive second moment,
+`Σ_p f_II^{(1)}(p)² ≪ N(log N)³`. And one honest correction: the *full* second moment is **not** reachable by
+an off-the-shelf Henriot bound — the `δ`-split that defeats McKee–Zhou defeats the majorant's bulk too. The
+map is unchanged in kind; the one parity-safe target is real but its execution needs multi-shift machinery,
+and its payoff stays `≤` known. Reproducible: `analysis/primitive_typeII.py`.
