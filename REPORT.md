@@ -2722,3 +2722,68 @@ structure of `f_II` explicit; (ii) a rigorous parity-free bound on the primitive
 an off-the-shelf Henriot bound — the `δ`-split that defeats McKee–Zhou defeats the majorant's bulk too. The
 map is unchanged in kind; the one parity-safe target is real but its execution needs multi-shift machinery,
 and its payoff stays `≤` known. Reproducible: `analysis/primitive_typeII.py`.
+
+# Session addendum (2026-06-20, cont.): §21 — is de la Bretèche–Browning the tool for the bulk? No, and the reason is structural
+
+## 21. The bulk is a divisor *correlation*, not a `Σ h(F)` average — so the Nair–Tenenbaum family is the wrong family
+
+§20 pointed at the de la Bretèche–Browning (dlB–B) binary-form divisor machinery as what the bulk "needs."
+Reading their actual theorem (arXiv:math/0604119, *Sums of arithmetic functions over values of binary forms*,
+Acta Arith. 125 (2007)) shows this pointer was **imprecise**, in an instructive way: dlB–B is a *first-moment*
+tool, and the Erdős–Straus second moment is a *correlation*. This corrects §20 and pins the genuinely correct
+machinery.
+
+### 21.1 What dlB–B actually bounds
+
+dlB–B Theorem 1 / Corollaries 1–2 bound, for a **single** primitive binary form `F ∈ ℤ[x₁,x₂]` and a
+sub-multiplicative `h ∈ M(A,B)`,
+> `S(X₁,X₂; h, F) := Σ_{n₁≤X₁, n₂≤X₂} h(|F(n₁,n₂)|) ≪ Δ_F · X₁X₂ · E`,   `E = ∏_p(1 + ρ*_F(p)(h(p)−1)/p)·(…)`,
+with the clean case (Cor 2): `Σ_{(n₁,n₂)∈[1,X]²} τ(|F(n₁,n₂)|) ≪_F X² log X` for `F` irreducible. This is the
+**2-variable Shiu/Nair–Tenenbaum bound**: the average of `h` over the values of **one** form across a box.
+
+### 21.2 Why the ESC second moment is not of that shape
+
+Write the (reduced) Type II form `redm(y',z') = 4y'z'−y'−z'` (§20). Then, grouping by the common value
+`n = redm`,
+> `Σ_{p≤N} f_II(p)²  =  Σ_{n≤N, n prime} r(n)²`,   `r(n) := #{(y',z') : redm(y',z') = n}`.
+
+This is the **additive energy / second moment of the representation function** `r(n)` of the form — a
+*correlation* of two representations sharing a value. The entire Nair–Tenenbaum lineage
+(Shiu 1980 → Nair → Nair–Tenenbaum → Henriot → dlB–B) bounds the **first** moment
+> `Σ_{(y',z')∈box} h(redm(y',z'))  =  Σ_n r(n) h(n)`,
+i.e. `r(n)` to the **first** power against a multiplicative weight. None of them bounds `Σ_n r(n)²`. So
+dlB–B (2-variable) fails for the *same* reason as Henriot (1-variable): the tool computes the wrong moment.
+That is the unifying explanation of why every "apply a Nair–Tenenbaum-type bound" route (§18.4, §18.7, §20)
+stalls — those theorems are built for averages of one form, and ESC's difficulty is the second moment.
+
+### 21.3 The genuinely correct machinery (and the corrected pointer)
+
+`Σ_n r(n)²` with `n` prime is the **additive divisor problem on average** — exactly Elsholtz–Tao's Remark 1.3
+two-shift Titchmarsh estimate (§14). Its home is the **dispersion method / spectral theory of the additive
+divisor problem**, *not* the Nair–Tenenbaum family:
+- Motohashi; Deshouillers–Iwaniec (spectral theory of `Σ τ(n)τ(n+h)`);
+- modern uniform versions: **Topacoğullari**, *On a certain additive divisor problem* (Acta Arith. 181, 2017,
+  arXiv:1512.05770); **Drappeau**, dispersion-method error terms (arXiv:1504.05549) — **both already in this
+  project's reference list** (EXPANSION §10), cited there for precisely this object.
+
+So §20's "de la Bretèche–Browning" should read **"the dispersion method (Motohashi / Deshouillers–Iwaniec /
+Topacoğullari / Drappeau)."** That literature *does* bound two-shift divisor correlations — but (i) its sharp
+form is the **asymptotic**, which at conductor `~p²` over primes is **parity-obstructed** (Granville–Shao 2023),
+and (ii) even a parity-safe *upper* bound is not packaged for the ESC structure (the realised-shift /
+integrality constraint `δ ∣ y'z'`, equivalently the conic `4y'z'≡y'+z' (mod p)`), so it remains a genuine
+research computation — the same wall, now correctly named.
+
+### 21.4 The exponent, and what is settled
+
+The order is forced and confirmed: `f_II` has dimension `d = 3` (the Elsholtz–Tao / Browning–Wilsch average
+order, §17.3), and the second moment of a dimension-`d` divisor count over primes has exponent `2d − 1`:
+> `Σ_{p≤N} f_II(p)²  ≍  N (log N)^{2·3−1} = N(log N)⁵`   (measured `N(log N)^{5.3}`, §19; diagonal only `N(log N)²`).
+
+**Verdict.** Neither the 1-variable (Henriot, §20) nor the 2-variable (dlB–B, §21) Nair–Tenenbaum bound closes
+the bulk, and now for a single clean reason: **they bound the first moment `Σ_n r(n)h(n)`; the Erdős–Straus
+difficulty is the second moment `Σ_n r(n)²`.** The correct machinery is the dispersion method / additive
+divisor problem (already cited in the project), whose upper bound is parity-safe *in principle* but unpackaged
+for this structure, and whose asymptotic is parity-blocked. The map is now complete and internally consistent:
+every Nair–Tenenbaum-family tool addresses the wrong moment; the right tool meets the parity wall from the
+familiar side; and the payoff, even granted, is `≤` Vaughan. Sources verified first-hand: dlB–B
+arXiv:math/0604119 (Thm 1, Cor 1–2); cross-referenced to the project's already-audited dispersion citations.
