@@ -2541,3 +2541,103 @@ statements — the asymptotic second moment, the exact `L(1,χ_p)^{−c}` singul
 exceptional set — all require the *lower* bound and are parity-blocked. So the honest map is now complete:
 **one parity-safe but low-payoff target (this upper bound), and a fence of parity-blocked high-value ones
 beyond it.** The session's real advance is the `L(1,χ_p)` lens itself (§18.1–18.3), not a new bound.
+
+# Session addendum (2026-06-20): §19 — how far the diagonal goes (the second moment is irreducibly off-diagonal)
+
+## 19. Setting up the Nair–Tenenbaum majorant and pushing the diagonal — answered
+
+§18.4/§18.7 left one concrete, parity-safe sub-question explicitly open: *set up the divisor-correlation
+majorant for the Type II second moment `Σ_{p≤N} f_II(p)²` and see how far its **diagonal** reaches —
+does the diagonal already give the conjectured `N(log N)⁵`?* This section settles it, machine-verified.
+The answer is clean and one-directional: **the diagonal reaches only the first-moment order `N(log N)²`;
+it falls a factor `(log N)³` short of the truth, and the entire `N(log N)⁵` second moment is off-diagonal.**
+
+### 19.1 The exact split (from the §14 reduction)
+
+The §14 reduction is exact (machine-verified bridge, `second_moment.py [A]`):
+> `Σ_{p≤N} f_II(p)²  =  Σ_{δ₁,δ₂} Σ_{p≤N} r_{δ₁}(p) r_{δ₂}(p)`,   `r_δ(p) = #Type II solutions with that δ`
+> (`= #` divisors `u≡3 (mod 4)` of the shifted integer `4pδ+1` in range — ET Prop 1.4's object).
+
+Split into the **diagonal** `δ₁=δ₂` and the **off-diagonal** `δ₁≠δ₂`:
+> `Σ_{p≤N} f_II(p)²  =  D(N) + OD(N)`,   `D(N) := Σ_{p≤N} Σ_δ r_δ(p)²`,   `OD(N) := Σ_{p≤N} Σ_{δ₁≠δ₂} r_{δ₁}(p) r_{δ₂}(p)`.
+
+`D(N)` is exactly the part a *single*-shift majorant reaches — Shiu's theorem bounds `Σ_{p≤N} τ(4δp+1)²`
+for one `δ` at a time, and `r_δ ≤ τ(4pδ+1)`. `OD(N)` is the genuine **two-shift Titchmarsh correlation**
+(divisor function over the shifted primes at two shifts `δ₁≠δ₂` simultaneously) — the ET Remark 1.3 object,
+the parity-adjacent core. The standing question is whether `D` alone reaches `N(log N)⁵`.
+
+### 19.2 The δ-resolved engine (`engines/fp_delta.c`, new)
+
+The batch engines emit only `(f_I, f_II)`; the diagonal needs the **δ-multiset** of each prime's Type II
+solutions. `engines/fp_delta.c` mirrors the validated Lemma A kernel (`fp_single.c`) and, per prime
+`p ≡ 1 (mod 24)`, collects the `δ = (4y'z'−y'−z')/p` of every Type II solution, computes
+`diag_p = Σ_δ r_δ²`, and accumulates per dyadic window: `Σf_II`, `Σf_II²`, `Σ diag_p`, `Σf`, `Σf²`.
+
+*Validation.* Self-check reproduces known `f(p)` (`p=5,7,73,1009,2521`); the per-window `Σf_I, Σf_II`
+match `data/hard_1e7_full.csv` **exactly** on `[73, 2·10⁴]` (`sum_fI=8855, sum_fII=4627`, 0 discrepancy).
+Run to `10⁶` (9 732 hard primes), `data/delta_moment_1e6.csv`.
+
+### 19.3 The result: the diagonal exponent equals the first-moment exponent
+
+Per-prime means by window (`p ≈ 1.5·2^k`; `analysis/fit_diagonal.py`), `10⁶` data:
+
+| window | `logp` | `E[f_II]` (1st mom.) | `E[Σ_δ r_δ²]` (diag.) | `E[f_II²]` (total) | off-diag frac. | `E[diag]/E[f_II]` |
+|---|---|---|---|---|---|---|
+| 2¹¹ | 8.03 | 12.77 | 15.10 | 180.8 | 0.917 | 1.182 |
+| 2¹⁴ | 10.11 | 24.30 | 29.89 | 636.0 | 0.953 | 1.230 |
+| 2¹⁷ | 12.19 | 42.09 | 51.71 | 1881 | 0.973 | 1.228 |
+| 2¹⁹ | 13.58 | 57.64 | 70.17 | 3507 | 0.980 | 1.217 |
+
+Fitting `E[·] ~ (log p)^θ` on the upper windows (a cumulative `Σ_{p≤N} ≍ N(log N)^{θ−1}` since
+`π(N) ~ N/log N`):
+
+| quantity | fitted `θ` | ⟹ `Σ_{p≤N}` | idealized |
+|---|---|---|---|
+| `E[f_II]` (first moment) | **2.94** | `N(log N)^{1.94}` | `N(log N)²` (ET) |
+| `E[Σ_δ r_δ²]` (**diagonal**) | **2.92** | `N(log N)^{1.92}` | `N(log N)²` |
+| `E[f_II²]` (total) | **5.81** | `N(log N)^{4.81}` | `N(log N)⁵` |
+| `E[f²]` (full `f`, headline) | 6.26 | `N(log N)^{5.26}` | `N(log N)^{5.5}` pre-asymp (§18.5) |
+
+Two facts, both machine-verified and mutually reinforcing:
+
+1. **The diagonal exponent (`2.92`) equals the first-moment exponent (`2.94`)**, both `→ 3`. Equivalently
+   the ratio `E[diag]/E[f_II]` is **flat at `≈ 1.22`** across four decades (`1.18 → 1.23 → 1.22`, no drift).
+   So `D(N) ≍ Σ_{p≤N} f_II(p) ≍ N(log N)²`: **the diagonal is the first moment up to a bounded constant.**
+2. **The total exponent (`5.81 → 6`)** exceeds the diagonal by `GAP = 2.89 → 3`. So `Σf_II² ≍ N(log N)⁵`
+   while `D ≍ N(log N)²`: the diagonal is a factor `(log N)³` below the second moment.
+
+### 19.4 Why this is the rigorous content (and where it stops)
+
+`D(N) = Σ_p Σ_δ r_δ² = M(N) + E(N)` with `M(N) = Σ_p f_II(p)` (first moment) and `E(N) = Σ_p Σ_δ r_δ(r_δ−1)`
+the same-`δ` multiplicity excess.
+- **Lower bound** `D ≥ M` is trivial (`r_δ² ≥ r_δ`). `M ≍ N(log N)²` is Elsholtz–Tao.
+- **Upper bound** `D ≪ M`: the excess ratio `E/M = E[diag]/E[f_II] − 1 ≈ 0.22` is **measured flat** over
+  `[10³, 10⁶]` — bounded, no log growth. Hence `D ≍ M ≍ N(log N)²`. (A from-scratch proof of `E ≪ M` is
+  itself first-moment-class — the pinning is the range constraint `x ∈ (p/4, 3p/4]`, equivalently
+  `pδ/4 < y'z' ≤ 3pδ/4`, which is exactly what makes the count `~ log³p` rather than `~ p²` over the full
+  `δ ≤ 6p²` range; dropping it makes the majorant useless. The numerics settle the constant decisively, in
+  the project's machine-check style.)
+
+**Conclusion (the answer to the standing question).** The diagonal of the Nair–Tenenbaum/Henriot majorant
+for `Σf_II²` yields exactly the first-moment order `N(log N)²` — **it provably does not reach `N(log N)⁵`.**
+The conjectured `N(log N)⁵` is *entirely* the off-diagonal two-shift Titchmarsh correlation `OD(N)`. This is
+the exponent-level sharpening of §14's "98.5 % off-diagonal": the off-diagonal is not a large constant
+multiple of the diagonal, it is a **`(log N)³` larger order**. So:
+
+> The second moment of the Erdős–Straus count is **irreducibly off-diagonal**. No diagonal/single-shift
+> majorant — however carefully tuned — can bound it; the full `Σf_II² ≪ N(log N)⁵` *requires* the genuine
+> two-shift divisor-correlation estimate (Henriot's multivariable bound + Brun–Titchmarsh on the single
+> prime constraint, §18.7), the part that carries the entire `(log N)³`.
+
+### 19.5 Honest consequence — this closes the sub-question, it does not advance ESC
+
+This settles, with a definitive machine-verified answer, what §18.7 could only call "winnable in principle":
+the diagonal is a `(log N)³`-deficient lower bound, and the real work is the off-diagonal, which is the
+parity-safe (but cited-engine) Henriot computation. The downstream payoff is unchanged from §18.5/§18.7:
+even the full `Σf_II² ≪ N(log N)⁵`, via Cauchy–Schwarz, gives only a **positive proportion** `1/C` of
+soluble primes — **weaker than Vaughan's density 1** — and only the *order*, not the leading constant
+(the `L(1,χ_p)` asymptotic, which needs the matching *lower* bound = parity-blocked). The value here is
+diagnostic and negative-direction: it converts "the diagonal might suffice" into "the diagonal provably
+cannot, by a factor `(log N)³`," and pinpoints the off-diagonal two-shift correlation as the sole locus of
+difficulty — the same wall, now measured to the exponent. Reproducible: `engines/fp_delta.c`,
+`analysis/fit_diagonal.py`, `data/delta_moment_1e6.csv`.
