@@ -19,7 +19,7 @@ Let $f(p)$ denote the number of unordered positive solutions of $\tfrac{4}{p}=\t
 
 $$ f(p)\ \approx\ (\log p)^{3}\cdot L(1,\chi_p)^{-c},\qquad \chi_p=\Big(\tfrac{\cdot}{p}\Big),\quad c\approx 0.6, $$
 
-where $\chi_p$ is the real quadratic character of $\mathbb{Q}(\sqrt p)$ and $L(1,\chi_p)=2h(p)\log\varepsilon_p/\sqrt p$ is its Dirichlet $L$-value — the class number times the regulator. Concretely, $\operatorname{corr}\big(\ln f,\ \ln L(1,\chi_p)\big)=-0.62$, stable across Euler-product truncations $X=50\ldots1500$ (re-run on $14{,}955$ primes near $10^9$ for this paper). The **more** primes split in $\mathbb{Q}(\sqrt p)$, the **fewer** Erdős–Straus solutions $p$ has.
+where $\chi_p$ is the real quadratic character of $\mathbb{Q}(\sqrt p)$ and $L(1,\chi_p)=2h(p)\log\varepsilon_p/\sqrt p$ is its Dirichlet $L$-value — the class number times the regulator. Concretely, $\operatorname{corr}\big(\ln f,\ \ln L(1,\chi_p)\big)=-0.62$ ($n=14{,}955$ primes near $10^9$, re-run for this paper; $95\%$ CI $\approx\pm0.01$, and unchanged under partial correlation controlling for $\log p$), stable across Euler-product truncations $X=50\ldots1500$. The **more** primes split in $\mathbb{Q}(\sqrt p)$, the **fewer** Erdős–Straus solutions $p$ has.
 
 We arrive at the law by a documented chain: (i) a cross-validated solution-count dataset and a lognormal law for $f(p)$ confirmed by blind prediction; (ii) a machine-verified kernel reducing $f(p)$ to divisors of shifted integers in residue classes, together with the square obstruction re-proved in full and formalized in Lean 4 + Mathlib ($20$ theorems, complete with no unproved steps); (iii) a residual spectrum exposing a quadratic-residue ladder $s_q\approx 18\,q^{-1.95}$ — "non-residues richer at every modulus" — which is the first-order shadow of the character $\chi_p$; (iv) a Fourier decomposition of the local divisor density over Dirichlet characters $\bmod\,\ell$ that isolates the quadratic character $(p/\ell)$ as the dominant non-trivial signal at every $\ell\in\{11,13,17,19,23\}$ ($14$–$47\sigma$), whose Euler product is by definition a power of $L(1,\chi_p)$.
 
@@ -283,18 +283,23 @@ The product of these quadratic characters is, by definition, the Euler product o
 
 $$ f(p)\ \approx\ (\log p)^3\cdot\prod_{\ell}\Big(1-\frac{c\,(p/\ell)}{\ell}\Big)\ \approx\ (\log p)^3\cdot L(1,\chi_p)^{-c},\qquad c\approx0.6. $$
 
-By Dirichlet's class-number formula $L(1,\chi_p)=2h(p)\log\varepsilon_p/\sqrt p$, this says **$f(p)$ is modulated by the class number / regulator of $\mathbb{Q}(\sqrt p)$: larger $L(1,\chi_p)\Rightarrow$ fewer Erdős–Straus solutions.** A direct test against an independent truncated $\ln L(1,\chi_p)=-\sum_{\ell\le X}\log\big(1-(p/\ell)/\ell\big)$ — built with no reference to the $f$-data — gives, on $14{,}955$ hard primes near $10^9$ (re-executed for this paper; raw output):
+By Dirichlet's class-number formula $L(1,\chi_p)=2h(p)\log\varepsilon_p/\sqrt p$, this says **$f(p)$ is modulated by the class number / regulator of $\mathbb{Q}(\sqrt p)$: larger $L(1,\chi_p)\Rightarrow$ fewer Erdős–Straus solutions.** A direct test against an independent truncated $\ln L(1,\chi_p)=-\sum_{\ell\le X}\log\big(1-(p/\ell)/\ell\big)$ — built with no reference to the $f$-data — gives, on $14{,}955$ hard primes near $10^9$ (re-executed for this paper; output of `analysis/lfunction_connection.py`, where `#Euler factors` is the number of primes $\ell\le X$ in the truncated product, **not** the sample size):
 
 ```
-  truncation X   #primes   corr(ln f, ln L(1,χ_p))
-         50        11        -0.5977
-        200        42        -0.6173
-        500        91        -0.6200
-       1500       235        -0.6199
-  regression slope d(ln f)/d(ln L) = -0.527   (the exponent −c)
+  n = 14,955 hard primes near 1e9   (p in [1.000, 1.010]e9, ln p ~ 20.73,
+       so the (log p)^3 trend is ~constant across the slice)
+
+  truncation X   #Euler factors (l<=X)   corr(ln f, ln L)   95% CI (Fisher z)
+         50              11             -0.5977          [-0.6079, -0.5873]
+        200              42             -0.6173          [-0.6271, -0.6073]
+        500              91             -0.6200          [-0.6298, -0.6100]
+       1500             235             -0.6199          [-0.6296, -0.6099]
+
+  partial corr(ln f, ln L | ln p) = -0.6199   ((log p)^3 trend removed)
+  regression slope d(ln f)/d(ln L) = -0.527   (an estimate of -c)
 ```
 
-The correlation is $-0.62$, stable across truncation, with slope $-0.53\approx-c$. The six hard square classes $\bmod\,840$ are a *finer* shadow of the same object: at $\ell=5,7$ the prime $p$ is forced to be a residue, so the leading quadratic character is constant and the class-splitting is carried by the higher residue characters — a cubic character at $7$ plus a $\sim17^\circ$ **chiral phase** ($\sigma_7(c)=a_0+2\operatorname{Re}(b\,\psi(c))$, $b=8.4\,e^{163^\circ i}$), the local shadow of the signed-sector see-saw and impossible for any single Dirichlet character.
+The correlation is $-0.62$ ($95\%$ CI $\approx\pm0.01$ at $n=14{,}955$), stable across truncation and — because the slice spans only $\ln p\in[20.723,20.733]$ — **unchanged when the $(\log p)^3$ trend is partialled out** (partial $r=-0.62$): it is the $L$-value, not the size of $p$, that $f$ tracks. The exponent is bracketed by two independent estimators: the per-character coefficient of §8.1 gives $c\approx0.6$, the global $\ln L$ regression slope gives $c\approx0.53$; we therefore quote $c\approx0.5$–$0.6$ rather than a single value. The six hard square classes $\bmod\,840$ are a *finer* shadow of the same object: at $\ell=5,7$ the prime $p$ is forced to be a residue, so the leading quadratic character is constant and the class-splitting is carried by the higher residue characters — a cubic character at $7$ plus a $\sim17^\circ$ **chiral phase** ($\sigma_7(c)=a_0+2\operatorname{Re}(b\,\psi(c))$, $b=8.4\,e^{163^\circ i}$), the local shadow of the signed-sector see-saw and impossible for any single Dirichlet character.
 
 
 ### 8.3 The mechanism: McKee–Zhou and the Gauss–Siegel precedent
