@@ -1,2 +1,3 @@
 import Subsetsums.Basic
 import Subsetsums.ErdosStraus
+import Subsetsums.GeneralizedErdosStraus

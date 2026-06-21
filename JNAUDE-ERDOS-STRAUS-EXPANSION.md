@@ -77,6 +77,12 @@ We are scrupulous about epistemic status. The $L$-function law is a **verified, 
 The project's working rule is: **no claim without a machine check, no engine without independent validation, no model without a blind test.** Four solution-counting engines were written independently in C, Rust, CUDA, and C/OpenMP; their outputs are byte-identical at five scales and reproduce the external dataset of the 2025 verification preprint on thousands of overlapping primes. Every numbered lemma in the structural sections is checked in exact arithmetic (`analysis/verify_lemmas.py`, $8{,}719$ assertions; `analysis/verify_signed.py`, $536{,}988$ assertions), and the elementary theory is additionally formalized in Lean. Statistical models were frozen on small scales and tested on uncomputed ranges. The single empirical claim on which the headline rests — the correlation $\operatorname{corr}(\ln f,\ln L(1,\chi_p))=-0.62$ — was re-executed for this paper and is reported with its raw output in §8.2 and §10.
 
 
+### 1.5 Plan of the paper
+
+
+The argument is a single descent from the data to the law, and the reader may follow it as one thread. §3 establishes the empirical ground — the cross-validated solution counts and the lognormal law, confirmed by blind prediction. §4 supplies the structural reduction, the divisor-class kernel and the square obstruction (both formalized in Lean), and with it the exact reason the elementary toolbox stops. §5 is the pivot: stripped of its obvious trends, the residual count still carries a consistent quadratic-residue signal at every modulus. §6 and §7 then gather the law's two remaining ingredients and fix its limits — the **second moment**, which exposes the count as a two-shift divisor correlation and so locates the analytic wall (with one rigorous Erdős–Kac anchor), and the **growth exponent** $3$, derived independently from the arithmetic geometry of the Cayley cubic. §8 assembles these into the $L$-function law, through a Fourier decomposition over Dirichlet characters and the McKee–Zhou singular series. §9 maps in full why the law stops short of a theorem; §10 records the three-layer source verification; §11 concludes. The main thread is $\S3\to\S4\to\S5\to\S8$; §6 and §7 run parallel to it and may be read after §8 without loss of continuity.
+
+
 ---
 
 ## 2. Notation and preliminaries
@@ -130,12 +136,16 @@ Per dyadic window, $\ln f$ is normal to high precision, so window minima are pur
 | $[2\times10^{9},2.01\times10^{9}]$ | median $681$; $\min\in[351,404]$ | median $681$ exact; $\min 405$ |
 | $[10^{10},10^{10}+10^{7}]$ | $\min\in[439,499]$; median $\approx852$ | targeted $\min=534$ (safe side); $f(10000001041)=980$, $f(10000003129)=945$ |
 
-The $10^{10}$ row required two new $128$-bit engines to break the $2\times10^9$ counting wall; the measured floor $534$ sits $\approx7\%$ **above** the predicted band — the model under-predicts, i.e. the conjecture is even safer than the law says — and is consistent with the $\sim$10% accuracy of the lognormal extreme-value model on held-out minima. The lognormal is the central empirical fact; everything that follows explains its mechanism.
+The $10^{10}$ row required two new $128$-bit engines to break the $2\times10^9$ counting wall; the measured floor $534$ sits $\approx7\%$ **above** the predicted band — the model under-predicts, i.e. the conjecture is even safer than the law says — and is consistent with the $\sim\!10\%$ accuracy of the lognormal extreme-value model on held-out minima. The lognormal is the central empirical fact; everything that follows explains its mechanism.
 
 
 ---
 
 ## 4. The kernel and the square obstruction (machine-verified)
+
+
+The mechanism the lognormal demands begins not with analysis but with structure. Before any analytic input, $f(p)$ is an *exact* divisor count in prescribed residue classes — this is what makes it computable, and what will, in §§5–8, make it an $L$-value — while at the six square classes that count provably collapses in its coprime strata. Both facts are theorems, re-proved here in full and formalized in Lean 4 + Mathlib; they fix the floor of the landscape and the reason the elementary toolbox cannot raise it.
+
 
 ### 4.1 The divisor-class kernel (Lemma A)
 
@@ -202,6 +212,10 @@ $$ s_q\ \approx\ 18.2\,q^{-1.95}. $$
 
 ## 6. The second moment and the analytic core
 
+
+§5 located the signal; turning it into an $L$-value (§8) needs two further inputs, supplied by this section and the next. Here we take the analytic route, through the **second moment** of $f$. It pays twice. It exposes the precise arithmetic object the count is built from — a correlation of two shifted divisor sums — and, in the same breath, locates the wall that stops a proof. The section then closes on firmer ground, with the one fully rigorous distributional law within reach: an Erdős–Kac theorem that anchors the §3 lognormal in the second moment and identifies the floor primes exactly.
+
+
 ### 6.1 The two-shift Titchmarsh reduction (exact)
 
 
@@ -237,7 +251,7 @@ Measured: mean $1.056$, $\mathrm{Var}\,1.072$ (the Erdős–Kac signature), skew
 ## 7. The growth exponent from the Cayley cubic (heuristic)
 
 
-The exponent $3$ in $f(p)\sim(\log p)^3$ has an independent arithmetic-geometry derivation. The Erdős–Straus surface $4xyz=n(xy+yz+zx)$ has open part $V_n\cong\mathbb{G}_m^2$ (Bright–Loughran, 2020: geometric unit group of rank $2$), with a boundary triangle of lines at infinity. Applying the Browning–Wilsch (2025) Batyrev–Manin–Peyre heuristic for integral points on log-K3 cubic surfaces,
+We return to the wall in §9; the law's one remaining ingredient is its exponent. The $3$ in $f(p)\sim(\log p)^3$ — so far an empirical fact (§3) matching the Elsholtz–Tao average order — has an independent arithmetic-geometry derivation. The Erdős–Straus surface $4xyz=n(xy+yz+zx)$ has open part $V_n\cong\mathbb{G}_m^2$ (Bright–Loughran, 2020: geometric unit group of rank $2$), with a boundary triangle of lines at infinity. Applying the Browning–Wilsch (2025) Batyrev–Manin–Peyre heuristic for integral points on log-K3 cubic surfaces,
 
 $$ N^{\circ}_U(B)\ \sim\ c\,(\log B)^{\varrho_U+b}, $$
 
@@ -251,6 +265,10 @@ matching the Elsholtz–Tao average and, on the repo's own data, $k=3.03$ for $\
 ---
 
 ## 8. The $L$-function law
+
+
+Every piece is now in hand: the quadratic-residue ladder of §5, the second moment built from divisor sums of quadratics (§6), and the exponent $3$ (§7). This section assembles them into the law of the abstract. The ladder sharpens into a single Fourier coefficient (§8.1); that coefficient's Euler product is, by definition, $L(1,\chi_p)$ (§8.2); and McKee–Zhou supplies the rigorous precedent that divisor sums of quadratics are governed by exactly this $L$-value (§8.3). The destination promised at the end of §5 is reached here.
+
 
 ### 8.1 The character decomposition
 
@@ -302,6 +320,10 @@ Three consequences are immediate and structurally important, granting the law:
 ---
 
 ## 9. Honest status: a verified law, short of a theorem
+
+
+The payoffs of §8.4 are real but conditional on the law. This section discharges that condition as far as it will go, and marks precisely where it will not: a derivation of the singular series blocks at the $\delta$-split (§9.1), the asymptotic and the matching lower bound are parity-obstructed (§9.2), and only a low-payoff upper bound survives parity-safe (§9.3). The wall met here is the same one §6.2 measured, now read from the side of a proof.
+
 
 ### 9.1 Where a derivation blocks (McKee–Zhou and the $\delta$-split)
 
