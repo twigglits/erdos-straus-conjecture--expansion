@@ -74,6 +74,21 @@ ranks the $f$-landscape at $10\times$ its fitting range ($\rho \approx +0.72$) a
 locates window floors for ~1% of sweep cost — an instrument for adversarial
 searches at scales where exhaustion is impossible.
 
+That same congruence ladder is the first-order shadow of a quadratic character,
+and following it down is the project's central result. A Fourier decomposition of
+the local divisor density isolates the Legendre symbol $(p/\ell)$ as the dominant
+signal at every prime $\ell$ ($14$–$47\sigma$); its Euler product is the quadratic
+$L$-value, giving the law
+$f(p) \approx (\log p)^{3} \cdot L(1,\chi_p)^{-c}$ ($c \approx 0.6$,
+$\mathrm{corr} = -0.62$). The count is modulated by the class number / regulator of
+$\mathbb{Q}(\sqrt p)$ — the more primes split, the fewer solutions — which confines
+any counterexample to the extreme class-number tail, makes Siegel zeros the *best*
+case, and shows the size budget never threatens $f > 0$. It is a verified,
+structurally-identified law (apparently unrecorded), short of a theorem at the
+two-shift Titchmarsh wall. The standalone write-up is the scientific paper
+[`JNAUDE-ERDOS-STRAUS-EXPANSION.md`](JNAUDE-ERDOS-STRAUS-EXPANSION.md)
+([PDF](JNAUDE-ERDOS-STRAUS-EXPANSION.pdf)).
+
 None of this proves or disproves the conjecture — the project's own theorems
 explain why this toolbox cannot — but the laws, datasets, and the signed-world
 structure are, as far as a careful literature search could establish (2026-06; we
@@ -119,7 +134,9 @@ Full details and tables live in [REPORT.md](REPORT.md); figures in `plots/`.
 > dominant character of the divisor density is the quadratic `(p/ℓ)` at *every* prime (14–47 σ). This
 > confines any counterexample to the extreme-class-number tail, makes Siegel zeros the *best* case, and
 > proves the size budget never threatens `f > 0`. A verified, structurally-identified law (apparently
-> unrecorded), short of a closed theorem — the proof meets the two-shift Titchmarsh wall. See
+> unrecorded), short of a closed theorem — the proof meets the two-shift Titchmarsh wall. Full paper:
+> [`JNAUDE-ERDOS-STRAUS-EXPANSION.md`](JNAUDE-ERDOS-STRAUS-EXPANSION.md)
+> ([PDF](JNAUDE-ERDOS-STRAUS-EXPANSION.pdf)); see also
 > [`NOTE_2026-06-18_L-function-discovery.md`](NOTE_2026-06-18_L-function-discovery.md) and REPORT §18.
 
 <div align="justify">
@@ -335,7 +352,9 @@ Full proofs and checks: [`erdos1/THEOREMS.md`](erdos1/THEOREMS.md).
 ├── LICENSE
 │
 │   ─── Problem 1 (main): Erdős–Straus conjecture, #242 ───
-├── REPORT.md                     the full Erdős–Straus study (§0–§13)
+├── REPORT.md                     the full Erdős–Straus study (§0–§21)
+├── JNAUDE-ERDOS-STRAUS-EXPANSION.md  the scientific paper — the quadratic L-value law
+├── JNAUDE-ERDOS-STRAUS-EXPANSION.pdf typeset paper (pandoc → LaTeX)
 ├── TRANSCRIPT.md                 original phone-session log that started it
 ├── engines/                      solution-counting engines (cross-validated)
 │   ├── fp.c                      f(p) counter — C reference
@@ -394,7 +413,8 @@ Full proofs and checks: [`erdos1/THEOREMS.md`](erdos1/THEOREMS.md).
 
 | Path | What it is |
 | --- | --- |
-| `REPORT.md` | The full study: §0–§8 landscape + laws, §9 proof attempt, §10 datasets, §11 signed extension, §12 residual + frontier, §13 ρ / Type III / K-criteria |
+| `REPORT.md` | The full study: §0–§8 landscape + laws, §9 proof attempt, §10 datasets, §11 signed extension, §12 residual + frontier, §13 ρ / Type III / K-criteria, §14 second moment, §15–§17 further angles, §18 the L-value law, §19–§21 the second-moment frontier |
+| `JNAUDE-ERDOS-STRAUS-EXPANSION.md` (+ `.pdf`) | The scientific paper: the Erdős–Straus count is governed by a quadratic $L$-value (`f(p) ≈ (log p)³·L(1,χ_p)^{−c}`), with the machine-verified account of the wall |
 | `TRANSCRIPT.md` | The original phone-session log that started the project |
 | `engines/fp.c`, `engines/fpr.rs`, `engines/fp.cu` | The positive-world engines (C / Rust / CUDA) |
 | `engines/fsigned.c`, `engines/census_ref.py` | The signed-grading engine + Python reference |
@@ -536,6 +556,23 @@ criterion, the general Type II sufficient condition, AND the square-obstruction 
 factor of 4c²+1 is ≡ 1 mod 4, so K1 cannot fire at squares). Still open: a rigorous limit (if one
 exists) for the Type III ratio f₁III/f₁ ≈ 0.436 via the singular-series-ratio route (§13.2); the
 *full* Lemma D in Lean (the complete Jacobi/squarefree argument, beyond the prime core done here).
+§17–§18 (2026-06-18) reframe the count. §17 closes the continued-fraction *transformation* angle
+(Ventas; Bello-Hernández et al. — an additive `p+i`-shift reformulation, not an escape) and the
+2026 AI/Lean frontier (the "resolutions" are hype; the parity wall stands), and isolates one
+orthogonal *heuristic* — the Browning–Wilsch `(log B)^{ϱ_U+b}` machine on the Cayley cubic ⟹
+`f(p) ~ (log p)³`. §18 is the headline: `f(p) ≈ (log p)³·L(1,χ_p)^{−c}` — the count is governed by
+the quadratic `L`-value (class number / regulator of `ℚ(√p)`), the dominant character of the divisor
+density being the Legendre `(p/ℓ)` at every prime (14–47 σ), with McKee–Zhou the rigorous
+singular-series precedent. It confines any counterexample to the extreme class-number tail
+(Granville–Soundararajan), makes Siegel zeros the *best* case, and shows the size budget never
+threatens `f > 0` (Stephens) — a verified, structurally-identified law, short of a theorem at the
+two-shift Titchmarsh wall. Full write-up: the scientific paper
+[`JNAUDE-ERDOS-STRAUS-EXPANSION.md`](JNAUDE-ERDOS-STRAUS-EXPANSION.md).
+§19–§21 (2026-06-20) map that wall from the second-moment side: the second moment is **irreducibly
+off-diagonal** (§19); the Henriot / Nair–Tenenbaum majorant closes the *primitive shadow* but not
+the bulk (§20); and de la Bretèche–Browning is first-moment machinery — structurally not the tool
+for the bulk correlation (§21). The parity-safe target stays a one-sided upper bound (positive
+proportion, ≤ Vaughan); the `L`-law's lower-bound content remains parity-blocked.
 
 </div>
 
@@ -557,7 +594,7 @@ exists) for the Type III ratio f₁III/f₁ ≈ 0.436 via the singular-series-ra
   Funct. Approx. Comment. Math. 28 (2000) 187–194
 - S. E. Salez, *The Erdős–Straus conjecture: new modular equations and checking up
   to N = 10¹⁷* (2014) — <https://arxiv.org/abs/1406.6307>
-- M. Spiridon, B. C. Dumitru, *Further verification and empirical evidence for the
+- S. Mihnea, D. C. Bogdan, *Further verification and empirical evidence for the
   Erdős–Straus conjecture* (2025, preprint; the external $f(p)$ dataset
   cross-validated here) — <https://arxiv.org/abs/2509.00128>
 - C. Pomerance, A. Weingartner, *Exceptions to the Erdős–Straus–Schinzel conjecture*
@@ -567,24 +604,38 @@ exists) for the Type III ratio f₁III/f₁ ≈ 0.436 via the singular-series-ra
 - T. Bloom, C. Elsholtz, *Egyptian Fractions* (survey, 2022) —
   <https://arxiv.org/abs/2210.04496>
 
+**The L-value law (§18)**
+
+- J. McKee, *The average number of divisors of an irreducible quadratic polynomial*, Math. Proc.
+  Camb. Phil. Soc. 126 (1999) 17–22 — the singular series ∑τ(quadratic) = 2·L(1,χ_disc)/ζ(2), the
+  rigorous mechanism behind the law; explicit constant: N. Zhou —
+  <https://arxiv.org/abs/1611.10186>; K. Lapkova — <https://arxiv.org/abs/1704.02498>
+- A. Granville, K. Soundararajan, *The distribution of values of L(1,χ_d)*, Geom. Funct. Anal. 13
+  (2003) 992–1028 — the large-value tail decays double-exponentially (any counterexample lies in
+  the extreme class-number tail)
+- P. J. Stephens, *Optimizing the size of L(1,χ)*, Proc. London Math. Soc. (1972) —
+  |L(1,χ)| ≤ ½(1−e^{−1/2}+o(1)) log q, constant 0.1967… (the size budget never threatens f > 0)
+- Gauss; Siegel — r₃(n) ∝ H(n) ∝ L(1,χ_{−n}): the precedent that representation / divisor counts
+  are governed by quadratic L-values
+
 **Second-moment frontier and divisor-in-AP inputs (§14)**
 
-- G. H. Halberstam, *On the distribution of additive number-theoretic functions III*,
-  J. London Math. Soc. 30 (1955) — Erdős–Kac CLT for additive functions of shifted primes
-  (the rigorous backbone of the ω₃(4p+1) channel law)
+- H. Halberstam, *On the distribution of additive number-theoretic functions III*,
+  J. London Math. Soc. **31** (1956) 14–27 — Erdős–Kac CLT for additive functions of shifted
+  primes (the rigorous backbone of the ω₃(4p+1) channel law; Part I is 30 (1955) 43–53)
 - K. Ford, *The distribution of integers with a divisor in a given interval*, Ann. of Math.
   168 (2008) 367–433 — <https://arxiv.org/abs/math/0401223> (the lognormal divisor law)
 - A. Granville, X. Shao, *Bombieri–Vinogradov for multiplicative functions, and beyond the
-  x^{1/2}-barrier* (2019) — <https://arxiv.org/abs/1703.06865> (every-modulus equidistribution
-  is provably false — the analytic mirror of Theorem F)
-- P. Sharma, *Ternary divisor function in arithmetic progressions* (level 1/2+1/30, 2024) —
-  <https://arxiv.org/abs/2303.06087>
-- S. Aydemir, A. Boran, *The ternary divisor function in APs averaged over residue classes*
-  (level 8/11, 2026) — <https://arxiv.org/abs/2601.12601>
-- S. Drappeau, *Sums of Kloosterman sums and the Titchmarsh divisor problem* (2017) —
-  <https://arxiv.org/abs/1504.05549>; E. Assing, V. Blomer, J. Li, *Uniform Titchmarsh divisor
-  problems* (2021) — <https://arxiv.org/abs/2005.13915>
-- B. Topacoğullari, *The shifted convolution of divisor functions* (2017) —
+  x^{1/2}-barrier* (2017, rev. 2019) — <https://arxiv.org/abs/1703.06865> (the classical
+  Selberg/√x parity barrier this line engages — the analytic mirror of Theorem F)
+- P. Sharma, *Bilinear sums with GL(2) coefficients and the exponent of distribution of d₃*
+  (level 1/2+1/30, 2024) — <https://arxiv.org/abs/2303.06087>
+- M. C. Aydemir, M. Boran, *Improved Averaged Distribution of d₃(n) in Prime Arithmetic
+  Progressions* (level 8/11, 2026) — <https://arxiv.org/abs/2601.12601>
+- S. Drappeau, *Sums of Kloosterman sums in arithmetic progressions, and the error term in the
+  dispersion method* (2015/16) — <https://arxiv.org/abs/1504.05549>; E. Assing, V. Blomer, J. Li,
+  *Uniform Titchmarsh divisor problems* (2020) — <https://arxiv.org/abs/2005.13915>
+- B. Topacoğullari, *On a certain additive divisor problem*, Acta Arith. 181 (2017) —
   <https://arxiv.org/abs/1512.05770>
 - (ESC-adjacent 2026, partial: Mballa, *natural-density-one parametrisation* —
   <https://arxiv.org/abs/2602.20036>; Bello-Hernández et al., *a divisor parametrisation* —
@@ -598,6 +649,7 @@ exists) for the Type III ratio f₁III/f₁ ≈ 0.436 via the singular-series-ra
   Selecta Math. 31 (2025) — <https://arxiv.org/abs/2407.16315> (the (log B)^{ϱ_U+b} machine;
   §17.3 applies it to the Cayley cubic ⟹ f(p) ~ (log p)³)
 - M. Bright, D. Loughran, *Brauer–Manin obstruction for Erdős–Straus surfaces* (2020) —
-  <https://arxiv.org/abs/1908.02526> (V_n ≅ 𝔾_m²; no Brauer–Manin obstruction)
-- S. Mihnea, D. Bogdan, *Further verification … to 10¹⁸* (2025) —
+  <https://arxiv.org/abs/1908.02526> (V_n ≅ 𝔾_m²; no Brauer–Manin obstruction *to existence* —
+  Br = ℤ/2ℤ obstructs only strong approximation, so the difficulty is analytic)
+- S. Mihnea, D. C. Bogdan, *Further verification … to 10¹⁸* (2025) —
   <https://arxiv.org/abs/2509.00128>

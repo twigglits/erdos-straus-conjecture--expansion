@@ -7,7 +7,7 @@
 
 **J. Naude**, with derivations, engines, and analyses produced in human–AI collaboration (Claude, Anthropic; see the repository commit trailers). Computational artifacts, datasets, and machine proofs accompany this paper in [`REPORT.md`](REPORT.md), [`analysis/`](analysis/), [`engines/`](engines/), and the Lean 4 development [`erdos1/subsetsums/`](erdos1/subsetsums/).
 
-*Working paper, revision of 2026-06-19. The Erdős–Straus conjecture is **open**; nothing here proves or disproves it. The contribution is a measured, reproducible, structurally-identified law for the solution count, a machine-verified delimitation of exactly why the elementary toolbox cannot close the problem, and a complete map of the analytic wall the law runs into.*
+*Working paper, revision of 2026-06-21. The Erdős–Straus conjecture is **open**; nothing here proves or disproves it. The contribution is a measured, reproducible, structurally-identified law for the solution count, a machine-verified delimitation of exactly why the elementary toolbox cannot close the problem, and a complete map of the analytic wall the law runs into.*
 
 
 ---
@@ -21,7 +21,7 @@ $$ f(p)\ \approx\ (\log p)^{3}\cdot L(1,\chi_p)^{-c},\qquad \chi_p=\Big(\tfrac{\
 
 where $\chi_p$ is the real quadratic character of $\mathbb{Q}(\sqrt p)$ and $L(1,\chi_p)=2h(p)\log\varepsilon_p/\sqrt p$ is its Dirichlet $L$-value — the class number times the regulator. Concretely, $\operatorname{corr}\big(\ln f,\ \ln L(1,\chi_p)\big)=-0.62$, stable across Euler-product truncations $X=50\ldots1500$ (re-run on $14{,}955$ primes near $10^9$ for this paper). The **more** primes split in $\mathbb{Q}(\sqrt p)$, the **fewer** Erdős–Straus solutions $p$ has.
 
-We arrive at the law by a documented chain: (i) a cross-validated solution-count dataset and a lognormal law for $f(p)$ confirmed by blind prediction; (ii) a machine-verified kernel reducing $f(p)$ to divisors of shifted integers in residue classes, together with the square obstruction re-proved in full and formalized in Lean 4 + Mathlib ($20$ theorems, no `sorry`); (iii) a residual spectrum exposing a quadratic-residue ladder $s_q\approx 18\,q^{-1.95}$ — "non-residues richer at every modulus" — which is the first-order shadow of the character $\chi_p$; (iv) a Fourier decomposition of the local divisor density over Dirichlet characters $\bmod\,\ell$ that isolates the quadratic character $(p/\ell)$ as the dominant non-trivial signal at every $\ell\in\{11,13,17,19,23\}$ ($14$–$47\sigma$), whose Euler product is by definition a power of $L(1,\chi_p)$.
+We arrive at the law by a documented chain: (i) a cross-validated solution-count dataset and a lognormal law for $f(p)$ confirmed by blind prediction; (ii) a machine-verified kernel reducing $f(p)$ to divisors of shifted integers in residue classes, together with the square obstruction re-proved in full and formalized in Lean 4 + Mathlib ($20$ theorems, complete with no unproved steps); (iii) a residual spectrum exposing a quadratic-residue ladder $s_q\approx 18\,q^{-1.95}$ — "non-residues richer at every modulus" — which is the first-order shadow of the character $\chi_p$; (iv) a Fourier decomposition of the local divisor density over Dirichlet characters $\bmod\,\ell$ that isolates the quadratic character $(p/\ell)$ as the dominant non-trivial signal at every $\ell\in\{11,13,17,19,23\}$ ($14$–$47\sigma$), whose Euler product is by definition a power of $L(1,\chi_p)$.
 
 The mechanism is the McKee–Zhou identity, by which the singular series of $\sum_{n\le N}\tau(F(n))$ for an irreducible quadratic $F$ equals $2L(1,\chi_{\mathrm{disc}\,F})/\zeta(2)$ — the precedent that divisor/representation counts are governed by quadratic $L$-values (Gauss–Siegel). The law is **not** a theorem: deriving the singular series via McKee–Zhou blocks at a verified obstruction (the Type II side-condition $\delta\mid y'z'$ makes $f_{\mathrm{II}}$ a *two-shift* divisor correlation, not a single $\sum\tau(F)$), which is the two-shift Titchmarsh estimate flagged out of reach by Elsholtz–Tao and blocked by the classical (Selberg) $\sqrt x$ parity barrier. What the $L$-lens does buy is sharp and unconditional in spirit: any Erdős–Straus exception must lie in the **extreme class-number tail** (a Granville–Soundararajan super-rare set), Siegel zeros are the **best** case rather than the worst, and the size budget — even at the maximal order $L(1,\chi_p)\asymp e^{\gamma}\log\log p$ — never threatens $f>0$.
 
@@ -64,7 +64,7 @@ This paper's central result is the **$L$-function law** of the abstract: $f(p)$ 
 
 1. the largest per-prime solution-count dataset we are aware of, four-engine cross-validated and validated against the published external dataset with zero discrepancies (§3);
 2. a lognormal law for $f(p)$, confirmed by four blind predictions of window minima before the computations were run (§3.3);
-3. the kernel bijection and the square obstruction, re-proved in full and **formalized in Lean 4 + Mathlib with no `sorry`** ($20$ theorems; §4, Appendix A), together with a no-finite-channel-system theorem (Theorem F) and an $\varepsilon$-covering cost law;
+3. the kernel bijection and the square obstruction, re-proved in full and **formalized in Lean 4 + Mathlib, complete with no unproved steps** ($20$ theorems; §4, Appendix A), together with a no-finite-channel-system theorem (Theorem F) and an $\varepsilon$-covering cost law;
 4. the explicit reduction of the second moment of $f_{\mathrm{II}}$ to a two-shift Titchmarsh divisor sum, measured $98.5\%$ off-diagonal, and the one rigorous distributional law in the circle, an Erdős–Kac theorem for the channel count $\omega_3(4p+1)$ (§6);
 5. a heuristic but data-matched derivation of the growth exponent $f(p)\sim(\log p)^3$ from the arithmetic geometry of the Cayley cubic (§7).
 
@@ -152,7 +152,7 @@ The mechanism the lognormal demands begins not with analysis but with structure.
 
 > **Lemma A (kernel bijection).** For prime $p\ge5$ and $x\in(p/4,3p/4]$, put $a=4x-p$, $B=px$ (so $\gcd(a,B)=1$). Solutions of $4/p=1/x+1/y+1/z$ with least denominator $x$ are in bijection with divisors $d\mid B^2$, $d\le B$, $d\equiv-B\pmod a$, via $y=(B+d)/a$, $z=(B+B^2/d)/a$.
 
-The bijection is now machine-verified in Lean 4 + Mathlib **in both directions**, with no `sorry`. Forward (`esc_kernel`): from $a+p=4x$, $B=px$, $de=B^2$ and $ay=B+d$, $az=B+e$, the identity $4/p=1/x+1/y+1/z$ follows from the two clean steps $1/y+1/z=a/B$ and $1/x+a/B=4/p$. Converse (`esc_kernel_converse`): every solution yields $d=ay-B$, $e=az-B$ with $de=B^2$, because the equation *is* $a\cdot yz=B(y+z)$, whence $(ay-B)(az-B)=a^2yz-aB(y+z)+B^2=B^2$. Forward and converse live in the **same** $(x,d,a,B)$ coordinates as the obstruction below, so kernel and obstruction reason about one object.
+The bijection is now machine-verified in Lean 4 + Mathlib **in both directions**, with no unproved steps. Forward (`esc_kernel`): from $a+p=4x$, $B=px$, $de=B^2$ and $ay=B+d$, $az=B+e$, the identity $4/p=1/x+1/y+1/z$ follows from the two clean steps $1/y+1/z=a/B$ and $1/x+a/B=4/p$. Converse (`esc_kernel_converse`): every solution yields $d=ay-B$, $e=az-B$ with $de=B^2$, because the equation *is* $a\cdot yz=B(y+z)$, whence $(ay-B)(az-B)=a^2yz-aB(y+z)+B^2=B^2$. Forward and converse live in the **same** $(x,d,a,B)$ coordinates as the obstruction below, so kernel and obstruction reason about one object.
 
 
 ### 4.2 Channels, identities, and their death at squares
@@ -173,7 +173,7 @@ The proof rests on two Jacobi-symbol facts that pull in opposite directions:
 
 The contradiction empties the coprime strata. This is the coprime case of Yamamoto's theorem — the case in which the engine and all covering arguments live.
 
-**Lean formalization.** The file `erdos1/subsetsums/Subsetsums/ErdosStraus.lean` machine-verifies, with no `sorry` (every theorem reduces to `propext, Classical.choice, Quot.sound`), $20$ theorems spanning all three movements:
+**Lean formalization.** The file `erdos1/subsetsums/Subsetsums/ErdosStraus.lean` machine-verifies, with no unproved steps (every theorem depending only on Lean's standard axioms `propext, Classical.choice, Quot.sound`), $20$ theorems spanning all three movements:
 
 - *Sufficient conditions:* `esc_of_factorization`, `esc_of_K1` (Obláth's criterion: $4p+1$ has a divisor $\equiv3\bmod4$), and the master `esc_of_typeII` ($\,(4y-1)(4z-1)=4p\delta+1$, $\delta\mid yz$).
 - *The obstruction, all divisors and both strata:* `typeI_target_jacobi` and `typeII_target_jacobi` (the target classes force Jacobi symbol $-1$); `div_jacobi_one` (every $d\mid x^2$ coprime to $a$, **odd or even**, has Jacobi symbol $+1$); hence `typeI_obstruction` and `typeII_obstruction` derive `False`. The prime cores `four_sq_add_one_div_one_mod_four` and `eight_sq_add_one_div_one_or_three_mod_eight` discharge the K1/K2 channels by strong induction.
@@ -412,7 +412,7 @@ The law is verified and structurally identified, but it is not a theorem, and we
 ## Appendix A. The Lean 4 + Mathlib development
 
 
-`erdos1/subsetsums/Subsetsums/ErdosStraus.lean` formalizes the elementary theory with **no `sorry`**; `#print axioms` reports only `propext, Classical.choice, Quot.sound` for every theorem. The $20$ theorems, by role:
+`erdos1/subsetsums/Subsetsums/ErdosStraus.lean` formalizes the elementary theory completely, with no unproved steps; `#print axioms` reports only Lean's standard `propext, Classical.choice, Quot.sound` for every theorem. The $20$ theorems, by role:
 
 - **Kernel:** `esc_kernel`, `esc_kernel_converse` (Lemma A, both directions).
 - **Sufficient conditions:** `esc_of_factorization`, `esc_of_K1` (Obláth), `esc_of_typeII` (master Type II), `comp_mod_four` (helper).
