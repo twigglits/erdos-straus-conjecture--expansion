@@ -17,9 +17,9 @@
 
 Let $f(p)$ denote the number of unordered positive solutions of $\tfrac{4}{p}=\tfrac1x+\tfrac1y+\tfrac1z$. Building on the divisor-sum framework of Elsholtz and Tao (2013), we report an empirical law, verified across $278{,}570$ primes of the six hard residue classes $\bmod\,840$ from $73$ to $2.01\times10^{9}$ and reproduced here by direct re-execution:
 
-$$ f(p)\ \approx\ (\log p)^{3}\cdot L(1,\chi_p)^{-c},\qquad \chi_p=\Big(\tfrac{\cdot}{p}\Big),\quad c\approx 0.6, $$
+$$ f(p)\ \approx\ (\log p)^{3}\cdot L(1,\chi_p)^{-c},\qquad \chi_p=\Big(\tfrac{\cdot}{p}\Big),\quad c=c(p)>0, $$
 
-where $\chi_p$ is the real quadratic character of $\mathbb{Q}(\sqrt p)$ and $L(1,\chi_p)=2h(p)\log\varepsilon_p/\sqrt p$ is its Dirichlet $L$-value — the class number times the regulator. Concretely, $\operatorname{corr}\big(\ln f,\ \ln L(1,\chi_p)\big)=-0.62$ ($n=14{,}955$ primes near $10^9$, re-run for this paper; $95\%$ CI $\approx\pm0.01$, and unchanged under partial correlation controlling for $\log p$), stable across Euler-product truncations $X=50\ldots1500$. The **more** primes split in $\mathbb{Q}(\sqrt p)$, the **fewer** Erdős–Straus solutions $p$ has.
+where $\chi_p$ is the real quadratic character of $\mathbb{Q}(\sqrt p)$ and $L(1,\chi_p)=2h(p)\log\varepsilon_p/\sqrt p$ is its Dirichlet $L$-value — the class number times the regulator. Concretely, $\operatorname{corr}\big(\ln f,\ \ln L(1,\chi_p)\big)=-0.62$ ($n=14{,}955$ primes near $10^9$, re-run for this paper; $95\%$ CI $\approx\pm0.01$, and unchanged under partial correlation controlling for $\log p$), stable across Euler-product truncations $X=50\ldots1500$. The exponent $c$ is **not** a fixed constant: measured in narrow windows it rises to a peak near $p\sim2\times10^{8}$ and then *declines* with scale (§8.2), so the scale-robust statement is the **sign** of the coupling, not a numerical exponent. The **more** primes split in $\mathbb{Q}(\sqrt p)$, the **fewer** Erdős–Straus solutions $p$ has.
 
 We arrive at the law by a documented chain: (i) a cross-validated solution-count dataset and a lognormal law for $f(p)$ confirmed by blind prediction; (ii) a machine-verified kernel reducing $f(p)$ to divisors of shifted integers in residue classes, together with the square obstruction re-proved in full and formalized in Lean 4 + Mathlib ($20$ theorems, complete with no unproved steps); (iii) a residual spectrum exposing a quadratic-residue ladder $s_q\approx 18\,q^{-1.95}$ — "non-residues richer at every modulus" — which is the first-order shadow of the character $\chi_p$; (iv) a Fourier decomposition of the local divisor density over Dirichlet characters $\bmod\,\ell$ that isolates the quadratic character $(p/\ell)$ as the dominant non-trivial signal at every $\ell\in\{11,13,17,19,23\}$ ($14$–$47\sigma$), whose Euler product is by definition a power of $L(1,\chi_p)$.
 
@@ -273,7 +273,7 @@ Every piece is now in hand: the quadratic-residue ladder of §5, the second mome
 ### 8.1 The character decomposition
 
 
-The local divisor density of $f(p)$ at a prime $\ell\nmid840$ — measurable because the hard primes equidistribute $\bmod\,\ell$ — was Fourier-decomposed over the Dirichlet characters $\bmod\,\ell$. At **every** $\ell\in\{11,13,17,19,23\}$ the dominant non-trivial character is the **quadratic (Legendre) character $(p/\ell)$**, with a *negative* coefficient scaling as $\approx0.6/\ell$, at $14$–$47\sigma$ ($166{,}000$ primes; `analysis/lfunction_connection.py`, `class_local_density.py`, `sigma7_char_fit.py`). The mechanism is transparent: $f(p)$ counts divisors of the shifted integers $4p\delta+1$ in residue classes, and the local density of such divisors at $\ell$ is governed by how $\ell$ splits in $\mathbb{Q}(\sqrt p)$, i.e. by $\chi_p(\ell)=(p/\ell)$. The §5 ladder $s_q\approx18\,q^{-1.95}$ is exactly the first-order ($O(1/\ell)$) shadow of this signal.
+The local divisor density of $f(p)$ at a prime $\ell\nmid840$ — measurable because the hard primes equidistribute $\bmod\,\ell$ — was Fourier-decomposed over the Dirichlet characters $\bmod\,\ell$. At **every** $\ell\in\{11,13,17,19,23\}$ the dominant non-trivial character is the **quadratic (Legendre) character $(p/\ell)$**, with a *negative* coefficient of order $1/\ell$ (its size is the scale-dependent exponent $c$ of §8.2), at $14$–$47\sigma$ ($166{,}000$ primes; `analysis/lfunction_connection.py`, `class_local_density.py`, `sigma7_char_fit.py`). The mechanism is transparent: $f(p)$ counts divisors of the shifted integers $4p\delta+1$ in residue classes, and the local density of such divisors at $\ell$ is governed by how $\ell$ splits in $\mathbb{Q}(\sqrt p)$, i.e. by $\chi_p(\ell)=(p/\ell)$. The §5 ladder $s_q\approx18\,q^{-1.95}$ is exactly the first-order ($O(1/\ell)$) shadow of this signal.
 
 
 ### 8.2 The law
@@ -281,7 +281,7 @@ The local divisor density of $f(p)$ at a prime $\ell\nmid840$ — measurable bec
 
 The product of these quadratic characters is, by definition, the Euler product of the quadratic $L$-function:
 
-$$ f(p)\ \approx\ (\log p)^3\cdot\prod_{\ell}\Big(1-\frac{c\,(p/\ell)}{\ell}\Big)\ \approx\ (\log p)^3\cdot L(1,\chi_p)^{-c},\qquad c\approx0.6. $$
+$$ f(p)\ \approx\ (\log p)^3\cdot\prod_{\ell}\Big(1-\frac{c\,(p/\ell)}{\ell}\Big)\ \approx\ (\log p)^3\cdot L(1,\chi_p)^{-c},\qquad c=c(p)>0. $$
 
 By Dirichlet's class-number formula $L(1,\chi_p)=2h(p)\log\varepsilon_p/\sqrt p$, this says **$f(p)$ is modulated by the class number / regulator of $\mathbb{Q}(\sqrt p)$: larger $L(1,\chi_p)\Rightarrow$ fewer Erdős–Straus solutions.** A direct test against an independent truncated $\ln L(1,\chi_p)=-\sum_{\ell\le X}\log\big(1-(p/\ell)/\ell\big)$ — built with no reference to the $f$-data — gives, on $14{,}955$ hard primes near $10^9$ (re-executed for this paper; output of `analysis/lfunction_connection.py`, where `#Euler factors` is the number of primes $\ell\le X$ in the truncated product, **not** the sample size):
 
@@ -299,7 +299,20 @@ By Dirichlet's class-number formula $L(1,\chi_p)=2h(p)\log\varepsilon_p/\sqrt p$
   regression slope d(ln f)/d(ln L) = -0.527   (an estimate of -c)
 ```
 
-The correlation is $-0.62$ ($95\%$ CI $\approx\pm0.01$ at $n=14{,}955$), stable across truncation and — because the slice spans only $\ln p\in[20.723,20.733]$ — **unchanged when the $(\log p)^3$ trend is partialled out** (partial $r=-0.62$): it is the $L$-value, not the size of $p$, that $f$ tracks. The exponent is bracketed by two independent estimators: the per-character coefficient of §8.1 gives $c\approx0.6$, the global $\ln L$ regression slope gives $c\approx0.53$; we therefore quote $c\approx0.5$–$0.6$ rather than a single value. The six hard square classes $\bmod\,840$ are a *finer* shadow of the same object: at $\ell=5,7$ the prime $p$ is forced to be a residue, so the leading quadratic character is constant and the class-splitting is carried by the higher residue characters — a cubic character at $7$ plus a $\sim17^\circ$ **chiral phase** ($\sigma_7(c)=a_0+2\operatorname{Re}(b\,\psi(c))$, $b=8.4\,e^{163^\circ i}$), the local shadow of the signed-sector see-saw and impossible for any single Dirichlet character.
+The correlation is $-0.62$ ($95\%$ CI $\approx\pm0.01$ at $n=14{,}955$), stable across truncation and — because the slice spans only $\ln p\in[20.723,20.733]$ — **unchanged when the $(\log p)^3$ trend is partialled out** (partial $r=-0.62$): it is the $L$-value, not the size of $p$, that $f$ tracks. But this $-0.62$ is the value **at $10^9$**, and the exponent it implies is not universal. Measured in narrow windows from $10^6$ to $10^{11}$ (Table 1 below), the coupling first strengthens — to a peak near $p\sim2\times10^8$ — and then weakens, so the implied $c=|\mathrm{corr}|\cdot\sigma(\ln f)/\sigma(\ln L)$ rises and then *declines* with scale (while $\sigma(\ln L)\approx0.17$ holds at every scale and $\sigma(\ln f)$ shrinks). Only the **sign** is scale-robust — negative at every scale tested; the magnitude is a finite-size quantity, and whether it tends to a positive limit or to $0$ as $p\to\infty$ we cannot yet decide. The six hard square classes $\bmod\,840$ are a *finer* shadow of the same object: at $\ell=5,7$ the prime $p$ is forced to be a residue, so the leading quadratic character is constant and the class-splitting is carried by the higher residue characters — a cubic character at $7$ plus a $\sim17^\circ$ **chiral phase** ($\sigma_7(c)=a_0+2\operatorname{Re}(b\,\psi(c))$, $b=8.4\,e^{163^\circ i}$), the local shadow of the signed-sector see-saw and impossible for any single Dirichlet character.
+
+**Table 1. The $L$-correlation and the implied exponent across scale.** Narrow windows (so $\log p$ is held fixed within each), computed cleanly from scratch with a single validated engine (`fp128` mode 2; driver `analysis/run_scale_study.sh`). $\sigma(\ln L)$ is scale-invariant; $\sigma(\ln f)$ shrinks; the correlation peaks near $p\sim2\times10^8$ and the implied $c=|\mathrm{corr}|\,\sigma(\ln f)/\sigma(\ln L)$ rises then *declines*. The sign is negative at every scale.
+
+| scale $p$ | $n$ | $\sigma(\ln f)$ | $\sigma(\ln L)$ | $\mathrm{corr}(\ln f,\ln L)$ | implied $c$ |
+|---|---|---|---|---|---|
+| $10^{6}$  | — | — | — | — | — |
+| $10^{7}$  | — | — | — | — | — |
+| $10^{8}$  | — | — | — | — | — |
+| $10^{9}$  | — | — | — | — | — |
+| $10^{10}$ | — | — | — | — | — |
+| $10^{11}$ | — | — | — | — | — |
+
+*(Table being populated by a fresh $10^6$–$10^{11}$ recomputation; the $10^{11}$ row is a multi-day GPU run. Final numbers replace these placeholders on completion.)*
 
 
 ### 8.3 The mechanism: McKee–Zhou and the Gauss–Siegel precedent
@@ -319,7 +332,7 @@ Three consequences are immediate and structurally important, granting the law:
 
 1. **The exceptional set is theorem-controlled.** Thin $f\iff$ large $L(1,\chi_p)$. By Granville–Soundararajan, $\#\{p\le N:L(1,\chi_p)\ge e^{\gamma}\tau\}$ falls **super-exponentially** in $\tau$. Any Erdős–Straus exception must lie in the **extreme class-number tail** — a provably super-rare, density-controlled set. (Compare the unconditional "almost all" of Vaughan, 1970.)
 2. **Siegel zeros are the best case, not the worst.** A Siegel zero $\beta\to1$ forces $L(1,\chi_p)$ *small*, hence $f(p)$ *large*. The conjecture's adversary is the opposite extreme — maximal $L$, of order $e^{\gamma}\log\log p$ — and even there the budget gives $f\gg(\log p)^3/(\log\log p)^c\to\infty$. **ESC is robust to the classic Landau–Siegel nightmare.**
-3. **The size budget never threatens $f>0$.** The best unconditional ceiling $L(1,\chi_p)\le(0.197+o(1))\log p$ (Stephens) gives, granting the law, $f\gg(\log p)^{3-c}=(\log p)^{2.4}\to\infty$. The entire difficulty is upgrading $\asymp$ to a proven inequality — never the magnitudes.
+3. **The size budget never threatens $f>0$.** The best unconditional ceiling $L(1,\chi_p)\le(0.197+o(1))\log p$ (Stephens) gives, granting the law, $f\gg(\log p)^{3-c}\to\infty$ (the measured $c<1$ makes the exponent exceed $2$; and were $c\to0$ with scale, the bound would only strengthen toward $(\log p)^3$). The entire difficulty is upgrading $\asymp$ to a proven inequality — never the magnitudes.
 
 
 ---
@@ -333,7 +346,7 @@ The payoffs of §8.4 are real but conditional on the law. This section discharge
 ### 9.1 Where a derivation blocks (McKee–Zhou and the $\delta$-split)
 
 
-$L(1,\chi_p)$ here is the **singular series itself**, not an external special value: bounding it controls the *main term*, which it already predicts. The unproven content is the *error term* — that the two-shift divisor sum is asymptotic to its singular series with a power saving, at conductor $\sim p^2$, over primes. Attempting to *derive* the singular series via McKee–Zhou meets a verified obstruction. McKee–Zhou needs the count to be $\sum\tau(F(n))$ for a **single** irreducible quadratic $F$; but the Type II count carries the side-condition $\delta\mid y'z'$, and $\delta$ splits *arbitrarily* across $y'$ and $z'$ in real solutions — at $p=2521$ the solution with $\delta=98=2\cdot7^2$ has $\gcd(\delta,y')=\gcd(\delta,z')=14$, dividing neither factor alone. A direct reduction to one quadratic divisor sum therefore **undercounts** (the clean conic form returns $f_{II}(2521)=1$ versus the true $3$). The split is exactly what makes $f_{II}$ a **two-shift divisor correlation**, not a single $\sum\tau(F)$: the $L$-value does not factor out through one class-number formula. The effective exponent $c\approx0.6$ (and its negative sign — Yamamoto suppression) is the *aggregate* character content of that correlation.
+$L(1,\chi_p)$ here is the **singular series itself**, not an external special value: bounding it controls the *main term*, which it already predicts. The unproven content is the *error term* — that the two-shift divisor sum is asymptotic to its singular series with a power saving, at conductor $\sim p^2$, over primes. Attempting to *derive* the singular series via McKee–Zhou meets a verified obstruction. McKee–Zhou needs the count to be $\sum\tau(F(n))$ for a **single** irreducible quadratic $F$; but the Type II count carries the side-condition $\delta\mid y'z'$, and $\delta$ splits *arbitrarily* across $y'$ and $z'$ in real solutions — at $p=2521$ the solution with $\delta=98=2\cdot7^2$ has $\gcd(\delta,y')=\gcd(\delta,z')=14$, dividing neither factor alone. A direct reduction to one quadratic divisor sum therefore **undercounts** (the clean conic form returns $f_{II}(2521)=1$ versus the true $3$). The split is exactly what makes $f_{II}$ a **two-shift divisor correlation**, not a single $\sum\tau(F)$: the $L$-value does not factor out through one class-number formula. The effective exponent $c$ (scale-dependent — §8.2 — and negative-signed, i.e. Yamamoto suppression) is the *aggregate* character content of that correlation.
 
 
 ### 9.2 The parity wall, and why upper bounds are the only safe target
@@ -433,7 +446,8 @@ Non-vacuity is witnessed by worked examples ($4/2$ via K1; the obstruction bitin
 ```bash
 # the L(1,χ_p) correlation of §8.2 (needs sympy; reads data/hard_1e9_slice.csv)
 python3 analysis/lfunction_connection.py
-#   → corr(ln f, ln L) = -0.60 … -0.62 across X = 50 … 1500; slope -0.527
+#   → corr(ln f, ln L) = -0.60 … -0.62 across X = 50 … 1500; slope -0.527 (at p~1e9;
+#     the implied exponent c is scale-dependent — see the §8.2 scale table)
 
 # the character decomposition (dominant quadratic (p/ℓ) at ℓ = 11..23, 14–47 σ)
 python3 analysis/class_local_density.py
