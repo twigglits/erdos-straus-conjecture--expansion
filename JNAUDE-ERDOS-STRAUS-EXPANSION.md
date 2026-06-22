@@ -273,7 +273,7 @@ Every piece is now in hand: the quadratic-residue ladder of §5, the second mome
 ### 8.1 The character decomposition
 
 
-The local divisor density of $f(p)$ at a prime $\ell\nmid840$ — measurable because the hard primes equidistribute $\bmod\,\ell$ — was Fourier-decomposed over the Dirichlet characters $\bmod\,\ell$. At **every** $\ell\in\{11,13,17,19,23\}$ the dominant non-trivial character is the **quadratic (Legendre) character $(p/\ell)$**, with a *negative* coefficient of order $1/\ell$ (its size is the scale-dependent exponent $c$ of §8.2), at $14$–$47\sigma$ ($166{,}000$ primes; `analysis/lfunction_connection.py`, `class_local_density.py`, `sigma7_char_fit.py`). The mechanism is transparent: $f(p)$ counts divisors of the shifted integers $4p\delta+1$ in residue classes, and the local density of such divisors at $\ell$ is governed by how $\ell$ splits in $\mathbb{Q}(\sqrt p)$, i.e. by $\chi_p(\ell)=(p/\ell)$. The §5 ladder $s_q\approx18\,q^{-1.95}$ is exactly the first-order ($O(1/\ell)$) shadow of this signal.
+The local divisor density of $f(p)$ at a prime $\ell\nmid840$ — measurable because the hard primes equidistribute $\bmod\,\ell$ — was Fourier-decomposed over the Dirichlet characters $\bmod\,\ell$. At **every** $\ell\in\{11,13,17,19,23\}$ the dominant non-trivial character is the **quadratic (Legendre) character $(p/\ell)$**, with a *negative* coefficient of order $1/\ell$ (its size is the scale-dependent exponent $c$ of §8.2), at $14$–$47\sigma$ ($166{,}000$ primes; `analysis/lfunction_connection.py`, `class_local_density.py`, `sigma7_char_fit.py`). The mechanism (made precise in §8.4): $f(p)$ counts divisors of the shifted integers $4p\delta+1$ in residue classes, and these counts track how $\ell$ splits in $\mathbb{Q}(\sqrt p)$, i.e. $\chi_p(\ell)=(p/\ell)$ — though §8.4 shows the signal is **not** a single-$\ell$ local density (those are character-free) but a shadow of the cross-prime correlation. The §5 ladder $s_q\approx18\,q^{-1.95}$ is exactly the first-order ($O(1/\ell)$) shadow of this signal.
 
 
 ### 8.2 The law
@@ -325,7 +325,25 @@ $$ \mathfrak{S}(F)=\frac{2\,L(1,\chi_{\mathrm{disc}\,F})}{\zeta(2)} $$
 (McKee, *Math. Proc. Camb. Phil. Soc.* **126** (1999); explicit constant in Zhou, arXiv:1611.10186; cf. Lapkova). This is the divisor-count analogue of the Gauss–Siegel fact that ternary representation counts are governed by quadratic $L$-values ($r_3(n)\propto H(n)\propto L(1,\chi_{-n})$). Elsholtz–Tao construct $f(p)$ from precisely such divisor sums $\tau(kab^2+1)$ but use McKee only as an $O$-bound, never extracting the constant — which is exactly where $L(1,\chi_p)$ lives. Because an $L(1,\chi_p)^{-c}$ factor has mean $\approx$ const, the law leaves the Elsholtz–Tao first moment (of order $N\log^2N$) untouched while explaining the **prime-by-prime variance** a first-moment bound is blind to.
 
 
-### 8.4 What the $L$-lens buys
+### 8.4 Why the signal is not local
+
+
+A natural attempt at a proof would extract the $-c$ exponent one prime at a time, as the quadratic-character content of an $\ell$-local solution density. This cannot work: **the signal is invisible to every single-prime local density.** Two exact facts, each a finite check (verified at $\ell=11,13$, $k\le2$; `analysis/local_sign.py`, `local_signal_origin.py`), where $a:=p\bmod\ell^k$.
+
+**Proposition (local triviality).** Over $\mathbb{Z}/\ell^k$, for every $\ell\nmid p$:
+*(i)* the bare surface $4xyz=p\,(xy+yz+zx)$ has solution count $|V_a|$ **independent of** $a$ among units, so its Legendre projection $\sum_a|V_a|\,(a/\ell)$ vanishes identically; and
+*(ii)* the Type II count $N_\ell(a)=\#\{(y',z'):v_\ell(4y'z'-y'-z')\le v_\ell(y')+v_\ell(z')\}$ is likewise independent of $a$.
+
+*Proof.* (i) The dilation $(x,y,z)\mapsto(\lambda x,\lambda y,\lambda z)$, $\lambda\in(\mathbb{Z}/\ell^k)^\times$, multiplies the cubic term by $\lambda^3$ and the quadratic by $\lambda^2$, so it carries $V_a$ bijectively onto $V_{\lambda a}$; the units act transitively, hence $|V_a|$ is constant. (ii) The §6.1 relation $p\delta=4y'z'-y'-z'$ fixes $\delta\equiv(4y'z'-y'-z')\,a^{-1}$, so $v_\ell(\delta)=v_\ell(4y'z'-y'-z')$ is $a$-free and the side-condition $\delta\mid y'z'$ reads $v_\ell(\delta)\le v_\ell(y'z')$, also $a$-free. $\square$
+
+The mod-$4$ divisorship $d=4y'-1\equiv3$ is built into the integrality of $y'$, not an odd-$\ell$ degree of freedom, so it does not break the dilation. This matches §8.3 exactly: McKee's $L(1,\chi_p)$ surfaces only *after* the sum over $n$ (here over $\delta$), never as a product of single Euler factors.
+
+So where does the measured signal sit? In the conditional mean $\mathbb{E}[\ln f\mid p\equiv a]$ — present in **both** $f_I$ and $f_{II}$ — and the lognormal identity ties it to the second moment:
+$$ \mathbb{E}[\ln f\mid a]=\ln\mathbb{E}[f\mid a]-\tfrac12\operatorname{Var}(\ln f\mid a), $$
+verified to four decimals on the $10^9$ slice (Legendre projections at $\ell=11$: $-0.05421$ on the left vs.\ $-0.05423$ on the right). Its dominant part is the projection of $\ln\mathbb{E}[f\mid a]$ itself ($-0.0532$) — and since every local density is flat, that can only be generated by the side-condition $\delta\mid y'z'$ acting on **all primes at once** (the factorization of $\delta$ must divide $y'z'$ at each $\ell$ simultaneously). That global coupling is precisely the two-shift correlation of §6.1. The negativity of $c$ is therefore not a missing local computation but a property of the correlation, hence parity-bound (§9.2): **the wall is structural, not a gap in effort.**
+
+
+### 8.5 What the $L$-lens buys
 
 
 Three consequences are immediate and structurally important, granting the law:
@@ -340,7 +358,7 @@ Three consequences are immediate and structurally important, granting the law:
 ## 9. Honest status: a verified law, short of a theorem
 
 
-The payoffs of §8.4 are real but conditional on the law. This section discharges that condition as far as it will go, and marks precisely where it will not: a derivation of the singular series blocks at the $\delta$-split (§9.1), the asymptotic and the matching lower bound are parity-obstructed (§9.2), and only a low-payoff upper bound survives parity-safe (§9.3). The wall met here is the same one §6.2 measured, now read from the side of a proof.
+The payoffs of §8.5 are real but conditional on the law. This section discharges that condition as far as it will go, and marks precisely where it will not: a derivation of the singular series blocks at the $\delta$-split (§9.1), the asymptotic and the matching lower bound are parity-obstructed (§9.2), and only a low-payoff upper bound survives parity-safe (§9.3). The wall met here is the same one §6.2 measured, now read from the side of a proof.
 
 
 ### 9.1 Where a derivation blocks (McKee–Zhou and the $\delta$-split)
