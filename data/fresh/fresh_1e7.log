@@ -1,0 +1,3 @@
+primes in range/mode: 2161   base primes: 470 (√pmax=3333)
+x=5550001/5550000 (100.0%) dX=262144 elapsed=2s eta=0s
+primes=2161 launches=16 time=2.2s

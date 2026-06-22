@@ -17,7 +17,7 @@
 
 Let $f(p)$ denote the number of unordered positive solutions of $\tfrac{4}{p}=\tfrac1x+\tfrac1y+\tfrac1z$. Building on the divisor-sum framework of Elsholtz and Tao (2013), we report an empirical law, verified across $278{,}570$ primes of the six hard residue classes $\bmod\,840$ from $73$ to $2.01\times10^{9}$ and reproduced here by direct re-execution:
 
-$$ f(p)\ \approx\ (\log p)^{3}\cdot L(1,\chi_p)^{-c},\qquad \chi_p=\Big(\tfrac{\cdot}{p}\Big),\quad c=c(p)>0, $$
+$$ f(p)\ \approx\ (\log p)^{3}\cdot L(1,\chi_p)^{-c},\qquad \chi_p=\Big(\tfrac{\cdot}{p}\Big),\quad c>0, $$
 
 where $\chi_p$ is the real quadratic character of $\mathbb{Q}(\sqrt p)$ and $L(1,\chi_p)=2h(p)\log\varepsilon_p/\sqrt p$ is its Dirichlet $L$-value — the class number times the regulator. Concretely, $\operatorname{corr}\big(\ln f,\ \ln L(1,\chi_p)\big)=-0.62$ ($n=14{,}955$ primes near $10^9$, re-run for this paper; $95\%$ CI $\approx\pm0.01$, and unchanged under partial correlation controlling for $\log p$), stable across Euler-product truncations $X=50\ldots1500$. The exponent $c$ is **not** a fixed constant: measured in narrow windows it rises to a peak near $p\sim2\times10^{8}$ and then *declines* with scale (§8.2), so the scale-robust statement is the **sign** of the coupling, not a numerical exponent. The **more** primes split in $\mathbb{Q}(\sqrt p)$, the **fewer** Erdős–Straus solutions $p$ has.
 
@@ -205,7 +205,7 @@ Then $s_q>0$ at $19$ of $21$ moduli $q\le97$ (the two flat ones have the smalles
 
 $$ s_q\ \approx\ 18.2\,q^{-1.95}. $$
 
-"Non-residues richer at every modulus" is exactly the statement that $f(p)$ carries the multiplicative signal of the Legendre symbol $\big(\tfrac{p}{q}\big)$ at every prime $q$, with a *consistent sign* — being a residue $\bmod\,q$ prunes channels (Theorem F seen from below). An additive model over these contrasts saturates out-of-sample at $\approx58\%$ of the residual variance, the remaining $\approx42\%$ being carried by the prime factorizations of the shifted integers $4pm+1$ themselves. The $q^{-2}$-summable ladder over a consistent quadratic signal is the empirical silhouette of an Euler product $\prod_q\big(1-c\,(p/q)/q\big)$; §8 confirms it *is* one.
+"Non-residues richer at every modulus" is exactly the statement that $f(p)$ carries the multiplicative signal of the Legendre symbol $\big(\tfrac{p}{q}\big)$ at every prime $q$, with a *consistent sign* — being a residue $\bmod\,q$ prunes channels (Theorem F seen from below). An additive model over these contrasts saturates out-of-sample at $\approx58\%$ of the residual variance, the remaining $\approx42\%$ being carried by the prime factorizations of the shifted integers $4pm+1$ themselves. The $q^{-2}$-summable ladder over a consistent quadratic signal is the empirical silhouette of an Euler product $\prod_q\big(1-c\left(\tfrac{p}{q}\right)/q\big)$ with a scalar $c>0$; §8 confirms it *is* one.
 
 
 ---
@@ -281,9 +281,9 @@ The local divisor density of $f(p)$ at a prime $\ell\nmid840$ — measurable bec
 
 The product of these quadratic characters is, by definition, the Euler product of the quadratic $L$-function:
 
-$$ f(p)\ \approx\ (\log p)^3\cdot\prod_{\ell}\Big(1-\frac{c\,(p/\ell)}{\ell}\Big)\ \approx\ (\log p)^3\cdot L(1,\chi_p)^{-c},\qquad c=c(p)>0. $$
+$$ f(p)\ \approx\ (\log p)^3\cdot\prod_{\ell}\Big(1-\frac{c\,\chi_p(\ell)}{\ell}\Big)\ \approx\ (\log p)^3\cdot L(1,\chi_p)^{-c},\qquad c>0. $$
 
-By Dirichlet's class-number formula $L(1,\chi_p)=2h(p)\log\varepsilon_p/\sqrt p$, this says **$f(p)$ is modulated by the class number / regulator of $\mathbb{Q}(\sqrt p)$: larger $L(1,\chi_p)\Rightarrow$ fewer Erdős–Straus solutions.** A direct test against an independent truncated $\ln L(1,\chi_p)=-\sum_{\ell\le X}\log\big(1-(p/\ell)/\ell\big)$ — built with no reference to the $f$-data — gives, on $14{,}955$ hard primes near $10^9$ (re-executed for this paper; output of `analysis/lfunction_connection.py`, where `#Euler factors` is the number of primes $\ell\le X$ in the truncated product, **not** the sample size):
+Here $\chi_p(\ell)=(\tfrac{p}{\ell})$ is the Legendre symbol of §2 and $c>0$ is a single scalar exponent — **not** a function of $\ell$ (its *fitted value* drifts with scale; Table 1). The two displayed forms agree to first order in $1/\ell$: the Euler product gives $\prod_\ell\big(1-\chi_p(\ell)/\ell\big)=L(1,\chi_p)^{-1}$ exactly, and $(1-x)^c=1-cx+O(x^2)$, whence $\prod_\ell\big(1-c\,\chi_p(\ell)/\ell\big)=L(1,\chi_p)^{-c}\,(1+O(1))$ — the convergent $O(1/\ell^2)$ remainder is absorbed into the amplitude. This is an **empirical law** ($f(p)$ carrying the character signal with mean order $(\log p)^3$), not a claimed identity; the $(\log p)^3$ is the Elsholtz–Tao average order (and §7's Cayley-cubic count), independent of the $L$-modulation it multiplies. By Dirichlet's class-number formula $L(1,\chi_p)=2h(p)\log\varepsilon_p/\sqrt p$, this says **$f(p)$ is modulated by the class number / regulator of $\mathbb{Q}(\sqrt p)$: larger $L(1,\chi_p)\Rightarrow$ fewer Erdős–Straus solutions.** A direct test against an independent truncated $\ln L(1,\chi_p)=-\sum_{\ell\le X}\log\big(1-(p/\ell)/\ell\big)$ — built with no reference to the $f$-data — gives, on $14{,}955$ hard primes near $10^9$ (re-executed for this paper; output of `analysis/lfunction_connection.py`, where `#Euler factors` is the number of primes $\ell\le X$ in the truncated product, **not** the sample size):
 
 ```
   n = 14,955 hard primes near 1e9   (p in [1.000, 1.010]e9, ln p ~ 20.73,
@@ -299,20 +299,20 @@ By Dirichlet's class-number formula $L(1,\chi_p)=2h(p)\log\varepsilon_p/\sqrt p$
   regression slope d(ln f)/d(ln L) = -0.527   (an estimate of -c)
 ```
 
-The correlation is $-0.62$ ($95\%$ CI $\approx\pm0.01$ at $n=14{,}955$), stable across truncation and — because the slice spans only $\ln p\in[20.723,20.733]$ — **unchanged when the $(\log p)^3$ trend is partialled out** (partial $r=-0.62$): it is the $L$-value, not the size of $p$, that $f$ tracks. But this $-0.62$ is the value **at $10^9$**, and the exponent it implies is not universal. Measured in narrow windows from $10^6$ to $10^{11}$ (Table 1 below), the coupling first strengthens — to a peak near $p\sim2\times10^8$ — and then weakens, so the implied $c=|\mathrm{corr}|\cdot\sigma(\ln f)/\sigma(\ln L)$ rises and then *declines* with scale (while $\sigma(\ln L)\approx0.17$ holds at every scale and $\sigma(\ln f)$ shrinks). Only the **sign** is scale-robust — negative at every scale tested; the magnitude is a finite-size quantity, and whether it tends to a positive limit or to $0$ as $p\to\infty$ we cannot yet decide. The six hard square classes $\bmod\,840$ are a *finer* shadow of the same object: at $\ell=5,7$ the prime $p$ is forced to be a residue, so the leading quadratic character is constant and the class-splitting is carried by the higher residue characters — a cubic character at $7$ plus a $\sim17^\circ$ **chiral phase** ($\sigma_7(c)=a_0+2\operatorname{Re}(b\,\psi(c))$, $b=8.4\,e^{163^\circ i}$), the local shadow of the signed-sector see-saw and impossible for any single Dirichlet character.
+The correlation is $-0.62$ ($95\%$ CI $\approx\pm0.01$ at $n=14{,}955$), stable across truncation and — because the slice spans only $\ln p\in[20.723,20.733]$ — **unchanged when the $(\log p)^3$ trend is partialled out** (partial $r=-0.62$): it is the $L$-value, not the size of $p$, that $f$ tracks. But this $-0.62$ is the value **at $10^9$**, and the exponent it implies is not universal. Measured in narrow windows from $10^6$ to $10^{10}$ (Table 1 below; the $10^{11}$ row awaits a multi-day GPU run still in progress), the correlation itself is nearly scale-stable — it stays within a $\pm0.03$ band of $-0.62$, with a shallow (but statistically resolved) maximum near $p\sim10^7$–$10^8$ and only a gentle weakening beyond it ($-0.620$ at $10^9$, $-0.596$ at $10^{10}$). What moves with scale is the *dynamic range* of $f$: $\sigma(\ln f)$ shrinks monotonically (from $0.21$ down to $0.14$) as the count distribution tightens, while $\sigma(\ln L)$ climbs from $\approx0.13$ and saturates near $0.175$ by $10^8$. The implied $c=|\mathrm{corr}|\cdot\sigma(\ln f)/\sigma(\ln L)$ therefore **declines monotonically** across the whole range — from $0.93$ at $10^6$ to $0.46$ at $10^{10}$ — driven by the narrowing spread of $f$, not by any collapse of the $L$-coupling (whose correlation barely moves). Only the **sign** is scale-robust — negative at every scale tested; the magnitude is a finite-size quantity, and whether $c$ tends to a positive limit or to $0$ as $p\to\infty$ we cannot yet decide, though the monotone descent over four decades is, if anything, weak evidence for the latter. The six hard square classes $\bmod\,840$ are a *finer* shadow of the same object: at $\ell=5,7$ the prime $p$ is forced to be a residue, so the leading quadratic character is constant and the class-splitting is carried by the higher residue characters — a cubic character at $7$ plus a $\sim17^\circ$ **chiral phase** ($\sigma_7(c)=a_0+2\operatorname{Re}(b\,\psi(c))$, $b=8.4\,e^{163^\circ i}$), the local shadow of the signed-sector see-saw and impossible for any single Dirichlet character.
 
-**Table 1. The $L$-correlation and the implied exponent across scale.** Narrow windows (so $\log p$ is held fixed within each), computed cleanly from scratch with a single validated engine (`fp128` mode 2; driver `analysis/run_scale_study.sh`). $\sigma(\ln L)$ is scale-invariant; $\sigma(\ln f)$ shrinks; the correlation peaks near $p\sim2\times10^8$ and the implied $c=|\mathrm{corr}|\,\sigma(\ln f)/\sigma(\ln L)$ rises then *declines*. The sign is negative at every scale.
+**Table 1. The $L$-correlation and the implied exponent across scale.** Narrow windows (so $\log p$ is held fixed within each), computed cleanly from scratch with a single validated engine (`fp128` mode 2; driver `analysis/run_scale_study.sh`, table by `analysis/scale_table.py`). Here $f=f_{\mathrm I}+f_{\mathrm{II}}$ and $\ln L$ is the truncated quadratic $L$-value at $X=1500$ ($235$ Euler factors); the $10^9$ row reproduces the headline $-0.620$. The correlation is nearly scale-stable (shallow maximum near $10^7$–$10^8$), $\sigma(\ln f)$ shrinks monotonically and $\sigma(\ln L)$ saturates near $0.175$ by $10^8$, so the implied $c=|\mathrm{corr}|\,\sigma(\ln f)/\sigma(\ln L)$ **declines monotonically** with scale. The sign is negative at every scale; the $95\%$ CI on each correlation is $\approx\pm0.01$ at $n\approx14{,}000$ and $\approx\pm0.03$ at $n\approx2{,}000$.
 
 | scale $p$ | $n$ | $\sigma(\ln f)$ | $\sigma(\ln L)$ | $\mathrm{corr}(\ln f,\ln L)$ | implied $c$ |
 |---|---|---|---|---|---|
-| $10^{6}$  | — | — | — | — | — |
-| $10^{7}$  | — | — | — | — | — |
-| $10^{8}$  | — | — | — | — | — |
-| $10^{9}$  | — | — | — | — | — |
-| $10^{10}$ | — | — | — | — | — |
+| $10^{6}$  | $1{,}927$  | $0.208$ | $0.132$ | $-0.588$ | $0.925$ |
+| $10^{7}$  | $2{,}161$  | $0.185$ | $0.161$ | $-0.646$ | $0.741$ |
+| $10^{8}$  | $2{,}001$  | $0.166$ | $0.170$ | $-0.640$ | $0.625$ |
+| $10^{9}$  | $14{,}955$ | $0.148$ | $0.174$ | $-0.620$ | $0.527$ |
+| $10^{10}$ | $13{,}564$ | $0.135$ | $0.175$ | $-0.596$ | $0.458$ |
 | $10^{11}$ | — | — | — | — | — |
 
-*(Table being populated by a fresh $10^6$–$10^{11}$ recomputation; the $10^{11}$ row is a multi-day GPU run. Final numbers replace these placeholders on completion.)*
+*(Rows $10^6$–$10^{10}$ are the completed fresh recomputation; the $10^{11}$ row awaits a multi-day GPU run still in progress and is filled on completion.)*
 
 
 ### 8.3 The mechanism: McKee–Zhou and the Gauss–Siegel precedent
