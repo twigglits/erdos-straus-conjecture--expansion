@@ -1,7 +1,7 @@
 # Erdős–Straus at 3.5×10⁷: floor growth, the channel decomposition, and the lognormal law
 
 **Session dates:** 2026-06-11 through 2026-06-13 · **Status of conjecture: OPEN** (erdosproblems.com #242; verified to 10¹⁸)
-**Continuation of:** phone session (TRANSCRIPT.md) — f(p) counting engine, Elsholtz–Tao program
+**Continuation of:** an earlier exploratory session — f(p) counting engine, Elsholtz–Tao program
 
 ---
 

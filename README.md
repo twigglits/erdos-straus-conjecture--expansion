@@ -355,7 +355,6 @@ Full proofs and checks: [`erdos1/THEOREMS.md`](erdos1/THEOREMS.md).
 ├── REPORT.md                     the full Erdős–Straus study (§0–§21)
 ├── JNAUDE-ERDOS-STRAUS-EXPANSION.md  the scientific paper — the quadratic L-value law
 ├── JNAUDE-ERDOS-STRAUS-EXPANSION.pdf typeset paper (pandoc → LaTeX)
-├── TRANSCRIPT.md                 original phone-session log that started it
 ├── engines/                      solution-counting engines (cross-validated)
 │   ├── fp.c                      f(p) counter — C reference
 │   ├── fpr.rs                    f(p) counter — Rust (multi-threaded, std-only)
@@ -415,7 +414,6 @@ Full proofs and checks: [`erdos1/THEOREMS.md`](erdos1/THEOREMS.md).
 | --- | --- |
 | `REPORT.md` | The full study: §0–§8 landscape + laws, §9 proof attempt, §10 datasets, §11 signed extension, §12 residual + frontier, §13 ρ / Type III / K-criteria, §14 second moment, §15–§17 further angles, §18 the L-value law, §19–§21 the second-moment frontier |
 | `JNAUDE-ERDOS-STRAUS-EXPANSION.md` (+ `.pdf`) | The scientific paper: the Erdős–Straus count is governed by a quadratic $L$-value (`f(p) ≈ (log p)³·L(1,χ_p)^{−c}`), with the machine-verified account of the wall |
-| `TRANSCRIPT.md` | The original phone-session log that started the project |
 | `engines/fp.c`, `engines/fpr.rs`, `engines/fp.cu` | The positive-world engines (C / Rust / CUDA) |
 | `engines/fsigned.c`, `engines/census_ref.py` | The signed-grading engine + Python reference |
 | `analysis/verify_lemmas.py`, `analysis/verify_signed.py` | Machine verification of §9 / §11 ($8{,}719$ / $536{,}988$ assertions) |

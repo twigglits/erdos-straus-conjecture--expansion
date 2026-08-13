@@ -450,7 +450,7 @@ The law is verified and structurally identified, but it is not a theorem, and we
 ## 12. AI-use disclosure
 
 
-Large language model assistance (Claude, Anthropic) was used throughout this work: to draft and refine derivations, to write the search and statistics engines in [`engines/`](engines/) and [`analysis/`](analysis/), to develop the Lean 4 formalization in [`erdos1/subsetsums/`](erdos1/subsetsums/), and to draft and edit the text of this paper. The per-step record is in the repository commit trailers and [`TRANSCRIPT.md`](TRANSCRIPT.md).
+Large language model assistance (Claude, Anthropic) was used throughout this work: to draft and refine derivations, to write the search and statistics engines in [`engines/`](engines/) and [`analysis/`](analysis/), to develop the Lean 4 formalization in [`erdos1/subsetsums/`](erdos1/subsetsums/), and to draft and edit the text of this paper. The per-step record is in the repository commit trailers.
 
 The AI is a tool, not an author, and meets no authorship criterion: it takes no responsibility for the work. The author alone conceived the line of inquiry, directed the investigation, and is solely responsible for the paper's content, including all claims, computations, and citations. Every load-bearing claim is independently checkable rather than taken on the model's word: the numerical results are reproducible by re-executing the committed engines against the committed datasets (Appendix B), the formalized statements are checked by the Lean 4 kernel against Mathlib with no unproved steps (Appendix A), and every citation was verified against primary sources by the author (§10).
 
