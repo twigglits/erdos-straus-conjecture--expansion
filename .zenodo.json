@@ -1,0 +1,24 @@
+{
+  "title": "The Erdős–Straus count is governed by a quadratic L-value",
+  "description": "<p>An experimental route from solution-counting to <em>L</em>(1,&chi;<sub>p</sub>), with a machine-verified account of the wall.</p><p>Let <em>f</em>(<em>p</em>) denote the number of unordered positive solutions of 4/<em>p</em> = 1/<em>x</em> + 1/<em>y</em> + 1/<em>z</em>. Building on the divisor-sum framework of Elsholtz and Tao (2013), we report an empirical law verified across 278,570 primes of the six hard residue classes mod 840 from 73 to 2.01&times;10<sup>9</sup>: <em>f</em>(<em>p</em>) &asymp; (log <em>p</em>)<sup>3</sup> &middot; <em>L</em>(1,&chi;<sub>p</sub>)<sup>&minus;c</sup>, with corr(ln <em>f</em>, ln <em>L</em>(1,&chi;<sub>p</sub>)) = &minus;0.62. The more primes split in Q(&radic;<em>p</em>), the fewer Erd&#337;s&ndash;Straus solutions <em>p</em> has.</p><p>The Erd&#337;s&ndash;Straus conjecture is <strong>open</strong>; nothing here proves or disproves it. The contribution is a measured, reproducible, structurally-identified law for the solution count, a machine-verified delimitation (Lean 4 + Mathlib, 20 theorems) of why the elementary toolbox cannot close the problem, and a map of the analytic wall the law runs into.</p><p>This record contains the paper together with its computational artifacts: solution-count datasets, analysis code, computation engines, and the Lean 4 development.</p>",
+  "upload_type": "publication",
+  "publication_type": "preprint",
+  "creators": [
+    {
+      "name": "Naude, Jean",
+      "orcid": "0009-0000-6248-2680"
+    }
+  ],
+  "license": "mit",
+  "access_right": "open",
+  "keywords": [
+    "Erdős–Straus conjecture",
+    "number theory",
+    "Dirichlet L-functions",
+    "class number",
+    "divisor sums",
+    "experimental mathematics",
+    "Lean 4",
+    "formal verification"
+  ]
+}
