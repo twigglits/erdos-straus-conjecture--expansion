@@ -305,7 +305,7 @@ phase-diagram-located empirical margin — and unproven.
   Pomerance–Weingartner, arXiv:2511.16817; Bright–Loughran (no Brauer–Manin obstruction, 2020);
   Elsholtz–Planitzer 2020; Vaughan 1970; T. Bloom, Erdős Problem #242
   (erdosproblems.com/242, accessed 2026-06-11, last edited 2026-05-07) + forum thread.
-- Analysis scripts: inline in session transcript (Python, stdlib only) + analysis/analyze_floor.py.
+- Analysis scripts: developed inline during the session (Python, stdlib only) + analysis/analyze_floor.py.
 
 ---
 

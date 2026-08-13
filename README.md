@@ -114,7 +114,7 @@ independent validation, no model without a blind test.**
   `analysis/verify_signed.py` ($536{,}988$ assertions, REPORT §11).
 - **Blind prediction protocol.** Statistical models are fitted on small scales,
   frozen, and tested on uncomputed ranges (fits $\le 2\times10^{8}$; tests at
-  $10^{9}$ and $2\times10^{9}$, stated in the transcript before the runs finished).
+  $10^{9}$ and $2\times10^{9}$, stated in advance, before the runs finished).
 - **Exact arithmetic everywhere** (integer / `Fraction` in Python; `__int128` in
   C); divisor-class enumeration via the kernel described in REPORT §9.1.
 - Hardware: i9-9900K ($16$ threads), RTX 5090 ($32$ GB). A $10^{7}$-wide hard-class
