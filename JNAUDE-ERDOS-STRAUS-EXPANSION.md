@@ -5,7 +5,9 @@
 
 ### An experimental route from solution-counting to $L(1,\chi_p)$, with a machine-verified account of the wall
 
-**J. Naude**, with derivations, engines, and analyses produced in human–AI collaboration (Claude, Anthropic; see the repository commit trailers). Computational artifacts, datasets, and machine proofs accompany this paper in [`REPORT.md`](REPORT.md), [`analysis/`](analysis/), [`engines/`](engines/), and the Lean 4 development [`erdos1/subsetsums/`](erdos1/subsetsums/).
+**J. Naude**
+
+Computational artifacts, datasets, and machine proofs accompany this paper in [`REPORT.md`](REPORT.md), [`analysis/`](analysis/), [`engines/`](engines/), and the Lean 4 development [`erdos1/subsetsums/`](erdos1/subsetsums/). See *AI-use disclosure* (§12) for the role of AI tooling in producing them.
 
 *Working paper, revision of 2026-06-21. The Erdős–Straus conjecture is **open**; nothing here proves or disproves it. The contribution is a measured, reproducible, structurally-identified law for the solution count, a machine-verified delimitation of exactly why the elementary toolbox cannot close the problem, and a complete map of the analytic wall the law runs into.*
 
@@ -441,6 +443,16 @@ The faithful-use principle applied throughout: where a cited result is used **ri
 The Erdős–Straus solution count $f(p)$ is governed, to the accuracy we can measure and reproduce, by the quadratic $L$-value $L(1,\chi_p)$ — the class number and regulator of $\mathbb{Q}(\sqrt p)$. We reached this not by guessing but by a documented descent: the lognormal law and its blind confirmations established that $f$ has a clean distribution; the machine-verified kernel and square obstruction established that $f$ is a divisor count in residue classes and pinned why elementary methods stop; the residual spectrum exposed a consistent quadratic-residue ladder at every modulus; and the character decomposition turned that ladder into an Euler product, hence into $L(1,\chi_p)^{-c}$, with the McKee–Zhou singular series as the rigorous precedent.
 
 The law is verified and structurally identified, but it is not a theorem, and we have mapped exactly why: the underlying object is a two-shift Titchmarsh divisor correlation whose asymptotic and lower-bound content is parity-obstructed, leaving only a low-payoff upper bound as parity-safe. What the law nonetheless settles, conditionally on itself and consistent with everything unconditional, is the *shape* of the problem: the magnitudes never threaten $f>0$, Siegel zeros help rather than hurt, and any counterexample is confined to the extreme class-number tail — a super-rare, density-controlled set. That is a sharper picture of where an Erdős–Straus exception could possibly hide than the conjecture has had, and it points the next rigorous effort at a single, cleanly isolated inequality.
+
+
+---
+
+## 12. AI-use disclosure
+
+
+Large language model assistance (Claude, Anthropic) was used throughout this work: to draft and refine derivations, to write the search and statistics engines in [`engines/`](engines/) and [`analysis/`](analysis/), to develop the Lean 4 formalization in [`erdos1/subsetsums/`](erdos1/subsetsums/), and to draft and edit the text of this paper. The per-step record is in the repository commit trailers and [`TRANSCRIPT.md`](TRANSCRIPT.md).
+
+The AI is a tool, not an author, and meets no authorship criterion: it takes no responsibility for the work. The author alone conceived the line of inquiry, directed the investigation, and is solely responsible for the paper's content, including all claims, computations, and citations. Every load-bearing claim is independently checkable rather than taken on the model's word: the numerical results are reproducible by re-executing the committed engines against the committed datasets (Appendix B), the formalized statements are checked by the Lean 4 kernel against Mathlib with no unproved steps (Appendix A), and every citation was verified against primary sources by the author (§10).
 
 
 ---
