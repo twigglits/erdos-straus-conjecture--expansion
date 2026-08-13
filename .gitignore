@@ -38,3 +38,5 @@ files/
 data/target_1e10_bottomK.txt
 engines/fp128
 engines/fp_single
+engines/fp128_rebuilt
+engines/fp_delta
