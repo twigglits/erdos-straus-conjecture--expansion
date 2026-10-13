@@ -21,6 +21,15 @@ the conjecture over $\mathbb{Z}$.
 > conjecture — lives self-contained in [`erdos1/`](erdos1/); see *"A second problem in
 > this repo"* near the end of this README, and `erdos1/NOTES.md` / `erdos1/THEOREMS.md`.
 
+> **Research update (2026-10-13).** [REPORT §22](REPORT.md#22-replacing-the-type-ii-side-condition-by-its-exact-residue-class)
+> gives an exact fixed-shift Type II divisor class: the modulus is `4s(δ)`, where
+> `s(δ)` is the least positive integer with `δ | s(δ)²`. The old `K_m` tests miss
+> solutions even when every shift is allowed: `p=9601` has no old certificate at
+> any `m`, but the complete class succeeds at `δ=4`. The large-prime search now
+> uses this stronger criterion. §21 also corrects a primitive/full-count mix-up
+> and withdraws its blanket exclusion of analytic methods. Written proofs and
+> independent exact checks are included; **the conjecture remains open**.
+
 ## The conjecture
 
 > For every integer $n \ge 2$ there exist **positive** integers $x, y, z$ with
@@ -414,7 +423,8 @@ Full proofs and checks: [`erdos1/THEOREMS.md`](erdos1/THEOREMS.md).
 
 | Path | What it is |
 | --- | --- |
-| `REPORT.md` | The full study: §0–§8 landscape + laws, §9 proof attempt, §10 datasets, §11 signed extension, §12 residual + frontier, §13 ρ / Type III / K-criteria, §14 second moment, §15–§17 further angles, §18 the L-value law, §19–§21 the second-moment frontier |
+| `REPORT.md` | The full study: §0–§8 landscape + laws, §9 proof attempt, §10 datasets, §11 signed extension, §12 residual + frontier, §13 ρ / Type III / K-criteria, §14 second moment, §15–§17 further angles, §18 the L-value law, §19–§21 the second-moment frontier (corrected in §21), §22 complete fixed-shift classes and the failure of unrestricted old K-channels |
+| `analysis/typeII_square_lift.py`, `analysis/verify_typeII_square_lift.py` | §22 exact residue criterion, independent enumeration checks, and finite certificates excluding every old K-channel at selected primes |
 | `JNAUDE-ERDOS-STRAUS-EXPANSION.md` (+ `.pdf`) | The scientific paper: the Erdős–Straus count is governed by a quadratic $L$-value (`f(p) ≈ (log p)³·L(1,χ_p)^{−c}`), with the machine-verified account of the wall |
 | `engines/fp.c`, `engines/fpr.rs`, `engines/fp.cu` | The positive-world engines (C / Rust / CUDA) |
 | `engines/fsigned.c`, `engines/census_ref.py` | The signed-grading engine + Python reference |
@@ -568,11 +578,16 @@ singular-series precedent. It confines any counterexample to the extreme class-n
 threatens `f > 0` (Stephens) — a verified, structurally-identified law, short of a theorem at the
 two-shift Titchmarsh wall. Full write-up: the scientific paper
 [`JNAUDE-ERDOS-STRAUS-EXPANSION.md`](JNAUDE-ERDOS-STRAUS-EXPANSION.md).
-§19–§21 (2026-06-20) map that wall from the second-moment side: the second moment is **irreducibly
-off-diagonal** (§19); the Henriot / Nair–Tenenbaum majorant closes the *primitive shadow* but not
-the bulk (§20); and de la Bretèche–Browning is first-moment machinery — structurally not the tool
-for the bulk correlation (§21). The parity-safe target stays a one-sided upper bound (positive
-proportion, ≤ Vaughan); the `L`-law's lower-bound content remains parity-blocked.
+§19–§21 (2026-06-20, corrected 2026-10-13) examine the second moment: the measured mass is
+predominantly off-diagonal (§19), and §20 estimates the primitive part. The original §21
+mistakenly substituted that primitive count for the full count; it now preserves the shift
+and integrality condition. A direct uniform bulk estimate is still missing. This is not a
+proof that a whole family of analytic methods cannot work, and the second-moment order
+`N(log N)⁵` remains a target rather than a consequence of a numerical fit.
+§22 (2026-10-13) removes the Type II side condition algebraically, replacing it by an exact
+divisor class modulo `4s(δ)`. It proves that arbitrarily deep old `K_m` searches are insufficient
+(`p=409,9601`), supplies the missing solutions, improves the large-prime verifier, and checks
+the formula on 6,348 solutions. No pointwise positivity theorem has been obtained.
 
 </div>
 

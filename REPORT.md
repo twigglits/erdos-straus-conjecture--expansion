@@ -2704,7 +2704,7 @@ not the realised ones); keeping only the realised shifts is bounding `f_II(p)` i
 
 ### 20.5 Honest verdict, and the correction to §18.7
 
-The upper bound `Σf² ≪ N(log N)⁵` is **true** (numerically `~ N(log N)^{5.3}`, §19) and **parity-safe in
+The upper bound `Σf² ≪ N(log N)⁵` is an **unproved target** (the finite-range fit is `~ N(log N)^{5.3}`, §19) and **parity-safe in
 principle** (it is a majorant; Selberg's barrier does not block it). But §18.7's "winnable in principle via
 Henriot" overstated the *availability*: it is **not an off-the-shelf Henriot application.** What Henriot
 delivers cleanly is the primitive shadow (`≪ N(log N)³`); the bulk requires genuine **multi-shift /
@@ -2723,15 +2723,16 @@ an off-the-shelf Henriot bound — the `δ`-split that defeats McKee–Zhou defe
 map is unchanged in kind; the one parity-safe target is real but its execution needs multi-shift machinery,
 and its payoff stays `≤` known. Reproducible: `analysis/primitive_typeII.py`.
 
-# Session addendum (2026-06-20, cont.): §21 — is de la Bretèche–Browning the tool for the bulk? No, and the reason is structural
+# Session addendum (2026-06-20; corrected 2026-10-13): §21 — auditing the proposed bulk estimate
 
-## 21. The bulk is a divisor *correlation*, not a `Σ h(F)` average — so the Nair–Tenenbaum family is the wrong family
+## 21. A bulk correlation estimate is still missing
 
 §20 pointed at the de la Bretèche–Browning (dlB–B) binary-form divisor machinery as what the bulk "needs."
-Reading their actual theorem (arXiv:math/0604119, *Sums of arithmetic functions over values of binary forms*,
-Acta Arith. 125 (2007)) shows this pointer was **imprecise**, in an instructive way: dlB–B is a *first-moment*
-tool, and the Erdős–Straus second moment is a *correlation*. This corrects §20 and pins the genuinely correct
-machinery.
+The theorem concerns averages of arithmetic functions over binary forms
+([de la Bretèche–Browning](https://arxiv.org/abs/math/0604119)). A direct application to the full
+Erdős–Straus second moment has not been supplied. The original version of this section confused the
+primitive count with the full count and asserted a general impossibility for this family of tools.
+Both assertions were too strong; the corrected distinction follows.
 
 ### 21.1 What dlB–B actually bounds
 
@@ -2741,49 +2742,216 @@ sub-multiplicative `h ∈ M(A,B)`,
 with the clean case (Cor 2): `Σ_{(n₁,n₂)∈[1,X]²} τ(|F(n₁,n₂)|) ≪_F X² log X` for `F` irreducible. This is the
 **2-variable Shiu/Nair–Tenenbaum bound**: the average of `h` over the values of **one** form across a box.
 
-### 21.2 Why the ESC second moment is not of that shape
+### 21.2 Preserve the shift and its integrality condition
 
-Write the (reduced) Type II form `redm(y',z') = 4y'z'−y'−z'` (§20). Then, grouping by the common value
-`n = redm`,
-> `Σ_{p≤N} f_II(p)²  =  Σ_{n≤N, n prime} r(n)²`,   `r(n) := #{(y',z') : redm(y',z') = n}`.
+Put `redm(Y,Z) = 4YZ−Y−Z`. The correct representation function is
 
-This is the **additive energy / second moment of the representation function** `r(n)` of the form — a
-*correlation* of two representations sharing a value. The entire Nair–Tenenbaum lineage
-(Shiu 1980 → Nair → Nair–Tenenbaum → Henriot → dlB–B) bounds the **first** moment
-> `Σ_{(y',z')∈box} h(redm(y',z'))  =  Σ_n r(n) h(n)`,
-i.e. `r(n)` to the **first** power against a multiplicative weight. None of them bounds `Σ_n r(n)²`. So
-dlB–B (2-variable) fails for the *same* reason as Henriot (1-variable): the tool computes the wrong moment.
-That is the unifying explanation of why every "apply a Nair–Tenenbaum-type bound" route (§18.4, §18.7, §20)
-stalls — those theorems are built for averages of one form, and ESC's difficulty is the second moment.
+> `r_δ(p) = #{1≤Y≤Z : redm(Y,Z)=pδ, δ | YZ}`,
+> `f_II(p) = Σ_δ r_δ(p)`, and
+> `Σ_{p≤N} f_II(p)² = Σ_{δ₁,δ₂} Σ_{p≤N} r_{δ₁}(p) r_{δ₂}(p)`.
 
-### 21.3 The genuinely correct machinery (and the corrected pointer)
+The former expression `r(p) = #{(Y,Z) : redm(Y,Z)=p}` counts only `δ=1`.
+For example, `p=97` has three Type II solutions, at shifts `2,8,20`, and none at shift `1`.
+Replacing `f_II` by that `r` therefore deletes the entire count at this prime.
 
-`Σ_n r(n)²` with `n` prime is the **additive divisor problem on average** — exactly Elsholtz–Tao's Remark 1.3
-two-shift Titchmarsh estimate (§14). Its home is the **dispersion method / spectral theory of the additive
-divisor problem**, *not* the Nair–Tenenbaum family:
+An estimate for `Σ h(F(u,v))` does not automatically estimate this coupled sum. However, the fact
+that it is an average over one form is **not** a theorem forbidding higher moments: admissible
+weights can themselves be powers such as `τ²`, as in §20.3, and Henriot treats multivariable
+arithmetic weights. A useful reduction must retain the restrictions and control its dependence
+on the shifts. §22 makes the integrality condition an explicit residue class.
+
+### 21.3 Candidate tools, not an exclusion theorem
+
+Dispersion and additive-divisor estimates are candidates for controlling the correlation:
 - Motohashi; Deshouillers–Iwaniec (spectral theory of `Σ τ(n)τ(n+h)`);
 - modern uniform versions: **Topacoğullari**, *On a certain additive divisor problem* (Acta Arith. 181, 2017,
   arXiv:1512.05770); **Drappeau**, dispersion-method error terms (arXiv:1504.05549) — **both already in this
   project's reference list** (EXPANSION §10), cited there for precisely this object.
 
-So §20's "de la Bretèche–Browning" should read **"the dispersion method (Motohashi / Deshouillers–Iwaniec /
-Topacoğullari / Drappeau)."** That literature *does* bound two-shift divisor correlations — but (i) its sharp
-form is the **asymptotic**, which at conductor `~p²` over primes is **parity-obstructed** (Granville–Shao 2023),
-and (ii) even a parity-safe *upper* bound is not packaged for the ESC structure (the realised-shift /
-integrality constraint `δ ∣ y'z'`, equivalently the conic `4y'z'≡y'+z' (mod p)`), so it remains a genuine
-research computation — the same wall, now correctly named.
+These references do not by themselves establish a bound uniform over the required shifts and
+moduli. Nor does a general reference to the sieve parity problem prove that every possible
+asymptotic or lower-bound approach fails. The unresolved task is a specific uniform estimate
+for the displayed representation counts. No theorem excluding an entire analytic method is
+claimed here. The previous attribution of this exact reduction to Elsholtz–Tao's Remark 1.3
+is also unsupported by the [arXiv text](https://arxiv.org/html/1107.1010); the reduction follows
+directly from their Type II parametrization and expansion of the square.
 
-### 21.4 The exponent, and what is settled
+### 21.4 The exponent remains a target
 
-The order is forced and confirmed: `f_II` has dimension `d = 3` (the Elsholtz–Tao / Browning–Wilsch average
-order, §17.3), and the second moment of a dimension-`d` divisor count over primes has exponent `2d − 1`:
-> `Σ_{p≤N} f_II(p)²  ≍  N (log N)^{2·3−1} = N(log N)⁵`   (measured `N(log N)^{5.3}`, §19; diagonal only `N(log N)²`).
+The conjectural order `Σ_{p≤N} f_II(p)² ≍ N(log N)⁵` is consistent with the measured growth.
+It is not forced by the first moment: rare large counts can change a second moment without
+changing its first-moment order. The data in §19 are evidence, not a proof of this bound.
+Even an upper bound of the desired size would yield a positive proportion through
+Cauchy–Schwarz, rather than pointwise positivity. The full conjecture remains open.
 
-**Verdict.** Neither the 1-variable (Henriot, §20) nor the 2-variable (dlB–B, §21) Nair–Tenenbaum bound closes
-the bulk, and now for a single clean reason: **they bound the first moment `Σ_n r(n)h(n)`; the Erdős–Straus
-difficulty is the second moment `Σ_n r(n)²`.** The correct machinery is the dispersion method / additive
-divisor problem (already cited in the project), whose upper bound is parity-safe *in principle* but unpackaged
-for this structure, and whose asymptotic is parity-blocked. The map is now complete and internally consistent:
-every Nair–Tenenbaum-family tool addresses the wrong moment; the right tool meets the parity wall from the
-familiar side; and the payoff, even granted, is `≤` Vaughan. Sources verified first-hand: dlB–B
-arXiv:math/0604119 (Thm 1, Cor 1–2); cross-referenced to the project's already-audited dispersion citations.
+# Session addendum (2026-10-13): §22 — complete fixed-shift classes and a failed restricted proof route
+
+## 22. Replacing the Type II side condition by its exact residue class
+
+The attempt was to remove the coupled divisibility condition from §§14 and 20, then seek
+a pointwise existence argument. The first step succeeds algebraically. It also reveals
+that the old `K_m` search can fail at **every** depth for a prime that has Type II solutions.
+The existence step is still open. The identities below are elementary consequences of
+the classical Type II parametrization; no claim of priority is made.
+
+### 22.1 The square-divisibility root
+
+For a positive integer `δ`, define
+
+$$s(\delta)=\prod_{\ell^e\parallel\delta}\ell^{\lceil e/2\rceil}.$$
+
+This is the least positive integer whose square is divisible by `δ`; indeed `δ | u²`
+if and only if `s(δ) | u`. In particular `s(δ) | δ | s(δ)²`. Writing uniquely
+`δ = r t²` with `r` squarefree gives `s(δ)=rt`.
+
+**Lemma.** Suppose `D E = 4nδ+1` and `D≡E≡−1 (mod 4)`, with all variables positive.
+Put `Y=(D+1)/4`, `Z=(E+1)/4`. Then
+
+$$\delta\mid YZ\quad\Longleftrightarrow\quad
+D\equiv-1\pmod{4s(\delta)}.$$
+
+*Proof.* The factor identity is `4YZ−Y−Z=nδ`. If `δ | YZ`, it follows that
+`δ | Y+Z`. For each `ℓ^e || δ`, if `v_ℓ(Y)<ceil(e/2)`, then `v_ℓ(Y)<e` and the
+sum condition forces `v_ℓ(Z)=v_ℓ(Y)`. This contradicts `v_ℓ(YZ)≥e`.
+Thus `s(δ) | Y` and `D≡−1 (mod 4s(δ))`.
+
+Conversely, `s(δ)|δ` gives `DE≡1 (mod 4s(δ))`. If `D≡−1` in this modulus,
+then `E≡−1` too. Hence `s(δ)` divides both `Y` and `Z`, and `δ|s(δ)²|YZ`. ∎
+
+**Exact count.** For prime `p≥5`, with unordered Type II solutions as in this repository,
+
+$$r_\delta(p)=\#\{D\mid 4p\delta+1:
+ D\le\sqrt{4p\delta+1},\ D\equiv-1\pmod{4s(\delta)}\}.$$
+
+No additional divisibility filter is needed. Each divisor gives
+`x=YZ/δ`, `y=pY`, `z=pZ`; cross multiplication proves `4/p=1/x+1/y+1/z`.
+Also `pδ=4YZ−Y−Z≥2YZ`, so `p/4<x≤p/2<pY≤pZ`. Thus `x` is coprime to `p`
+and the solution really is Type II. Conversely every Type II solution recovers
+its unique `δ=YZ/x` and `D=4Y−1`, proving the count without duplication.
+
+### 22.2 A complete finite shift bound
+
+Let `a=4x−p` and `d=aY−x`. The Type II equation gives
+`d=xY/Z`, so `1≤d≤x`, and
+
+$$\delta=\frac{Y^2}{d}=\frac{(x+d)^2}{a^2d}
+ \le\frac{(x+1)^2}{a^2}.$$
+
+The inequality follows from `(x+1)²d−(x+d)²=(d−1)(x²−d)≥0`.
+If `a₀` is the least positive residue of `−p mod 4`, then `a≥a₀` and
+`(x+1)/a=1/4+(p+4)/(4a)`. Therefore every Type II solution has
+
+$$1\le\delta\le B(p):=
+ \left\lfloor\frac{(p+a_0+4)^2}{16a_0^2}\right\rfloor.$$
+
+For `p≡1 (mod 4)`, this is `floor((p+7)²/144)`. This finite bound is useful
+for exhaustive checks on small primes; it does not make large-prime enumeration cheap.
+
+### 22.3 Why arbitrarily deep old K-channels are insufficient
+
+The old `K_m` test seeks `D | 4pm+1` with `D≡−1 (mod 4m)`.
+It is exactly the new class when `m` is squarefree, and a potentially smaller class
+otherwise. Its existence is equivalent to
+
+$$p=4mab-a-b,\qquad 1\le a\le b.$$
+
+Indeed, the old congruence forces `Y=ma`, `Z=mb`; the reverse construction uses
+`D=4ma−1`, `E=4mb−1`. Since
+`p=(4ma−1)b−a≥4a²−2a`, all old certificates, for **all** `m`, can be checked by
+
+$$1\le a\le\left\lfloor\frac{1+\sqrt{1+4p}}4\right\rfloor,
+ \quad q\mid p+a,\quad q\equiv-1\pmod{4a},\quad (p+a)/q\ge a.$$
+
+Here `m=(q+1)/(4a)`. This finite criterion gives reproducible certificates that
+**no old `K_m` works at any shift** for `p=409` and for the square-class floor prime
+`p=9601`. The bounds on `a` are only `10` and `49`, respectively; every divisor
+list is saved in `data/typeII_square_lift_verification.json`.
+
+Yet the complete class already works at `δ=4`, where `s(4)=2`:
+
+| p | D | E | modulus | (x,y,z) |
+|---|---|---|---|---|
+| 409 | 7 | 935 | 8 | (117, 818, 95706) |
+| 9601 | 23 | 6679 | 8 | (2505, 57606, 16033670) |
+
+These give exact positive Egyptian-fraction identities. Thus the attempted strategy
+“some old `K_m` must fire for each prime, if `m` is large enough” is false.
+This is a counterexample to that restricted strategy, **not** to Erdős–Straus.
+
+The gcd normalization explains the missing sector. Write `Y=h a`, `Z=h b`,
+`gcd(a,b)=1`. Since `x(a+b)=h ab(4x−p)` and `gcd(a+b,ab)=1`, one has `ab|x`.
+Write `x=gab`; then `g(a+b)=h(4x−p)`. Since `gcd(4x−p,x)=1`, it follows that
+`c=(a+b)/(4x−p)` is integral, `h=gc`, and `δ=gc²`.
+The old congruence is equivalent to `c=1`: `δ|Y` and `δ|Z` mean `c|a,b`.
+At `409` and `9601`, all Type II solutions have `c>1`.
+
+Restricting to square shifts alone also fails. At `p=97`, the complete Type II
+list has shifts `2,8,20`, none a square. The root criterion must retain general
+`δ=r t²`, rather than only the squarefree or only the square part.
+
+### 22.4 What the formula suggests analytically, and what remains unproved
+
+The integrality restriction is now an explicit modulus depending only on `δ`.
+The missing estimate is for divisors in those classes, summed uniformly over
+the relevant `δ` (and over pairs of shifts for the second moment). Discarding
+the residue class and bounding by `τ(4pδ+1)` still loses its essential sparsity.
+
+One elementary calculation explains why this modulus deserves to be retained.
+The reciprocal-modulus weight, without its factor `4`, satisfies
+
+$$\sum_{\delta\le T}\frac1{s(\delta)}
+ =\sum_{r\le T}\frac{\mu^2(r)}r
+   H_{\lfloor\sqrt{T/r}\rfloor}
+ =\frac{(\log T)^2}{4\zeta(2)}+O(\log T).$$
+
+To check the asymptotic, use `H_floor(u)=log u+O(1)` for `u≥1` and
+`Σ_{r≤u} μ²(r)/r=log(u)/ζ(2)+O(1)`, then partial summation.
+The latter follows by inserting `μ²(r)=Σ_{d²|r} μ(d)` into the harmonic sum;
+the series `Σ log(d)/d²` converges. This proves a statement about the weights,
+not about the divisor counts. In particular, it does **not** justify replacing
+`r_δ(p)` by `τ(4pδ+1)/φ(4s(δ))`, either pointwise or uniformly on average.
+Proving adequate distribution, or finding a constructive alternative, remains the task.
+
+For a prime `p≥5`, positivity of the complete sum `Σ_{δ≤B(p)} r_δ(p)` would
+prove the existence of a Type II solution. This is a **sufficient**, possibly
+stronger target for Erdős–Straus: a Type I solution alone also settles the original
+equation. No pointwise lower bound for this sum is proved here.
+
+### 22.5 Verification, implementation, and source boundaries
+
+`analysis/typeII_square_lift.py` implements the exact modulus, certificate reconstruction,
+finite shift bound, and all-depth old-channel test. `analysis/verify_large_primes.py`
+now uses the complete modulus in both stages. Search misses remain inconclusive;
+the old assertion that a deeper solution “provably” exists has been removed.
+
+Reproduce the standard-library checks:
+
+```bash
+python3 analysis/verify_typeII_square_lift.py --output data/typeII_square_lift_verification.json
+```
+
+With the existing `sympy` dependency installed, also exercise the large-prime search:
+
+```bash
+python3 analysis/verify_typeII_square_lift.py --check-solver --output data/typeII_square_lift_verification.json
+```
+
+The default run checks `6,348` Type II solutions on `414` primes: all primes `5≤p≤2000`,
+plus all `p≡1 (mod 24)` through `10000`. It agrees with all `301` applicable stored
+reference counts. For the `44` primes through `200`, the kernel, **complete** shifted-divisor
+enumeration, and direct `x,y` Egyptian-fraction enumeration produce identical solution sets;
+`31,952` candidate factor pairs check both acceptance and rejection of the new criterion.
+The all-depth old-channel test also agrees with the full kernel on every tested prime.
+These are finite exact checks accompanying the proof, not a formal proof in Lean.
+
+The optional solver check includes `409`, `9601`, and `10000001041` among nine
+deterministic targets, and checks the reconstructed fractions exactly. The weight identity
+in §22.4 is also checked with rational arithmetic at `T=1,2,10,100,1000`.
+
+The classical source is [Elsholtz–Tao, §2, especially (2.21)–(2.22)](https://arxiv.org/html/1107.1010).
+The recent [Bello-Hernández–Benito–Fernández parametrization](https://arxiv.org/abs/2606.10922)
+was checked for overlap; it does not supply the missing pointwise existence assertion.
+The September preprint [arXiv:2609.09204](https://arxiv.org/abs/2609.09204) is marked
+**withdrawn** with the comment “some errors”; its claims are not used as lemmas.
+This section advances and corrects the repository's reduction and search, and leaves the
+conjecture open.

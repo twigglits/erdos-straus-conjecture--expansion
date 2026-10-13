@@ -41,9 +41,14 @@ circular.
 
 ## Honest verdict (corrects §18.7)
 
-The upper bound is **true** (numerics `N(log N)^{5.3}`) and parity-safe in principle, but **not** an
+The upper bound is an **unproved target** (finite-range fit `N(log N)^{5.3}`) and parity-safe in principle, but **not** an
 off-the-shelf Henriot application. The bulk needs genuine multi-shift / 2D additive-divisor technology
 (de la Bretèche–Browning binary-form divisor machinery, summing over the conic `4y'z'≡y'+z' (mod p)` with
 realised-shift control) — research-level, and the asymptotic/lower-bound is parity-blocked as everywhere.
 Even completed, the payoff is Cauchy–Schwarz positive proportion `≤ Vaughan`. Deliverables: the primitive↔
 divisors-of-`4p+1` identity, and the rigorous `Σ f_II^{(1)2} ≪ N(log N)³`. Reproduce: `analysis/primitive_typeII.py`.
+
+**Follow-up (2026-10-13).** REPORT §21 corrects a subsequent primitive/full-count mix-up and
+withdraws blanket exclusions of analytic methods. REPORT §22 replaces `δ | y'z'` by its exact
+divisor class modulo `4s(δ)`, where `s(δ)` is the least positive integer with `δ | s(δ)²`.
+Uniform estimates over the resulting shifts and moduli remain unproved.

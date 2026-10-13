@@ -1,22 +1,26 @@
 #!/usr/bin/env python3
 """verify_large_primes.py — verify ESC for genuinely LARGE hard-class primes, far past
-any brute-force frontier, by exhibiting an EXACT solution through the K-channels.
+any brute-force frontier, by exhibiting an EXACT solution through shifted divisors.
 
-Counting f(p) is O(p); even the kernel small-a search (find_solution.py) must factor
-x ≈ p/4, so it stalls once p has ~50+ digits.  But *verifying* ESC for one prime needs
+The current counting engines scan O(p) possible least denominators; even the kernel
+small-a search (find_solution.py) must factor x ≈ p/4, which can become expensive
+once p has ~50+ digits. But *verifying* ESC for one prime needs
 only ONE solution, and the K-channel construction (Lean `esc_of_typeII`, REPORT §9.2)
 scales to ANY size:
 
-  pick δ ≥ 1; let N = 4pδ + 1.  Find a small prime q | N with q ≡ −1 (mod 4δ).
+  pick δ ≥ 1; let N = 4pδ + 1 and s = product_l l^ceil(v_l(δ)/2).
+  Find a small prime q | N with q ≡ −1 (mod 4s).
   Then D = q ≡ 3 (mod 4), E = N/q ≡ 3 (mod 4) (no factoring of E — just one division),
-  y = (D+1)/4, z = (E+1)/4, and q ≡ −1 (mod 4δ) ⟹ δ | y ⟹ δ | y·z, so x = y·z/δ ∈ ℕ and
+  y = (D+1)/4, z = (E+1)/4, and s | y,z ⟹ δ | y·z, so x = y·z/δ ∈ ℕ and
       4/p = 1/x + 1/(p·y) + 1/(p·z).
 
-Only a *small* prime factor of N in one fixed residue class is needed — never a full
-factorisation — so the reach is bounded by trial division, not by factoring p.  We run
+A suitable small factor of N suffices; its complementary divisor need not be
+factored. The class modulo 4s is complete at each fixed shift when all divisors
+are tested (REPORT §22); the older class modulo 4δ misses squareful-shift solutions.
+For example p=9601 has no old K_m certificate at ANY m, but δ=4, q=23 works here. We run
 it on the six genuinely hard square classes p ≡ {1,121,169,289,361,529} (mod 840) at
-exponentially growing sizes; each solution is checked exactly with `Fraction`.  A failure
-to find any solution would be a counterexample candidate.
+exponentially growing sizes; each solution is checked exactly with `Fraction`. A search
+miss is inconclusive: the shifts, trial factors, and factorization effort are bounded.
 
 Run:  python3 analysis/verify_large_primes.py        (needs sympy)
 """
@@ -25,6 +29,11 @@ import time
 from fractions import Fraction
 
 import sympy
+
+try:
+    from .typeII_square_lift import shift_modulus, solution_from_shift_factor
+except ImportError:  # Direct invocation from the analysis directory or repository root.
+    from typeII_square_lift import shift_modulus, solution_from_shift_factor
 
 SQ_RES = [1, 121, 169, 289, 361, 529]            # the six hard classes mod 840
 # δ values to try, smallest channels first (δ=1 is K1, δ=2 is K2, …); a wide spread of
@@ -45,27 +54,20 @@ def hard_prime(size: int, r: int, rng) -> int:
 
 
 def _try_factor(delta, p, q):
-    """Build a solution from a divisor q ≡ −1 (mod 4δ) of N = 4pδ+1, or None."""
-    N = 4 * p * delta + 1
-    if N % q:
-        return None
-    E = N // q                                     # complementary divisor, exact
-    if (q + 1) % 4 or (E + 1) % 4:
-        return None
-    y, z = (q + 1) // 4, (E + 1) // 4
-    if (y * z) % delta:
-        return None
-    return (y * z) // delta, p * y, p * z, delta, q
+    """Build a certificate in the complete class modulo 4s(δ), or return None."""
+    sol = solution_from_shift_factor(p, delta, q)
+    return (*sol, delta, q) if sol is not None else None
 
 
 def solve_esc(p: int, budget_s: float = 8.0):
     """Return (x, Y, Z, delta, q) with 4/p = 1/x + 1/Y + 1/Z, or None if no solution was
     found WITHIN THE CHEAP SEARCH BUDGET.  None means 'no cheap channel fired in time' —
-    NOT a counterexample: a solution provably still exists at greater channel depth
-    (the conjecture is open, but solubility of any single prime is not in doubt here)."""
+    NOT a counterexample or a proof that a deeper solution exists. The time budget
+    is checked between stage-2 factorizations; an individual factorization can
+    overrun it."""
     # stage 1 — trial division by small primes in the target class (instant for most p)
     for delta in DELTAS:
-        mod = 4 * delta
+        mod = shift_modulus(delta)
         N = 4 * p * delta + 1
         for q in SMALL:
             if q % mod == mod - 1 and N % q == 0:
@@ -73,16 +75,16 @@ def solve_esc(p: int, budget_s: float = 8.0):
                 if sol:
                     return sol
     # stage 2 — escalate: pull factors of N and test EVERY divisor in the target class.
-    # For small N (≲ 10⁴⁵) factor fully and enumerate divisors — this is exhaustive for the
-    # channel, so it resolves any K1/K2-starved prime in range; for huge N, take the prime
+    # For N < 10⁴⁵ attempt full factorization. A completed factorization and untruncated
+    # divisor list exhaust this shift, not all shifts. For huge N, take the prime
     # factors Pollard-rho/ECM can reach (a cheap-search miss there is honest, not a cex).
     deadline = time.time() + budget_s
     for delta in DELTAS:
         if time.time() > deadline:
             break
-        mod = 4 * delta
+        mod = shift_modulus(delta)
         N = 4 * p * delta + 1
-        if N < 10 ** 45:                           # fully factorable: exhaust the channel
+        if N < 10 ** 45:                           # attempt full factorization
             fac = sympy.factorint(N)
             divs = [1]
             for q, e in fac.items():
@@ -125,8 +127,8 @@ def verify_interval(N: int, W: int):
             checked += 1
             deepest = max(deepest, sol[3])
         p += 840
-    print(f"  {checked} hard-class primes in the window, ALL verified exact "
-          f"({misses} needed deeper search); deepest channel δ={deepest}; {time.time()-t0:.1f}s.")
+    print(f"  {checked} hard-class primes verified exactly; {misses} unresolved search misses; "
+          f"deepest shift δ={deepest}; {time.time()-t0:.1f}s.")
 
 
 if __name__ == "__main__":
@@ -152,8 +154,8 @@ if __name__ == "__main__":
             sol = solve_esc(p)
             dt = time.time() - ts
             if sol is None:
-                # NOT a counterexample — the cheap channels (δ ≤ 33, factors ≤ 2·10⁵)
-                # simply did not fire within budget; a solution exists at greater depth.
+                # Only the configured shifts and available factors were searched.
+                # A miss neither disproves ESC nor establishes a deeper solution.
                 print(f"  class {r:3d} mod 840:  — cheap channels exhausted in {dt:.1f}s "
                       f"(deeper search needed; not a counterexample)")
                 continue
